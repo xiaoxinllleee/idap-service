@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.jx.wdyy.mapper.KhgxglCkkhyxdjbMapper">
+
+    <select id="getTheYyHistoryMap" resultType="java.util.List">
+        select * from (SELECT null as CKJE,tb.lrsj,tb.JGDM,YXBL,null as CKZL,zjhm,null as
+        khzl,sbzt,yybh,khmc,sjhm,YYRQ,org.ZZJC as jgmc ,'1' as type,yggh,null as bz
+        from khgxgl_sjyhyxdjb tb left JOIN hr_bas_organization org on tb.jgdm = org.YWJGDM
+        <where>
+            <if test="param2.yggh != null  and param2.yggh != '' ">and tb.YGGH = #{param2.yggh}</if>
+            <if test="param2.sbzt != null ">and tb.sbzt = #{param2.sbzt}</if>
+            <if test="param2.search != null  and param2.search != '' ">
+                and (tb.KHMC like CONCAT(CONCAT('%',#{param2.search}), '%')
+                or tb.ZJHM like CONCAT(CONCAT('%',#{param2.search}), '%'))
+            </if>
+        </where>
+        UNION ALL
+        select tb.CKJE,tb.lrsj,tb.JGDM,YXBL, CKZL,zjhm,khzl,sbzt,yybh,khmc,sjhm,YYRQ,org.ZZJC as jgmc,'2' as type ,yggh,bz
+        from khgxgl_ckkhyxdjb tb left JOIN hr_bas_organization org on tb.jgdm = org.YWJGDM
+        <where>
+            <if test="param2.yggh != null  and param2.yggh != '' ">and tb.YGGH = #{param2.yggh}</if>
+            <if test="param2.sbzt != null  ">and tb.sbzt = #{param2.sbzt}</if>
+            <if test="param2.khzl != null and param2.khzl != ''">and khzl = #{param2.khzl}</if>
+            <if test="param2.search != null  and param2.search != '' ">
+                and (tb.KHMC like CONCAT(CONCAT('%',#{param2.search}), '%')
+                or tb.ZJHM like CONCAT(CONCAT('%',#{param2.search}), '%'))
+            </if>
+        </where>
+        )  t5
+        <where>
+            <if test="param2.yylx != null and param2.yylx != ''">and t5.type = #{param2.yylx}</if>
+        </where>
+        order by t5.yyrq desc
+
+    </select>
+</mapper>

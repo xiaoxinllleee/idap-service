@@ -1,0 +1,20 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"areaname": "家电市场",
+		"zkhs": "8,723",
+		"qzkhs": "1,523",
+		"hxkhs": "882",
+		"ckhs": "6,293",
+		"dkhs": "3,252",
+		"ckje": "4,295万元",
+		"ckrp": "4,123万元",
+		"dkye": "2,962万元",
+		"byzfcs": "568",
+		"ljzfcs": "2,482",
+		"zzbz": "2",
+		"dybh": "10007"
+	}
+}

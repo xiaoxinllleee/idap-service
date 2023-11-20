@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ckjkpt.ckzhgl.ckzhglgl.mapper.CkjkptCkzhglxxMapper">
+        <select id="getMaxId" resultType="java.lang.String">
+              select nvl(max(glid),0)+1 from ckjkpt_ckzhglxx
+            </select>
+        <select id="getCkzhglxxByckzh" parameterType="java.lang.String" resultType="java.lang.Integer">
+            select count(*) from CKJKPT_CKZHGLXX where ckzh=#{ckzh}
+        </select>
+
+   <!-- <select id="getListClaim" resultType="org.cmms.modules.ckjkpt.ckzhgl.dfpckzhgl.entity.HrBasStaffPostVo" parameterType="java.lang.String">
+        select t.*,t2.ywjgdm from HR_BAS_STAFF_POST@eweb t,HR_BAS_ORGANIZATION@eweb t2
+        where t.zzbz=t2.zzbz
+        <if test="ywjgdm != null and ywjgdm !=''">
+            and  t2.ywjgdm = #{ywjgdm}
+        </if>
+        <if test="rglx != null and rglx!=''">
+            and  t.rglx = #{rglx}
+        </if>
+        <if test="gwbz != null and gwbz!=''">
+            and  t.gwbz = #{gwbz}
+        </if>
+        <if test="khjlbz != null and khjlbz!=''">
+        and  t.khjlbz = #{khjlbz}
+    </if>
+        <if test="yggh != null and yggh!=''">
+            and  t.yggh = #{yggh}
+        </if>
+    </select>-->
+
+    <select id="extract"  statementType="CALLABLE">
+        {call PKG_CKJKPT.P_DFPCKZH_INIT}
+    </select>
+
+    <select id="judgeExtract" resultType="java.lang.Integer">
+        SELECT PVALUE FROM ERP_BAS_ASSESS_PARAM WHERE PID = 'P90027'
+    </select>
+
+    <select id="getMaxDataDate" resultType="java.lang.String">
+        select max(DATA_DATE) ZDRKRQ from ods_020.Cbs_borm_base
+    </select>
+
+    <select id="viewCkzhExit" resultType="org.cmms.modules.dklldj.lldjgl.glzhgl.entity.CbsInvmBase" parameterType="java.lang.String">
+        select * from ods_020.CBS_INVM_BASE where  sub_acct_no=#{ckzh}
+        <if test="b_date != null and b_date!=''">
+           and data_date &gt;= #{b_date}
+        </if>
+        <if test="e_date != null and e_date!=''">
+            and data_date &lt;=#{e_date}
+        </if>
+    </select>
+
+    <select id="getDkzh" resultType="java.lang.String" parameterType="java.lang.String">
+       select  ACCT_NO  from ods_020.CBS_BORM_BASE where AUTO_DBT_ACCT_NO=#{ckzh}
+    </select>
+
+    <select id="empCheckFunc" parameterType="java.lang.String" resultType="org.cmms.modules.ckjkpt.ckzhgl.ckzhglgl.vo.HrBasStaffPostVO">
+        select t1.zzbz, t1.yggh, t2.ygxm, t1.gwbz, t1.rglx, t1.rgrq, t1.lgrq, t1.khjlbz, t1.gyh, t1.bz, t1.scbz, t1.scsj, t1.scczy, t1.id, t1.sfcykh, t1.sfltx
+          from hr_bas_staff_post t1
+          left join hr_bas_staff t2 on t1.yggh = t2.yggh
+         where t1.zzbz = #{zzbz} and t1.gwbz = #{gwbz} and t1.yggh = #{yggh}
+    </select>
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.RateZxlldjbMapper">
+
+    <select id="queryzxlldjb"  resultType="org.cmms.modules.xdgl.grdkgl.entity.RateZxlldjb">
+		select * from  rate_zxlldjb where zjhm = #{zjhm} and djnf = #{djnf} and spzt = 1 and rownum = 1
+	</select>
+
+	<update id="updateSpzt">
+		update Rate_zxlldjb set spzt =#{param2}
+		<if test="param3 != null and param3 != ''">
+			,note =#{param3}
+		</if>
+		where djid =#{param1}
+	</update>
+
+</mapper>

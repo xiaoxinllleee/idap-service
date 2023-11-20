@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.yjzrbg.mapper.CamsZcsxYjzrbgMapper">
+
+    <update id="updateScore">
+        update CAMS_ZCSX_YJZRBG set xypf=#{dao.fs},fxdj=#{dao.fxdjDict},hczt=#{dao.zzjgvalDict}
+        where zjhm = #{dao.zjhm}
+    </update>
+
+    <update id="updateCsed">
+        update CAMS_ZCSX_YJZRBG set csed = #{hzed} where zjhm = #{zjhm}
+    </update>
+
+    <update id="mergeNhxx">
+        merge into CAMS_ZCSX_YJZRBG t using (
+            select * from khxxgl_khxq_nh
+        )t2 on (t.zjhm = t2.zjhm)
+            when not matched then
+                insert (id,create_time,zjhm,khmc) values (t2.id,sysdate,t2.zjhm,t2.khmc)
+    </update>
+</mapper>

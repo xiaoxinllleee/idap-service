@@ -1,0 +1,20 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"areaname": "宝珍西街",
+		"zkhs": "6,847",
+		"qzkhs": "1,048",
+		"hxkhs": "582",
+		"ckhs": "5,982",
+		"dkhs": "1,192",
+		"ckje": "3,852万元",
+		"ckrp": "3,424万元",
+		"dkye": "2,524万元",
+		"byzfcs": "242",
+		"ljzfcs": "652",
+		"zzbz": "2",
+		"dybh": "10004"
+	}
+}

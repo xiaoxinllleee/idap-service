@@ -1,0 +1,38 @@
+{
+  "message": "",
+  "success": true,
+  "result": {
+    "pageSize": 10,
+    "pageNo": 0,
+    "total": 1,
+    "totalPage": 1,
+    "records": [
+      {
+        "id": "d8488dsadsad155123",
+        "khlx": "1",
+        "khlx_dictText": "潜在客户",
+        "jhksyf": "2019-06",
+        "jhjsyf": "2019-07",
+        "sfsckhhfmx": "1",
+        "sfsckhhfmx_dictText": "是",
+        "jhsm": "6月份至7月份针对潜在客户进行营销，计划营销存款100万",
+        "cjr": "操作员1",
+        "cjsj": "2019-05-30 11:44:32"
+      },
+      {
+        "id": "gg400glasdlsassde",
+        "khlx": "2",
+        "khlx_dictText": "普通客户",
+        "jhksyf": "2019-08",
+        "jhjsyf": "2019-08",
+        "sfsckhhfmx": "2",
+        "sfsckhhfmx_dictText": "否",
+        "jhsm": "营销普通客户",
+        "cjr": "操作员1",
+        "cjsj": "2019-07-15 14:21:05"
+      }
+    ]
+  },
+  "status": 200,
+  "timestamp": 1534955098193
+}

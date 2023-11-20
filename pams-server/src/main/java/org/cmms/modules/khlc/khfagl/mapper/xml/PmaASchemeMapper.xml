@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khlc.khfagl.mapper.PmaASchemeMapper">
+    <select id="getSchenmeByJdId" resultType="org.cmms.modules.khlc.khfagl.entity.PmaAScheme">
+        select * from PMA_A_SCHEME where  MENU_ID IN (select MENU_ID from PMA_A_SCHEME_MENU start with MENU_ID=#{jdid} connect by prior MENU_ID = PARENT_MENU_ID)
+        <if test="famc!=null and famc!=''">
+            and SCHEME_NAME like '%${famc}%'
+        </if>
+    </select>
+</mapper>

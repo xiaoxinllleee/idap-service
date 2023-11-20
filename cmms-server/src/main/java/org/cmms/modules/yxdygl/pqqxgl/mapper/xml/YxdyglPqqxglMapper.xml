@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.yxdygl.pqqxgl.mapper.YxdyglPqqxglMapper">
+
+    <select id="getcount" resultType="int">
+        select  count(distinct menu_id) from YXDYGL_PQQXGL
+    </select>
+
+    <select id="getByPage" resultType="org.cmms.modules.yxdygl.pqqxgl.entity.YxdyglPqqxglTree">
+        select * from YXDYGL_PQQXGL t left join YXDYGL_MAIN t2 on t.menu_id = t2.id  where t.menu_id in (select menu_id from
+                                                                          ( select menu_id,ROWNUM from
+            (select distinct menu_id from YXDYGL_PQQXGL t where 1 = 1
+            <if test="dao.khjl != null and dao.khjl != ''">
+                and khjl = #{dao.khjl}
+            </if>
+            <if test="dao.sfzkhjl != null and dao.sfzkhjl != ''">
+                and sfzkhjl = #{dao.sfzkhjl}
+            </if>
+            order by menu_id)
+            )
+          where  ROWNUM between #{startPage} and #{endPage})
+          <if test="dao.khjl != null and dao.khjl != ''">
+        and khjl = #{dao.khjl}
+         </if>
+        <if test="dao.sfzkhjl != null and dao.sfzkhjl != ''">
+            and sfzkhjl = #{dao.sfzkhjl}
+        </if>
+
+        <if test="dao.menuId != null and dao.menuId != ''">
+            and t2.wgmc like #{dao.menuId}
+        </if>
+            and t2.wgmc is not null
+        order by t.menu_id,sfzkhjl
+    </select>
+
+    <select id="getMenuIdsByZkhjl" resultType="string">
+        select  menu_id from YXDYGL_PQQXGL t where sfzkhjl = '1'
+    </select>
+
+    <select id="getMenuIdsByKhjlgh" resultType="string">
+        select  menu_id from YXDYGL_PQQXGL t where khjl = #{yggh}
+    </select>
+
+</mapper>

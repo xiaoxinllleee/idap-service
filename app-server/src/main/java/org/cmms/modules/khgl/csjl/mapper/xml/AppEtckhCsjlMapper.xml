@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.csjl.mapper.AppEtckhCsjlMapper">
+
+    <select id="getCsjlList" resultType="org.cmms.modules.khgl.csjl.entity.AppEtcCsjlVO">
+        select t.id,t.csr,t.csrq,t.csxx
+        from APP_ETCKH_CSJL t
+        where t.zjhm = #{zjhm}
+    </select>
+
+
+    <select id="getCsxxList" resultType="org.cmms.modules.khgl.csjl.entity.AppEtckhCsjlVO">
+        select * from (select h.*,rownum as r from
+        (select t.khxx,t.csr,t.csrq,t1.dkrq,t1.dkje,t1.hsrq,t.csxx,t.tjrq
+         from APP_ETCKH_CSJL t
+         left join IBUS_ETC_DJKDKJL t1
+         on t.khxx = t1.hm
+         <where>
+             <if test="namecn != null and namecn !=''">
+                and instr(t.khxx,#{namecn}) > 0
+             </if>
+         </where>
+         )h)
+         where r between #{start} and #{end}
+    </select>
+</mapper>

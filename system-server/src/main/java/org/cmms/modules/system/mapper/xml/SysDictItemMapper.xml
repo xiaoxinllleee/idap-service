@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.system.mapper.SysDictItemMapper">
+    <select id="selectItemsByDictCode" resultType="org.cmms.modules.system.entity.SysDictItem">
+        select * from SYS_DICT_ITEM where dict_id = (select id from SYS_DICT where dict_code=#{code} and rownum = 1 )
+    </select>
+
+    <select id="getByWorkNo" resultType="org.cmms.modules.system.entity.VsysUserRole">
+        select * from V_SYS_USER_ROLE where user_id=(select id from sys_user where work_no=#{wordNo} )
+    </select>
+
+    <select id="getSeqRateZxlldjbDjidNextval" resultType="java.lang.String">
+        select ${seq} as xlh from dual
+    </select>
+
+    <select id="getCollateralScore" parameterType="java.lang.String" resultType="java.lang.String">
+        select nvl(t1.description,0) as score
+          from sys_dict_item t1,
+               sys_dict t2
+         where t1.dict_id=t2.id
+           and t2.dict_code=#{dictcode} and t1.item_value=#{itemvalue}
+         order by t1.sort_order
+    </select>
+</mapper>

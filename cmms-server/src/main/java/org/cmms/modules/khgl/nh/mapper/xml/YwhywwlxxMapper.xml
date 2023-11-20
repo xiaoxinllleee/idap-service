@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.nh.mapper.YwhywwlxxMapper">
+
+
+    <select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.nh.entity.Ywhywwlxx">
+        SELECT *
+        FROM  KHXXGL_YWHYWWLXX
+        WHERE
+        zjhm = #{zjhm}
+    </select>
+
+
+    <select id="selectByHhbm" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.nh.entity.Ywhywwlxx">
+        SELECT *
+        FROM  KHXXGL_YWHYWWLXX
+        WHERE
+        hhbm = #{hhbm}
+    </select>
+
+
+    <delete id="deleteByMainId" parameterType="java.lang.String">
+        DELETE
+        FROM  KHXXGL_YWHYWWLXX
+        WHERE
+        zjhm = #{zjhm}
+    </delete>
+
+    <select id="endDate" resultType="string">
+        select greatest(  max(end_date),max(app_maturity_date)) from cbs_borm_base where ident_no =#{zjhm}
+    </select>
+    <select id="appMaturityDate" resultType="string">
+        select max(app_maturity_date) from cbs_borm_base where ident_no =#{zjhm};
+    </select>
+
+</mapper>

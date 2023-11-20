@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.pad.nhxxgl.mapper.KhglNhhzxxglMapper">
+
+    <select id="selectpyxx" parameterType="java.lang.String" resultType="org.cmms.modules.pad.pyxx.entity.Nhbkbpyfsxx">
+		select  hhbm,zjhm,max(khmc)khmc,min(njjqk)njjqk,min(fcjz)fcjz,min(dznyxfpqk)dznyxfpqk ,min(jtysgjqk)jtysgjqk,min(jtcsrqk)jtcsrqk
+		  from  CAMS_ZCSX_NHBKBPYFSXX
+		 where hhbm = #{hhbm}
+		group by hhbm,zjhm
+	</select>
+
+	<insert id="syncYesNhhzxx">
+		insert into KHGL_NHHZXXGL_SYNC_YES
+		select hhbm from KHGL_NHHZXXGL where hhbm not in (select hhbm from KHGL_NHHZXXGL_SYNC_YES)
+	</insert>
+
+
+	<update id="updateKhlx" parameterType="java.lang.String" statementType="CALLABLE">
+		{ call PKG_KHXXGL.P_KHLX_UPDATE_BY_HHBM(#{hhbm},#{newhhbm}) }
+	</update>
+
+	<select id="getJtcyDkxxByZjhm" parameterType="java.lang.String" resultType="org.cmms.modules.pad.nhxxgl.entity.DkxxVo">
+		select zjhm,jgdm as dkzh,dkje as onedkje,dkye as onedkye from KHXXGL_YWHYWWLXX_ZH
+		where zjhm=#{zjhm} order by sjrq desc
+	</select>
+</mapper>

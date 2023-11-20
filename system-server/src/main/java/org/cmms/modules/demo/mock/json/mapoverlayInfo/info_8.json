@@ -1,0 +1,20 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"areaname": "批发市场",
+		"zkhs": "5,723",
+		"qzkhs": "1,832",
+		"hxkhs": "472",
+		"ckhs": "4,982",
+		"dkhs": "1,423",
+		"ckje": "3,832万元",
+		"ckrp": "3,623万元",
+		"dkye": "2,492万元",
+		"byzfcs": "82",
+		"ljzfcs": "682",
+		"zzbz": "2",
+		"dybh": "10009"
+	}
+}

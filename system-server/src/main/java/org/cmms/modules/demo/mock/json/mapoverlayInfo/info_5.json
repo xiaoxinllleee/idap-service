@@ -1,0 +1,20 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"areaname": "家居广场",
+		"zkhs": "7,222",
+		"qzkhs": "1,423",
+		"hxkhs": "682",
+		"ckhs": "6,023",
+		"dkhs": "2,652",
+		"ckje": "4,923万元",
+		"ckrp": "3,824万元",
+		"dkye": "2,562万元",
+		"byzfcs": "321",
+		"ljzfcs": "1,242",
+		"zzbz": "2",
+		"dybh": "10006"
+	}
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dklldj.jbxxgl.zhrpcx.mapper.Rate_zhckrpMapper">
+    <select id="extract"  parameterType="java.util.Map" statementType="CALLABLE">
+        {call PKG_LLDJ.P_ZHRP_TJ(#{tjyf,mode=IN,jdbcType=VARCHAR},#{zjhm,mode=IN,jdbcType=VARCHAR},#{khzh,mode=IN,jdbcType=VARCHAR})}
+    </select>
+</mapper>

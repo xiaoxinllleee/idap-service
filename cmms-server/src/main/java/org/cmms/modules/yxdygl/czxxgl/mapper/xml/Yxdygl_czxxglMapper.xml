@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.yxdygl.czxxgl.mapper.Yxdygl_czxxglMapper">
+    <select id="queryByQybm" parameterType="string" resultType="org.cmms.modules.yxdygl.czxxgl.entity.Yxdygl_czxxgl">
+        SELECT * FROM YXDYGL_CZXXGL WHERE qybm = #{qybm} AND ROWNUM=1
+    </select>
+
+    <select id="queryByCmc" parameterType="string" resultType="org.cmms.modules.yxdygl.czxxgl.entity.Yxdygl_czxxgl">
+        select * from Yxdygl_czxxgl where village like #{cmc}
+    </select>
+</mapper>

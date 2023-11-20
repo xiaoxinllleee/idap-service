@@ -1,0 +1,26 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"records":[
+			{
+				"id ": 1,
+				"sszh": "123",
+				"ssyxdy": "会员管理",
+				"cqjmbh": "2",
+				"dabh": "1",
+				"dwmc": "特别行动组",
+				"lxfs": "123",
+				"dwdz": "长沙",
+				"xyfl": "行业分类",
+				"lxrxx": "1",
+				"ywhywwlqk": "特别行动组",
+				"gskhjl": "张三",
+				"jrywqk": "金融业务情况",
+				"yxqk": "1",
+				"fjxx": "附件信息"
+			}
+		]
+	}
+}

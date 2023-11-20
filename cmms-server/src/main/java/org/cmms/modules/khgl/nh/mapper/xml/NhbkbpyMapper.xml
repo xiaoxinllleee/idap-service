@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.nh.mapper.NhbkbpyMapper">
+
+    <!--查询客户评议信息-->
+    <select id="viewDetail" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.nh.entity.Nhbkbpy">
+        SELECT T.PYSJ, T.PYYXM, T.PYYZJHM, T.PYDF, T.CXD, T.JYSXED, T.PYLX
+          FROM CAMS_ZCSX_NHBKBPY T
+         WHERE T.ZJHM = #{ZJHM} ORDER BY T.PYSJ DESC
+    </select>
+
+    <select id="PymxData" resultType="org.cmms.modules.khgl.nh.entity.Nhbkbpy">
+        SELECT T.PYSJ, T.PYYXM, T.PYYZJHM, T.PYDF, T.CXD, T.JYSXED,
+               T.HYZK, T.NNQK, T.JKZTQK, T.JYNL, T.FWJZQK,
+               T.DZNYXFPQK, T.NJJQK, T.JYQK, T.JTCSRQK, T.JTZSR,
+               T.JKRHKYY, T.JKRBJYQ, T.JKRLXYQ, T.CKYWWL, T.ZWQK,
+               T.JTCYGX, T.JTNDLRSQK, T.JTRKSZHJN, T.XYZK, T.SHSWJRY,
+               T.SHGXZK, T.SHXGQK, T.JTYSGJQK, T.ZMJGLJK, T.JRJGDKQK, T.BZ, T.BYSXQX
+          FROM CAMS_ZCSX_NHBKBPY T
+         WHERE T.ZJHM = #{ZJHM} AND T.PYYZJHM = #{PYYZJHM}
+    </select>
+
+
+    <delete id="deleteByMainId" parameterType="java.lang.String">
+        DELETE
+        FROM  CAMS_ZCSX_NHBKBPY
+        WHERE
+        zjhm = #{zjhm}
+    </delete>
+
+
+    <select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.nh.entity.Nhbkbpy">
+        SELECT *
+        FROM  CAMS_ZCSX_NHBKBPY
+        WHERE
+        zjhm = #{zjhm}
+    </select>
+
+    <select id="randomList" resultType="org.cmms.modules.khgl.nh.entity.Nhbkbpy">
+        select * from (
+            select * from CAMS_ZCSX_NHBKBPY
+            where qydm in (select wgbh  from yxdygl_main start with id=#{dao.qydm} connect by prior id = PARENT_ID) and pyls=#{dao.pyls}
+            order by dbms_random.value
+        )
+        where rownum &lt;= (select ceil(count(1) * #{dao.cqbl} /100) from CAMS_ZCSX_NHBKBPY where
+            qydm in (select wgbh  from yxdygl_main start with id=#{dao.qydm} connect by prior id = PARENT_ID) and pyls=#{dao.pyls}
+            )
+    </select>
+
+    <select id="getYpyrs" resultType="org.cmms.modules.khgl.nh.vo.KpyhsVO">
+        select qydm wgbh,count(distinct hhbm)hs from CAMS_ZCSX_NHBKBPY where pyls is not null group by qydm
+    </select>
+
+    <select id="minJcmxcs" resultType="decimal">
+        select nvl(min(jcmxcs),0)jcmxcs from CAMS_ZCSX_NHBKBPY t where hhbm=#{hhbm}
+    </select>
+
+    <select id="getAllBkbpybz" resultType="string">
+        select listagg(bz,',') within group (order by bz) from (
+            select bz from  CAMS_ZCSX_NHBKBPY t where hhbm=#{hhbm})
+    </select>
+
+    <select id="getBmdListOne" resultType="org.cmms.modules.khgl.nh.entity.XtBmd">
+        select t1.*,t2.nl,
+               t2.sfljqk,
+               t2.bysxqx,
+               t2.bz,
+               t2.sfjysx,
+               t2.ncfcqk,
+               t2.cqywfc,
+               t2.ywcl,t2.sfzbd,t2.cqjzd,t2.zyxm,t2.sr,t2.jysxed,t2.pyls from (
+                                                                                  select wgbh,hhbm,yhzgx,khmc,zjhm,sjhm,hjdz,sfycdg from KHXXGL_KHXQ_NH where hhbm in (
+                                                                                      select distinct hhbm from CAMS_ZCSX_NHBKBPY where pyls= 1 and zjhm in (select zjhm from CAMS_ZCSX_NHBKBPY group by zjhm having count(1) > 1) )
+                                                                                                                                                          and wgbh in (select menu_id
+                                                                                                                                                                       from YXDYGL_PQQXGL
+                                                                                                                                                                       where khjl = #{yggh}
+                                                                                                                                                              <if test="wgbh != null and wgbh !=''">
+                                                                                                                                                                  and menu_id in
+                                                                                                                                                                  (select wgbh
+                                                                                                                                                                  from yxdygl_main
+                                                                                                                                                                  start with wgbh = #{wgbh}
+                                                                                                                                                                  connect by prior wgbh = parent_id)
+                                                                                                                                                              </if>
+                                                                                                                                                              )
+                                                                                  order by hhbm
+                                                                              )t1 left join (select * from CAMS_ZCSX_NHBKBPY where pyls= 1) t2
+                                                                                            on t1.hhbm = t2.hhbm and t1.zjhm = t2.zjhm
+    </select>
+    <select id="getBmdListOneUp" resultType="org.cmms.modules.khgl.nh.entity.XtBmd">
+        select t1.*,t2.nl,
+               t2.sfljqk,
+               t2.bysxqx,
+               t2.bz,
+               t2.sfjysx,
+               t2.ncfcqk,
+               t2.cqywfc,
+               t2.ywcl,t2.sfzbd,t2.cqjzd,t2.zyxm,t2.sr,t2.jysxed,t2.pyls from (
+                                                                                  select wgbh,hhbm,yhzgx,khmc,zjhm,sjhm,hjdz,sfycdg from KHXXGL_KHXQ_NH where hhbm in (
+                                                                                      select distinct hhbm from CAMS_ZCSX_NHBKBPY where pyls= #{pyls} )
+                                                                                                                                                          and wgbh in (select menu_id
+                                                                                                                                                                       from YXDYGL_PQQXGL
+                                                                                                                                                                       where khjl = #{yggh}
+        <if test="wgbh != null and wgbh !=''">
+            and menu_id in
+            (select wgbh
+            from yxdygl_main
+            start with wgbh = #{wgbh}
+            connect by prior wgbh = parent_id)
+        </if>
+                                                                                                                                                              )
+                                                                                  order by hhbm
+                                                                              )t1 left join (select * from CAMS_ZCSX_NHBKBPY where pyls= #{pyls}) t2
+                                                                                            on t1.hhbm = t2.hhbm and t1.zjhm = t2.zjhm
+    </select>
+
+    <select id="getMaxPyls" resultType="integer">
+
+        select nvl(max(pyls),0) from CAMS_ZCSX_NHBKBPY where qydm in (select menu_id
+                                                               from YXDYGL_PQQXGL
+                                                               where khjl = #{yggh}
+        <if test="wgbh != null and wgbh !=''">
+            and menu_id in
+            (select wgbh
+            from yxdygl_main
+            start with wgbh = #{wgbh}
+            connect by prior wgbh = parent_id)
+        </if>
+            )
+    </select>
+
+    <select id="getpyyxm" resultType="string">
+        select max(pyyxm) pyyxm from (
+            select t.pyyxm from CAMS_ZCSX_NHBKBPY t where qydm=#{wgbh} and pyls=#{pyls} and rownum=1
+            union all
+            select pyyxm from cams_zcsx_nhplpy where pywg=#{wgbh} and pyls=#{pyls} and rownum=1
+        )
+    </select>
+
+    <select id="getYsxdx" resultType="string">
+        select distinct zjhm from CAMS_ZCSX_NHBKBPY t where pylc like '%3%' and zhsded > 0 and zjhm =#{zjhm}
+    </select>
+
+    <select id="getMaxJysxed" resultType="decimal">
+        select max(jysxed) from CAMS_ZCSX_NHBKBPY  where zjhm =#{zjhm}
+    </select>
+
+    <select id="queryPyxxNy"  resultType="org.cmms.modules.khgl.nh.vo.NhbkbpyNyVo">
+        select t1.hhbm hhbm,
+               t1.yhzgx yhzgx,
+               t1.khmc khmc,
+               t1.nl nl,
+               t1.zjhm zjhm,
+               t1.sjhm sjhm,
+               t1.zz jzdz,
+               t2.sfljqk sfljqk,
+               t2.bysxqx bysxqx,
+               t2.bz bz,
+               t2.ncfcqk ncfcqk,
+               t2.cqywfc cqywfc,
+               t2.ywcl ywcl,
+               t2.sfzbd sfzbd,
+               t2.cqjzd cqjzd,
+               t2.zyxm zyxm,
+               t2.sr sr,
+               t2.pyls pyls,
+               t2.pyyxm pyyxm,
+               t2.pyyzjhm pyyzjhm,
+               t2.gzlx gzlx,
+               t2.ncfcqk_bz ncfcbz,
+               t2.cqywfc_bz cqfcbz,
+               t2.ywcl_bz ywclbz,
+               t2.cqjzdbz cqjzdbz,
+               t2.pylx pylx,
+               t2.pysj pysj,
+               t2.pyyjyed pyyjyed,
+               t1.wgbh wgbh
+        from khxxgl_khxq_nh t1
+        left join (
+            select * from CAMS_ZCSX_NHBKBPY where pyls=#{pyls}
+            ) t2 on t2.zjhm=t1.zjhm and t1.wgbh=t2.qydm
+        left join yxdygl_main t3 on t1.wgbh=t3.wgbh
+        where t3.parent_id=#{wgbh}
+        order by t1.hhbm,nvl(t2.sfljqk,10)
+    </select>
+
+    <select id="getPylsByWgbh" resultType="java.lang.Integer">
+        select  max(nvl(t1.pyls,0)) from CAMS_ZCSX_NHBKBPY t1
+        left join yxdygl_main t2 on t1.qydm=t2.wgbh
+        where t2.parent_id=#{wgbh}
+    </select>
+</mapper>

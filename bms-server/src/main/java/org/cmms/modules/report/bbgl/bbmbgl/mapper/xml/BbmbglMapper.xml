@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.report.bbgl.bbmbgl.mapper.BbmbglMapper">
+    <select id="getBbmbsjList" resultType="org.cmms.modules.report.bbgl.bbmbgl.entity.BbmbglVo" parameterType="java.lang.String">
+
+            select bbyf,bbbh,bblj,bbmc,bblx,sjlx,sfqy,bbsx,bbh,create_by,create_time,update_by,update_time,sfcj from (
+              select t2.id,
+                to_date(${bbyf}, 'yyyymmdd') as bbyf,
+                t1.bbbh,
+                t2.bblj,
+                t1.bbmc,
+                t1.bblx,
+                t1.sjlx,
+                t1.sfqy,
+                t1.bbsx,
+                t1.bbh,
+                t2.create_by,
+                t2.create_time,
+                t2.update_by,
+                t2.update_time,
+                case when t2.bblj is null then 0 else 1 end sfcj
+                from rep_bbmbgl t1
+            left join (select * from rep_bbsjgl
+            where bbyf = to_date(${bbyf}, 'YYYYMMDD')) t2
+                on t1.bbbh = t2.bbbh) where 1=1
+            <if test="bbmbglVo.bblx != null and bbmbglVo.bblx != ''">
+                and bblx = #{bbmbglVo.bblx}
+            </if>
+            <if test="bbmbglVo.sfcj != null and bbmbglVo.sfcj != ''">
+                    and sfcj = #{bbmbglVo.sfcj}
+            </if>
+            <if test="bbmbglVo.sjlx != null and bbmbglVo.sjlx != ''">
+                and sjlx = #{bbmbglVo.sjlx}
+            </if>
+            <if test="bbmbglVo.bbbh != null and bbmbglVo.bbbh != ''">
+                and bbbh = #{bbmbglVo.bbbh}
+            </if>
+            <if test="bbmbglVo.bbmc != null and bbmbglVo.bbmc != ''">
+                and bbmc like '%${bbmbglVo.bbmc}%'
+            </if>
+            order by bbbh asc
+
+    </select>
+</mapper>

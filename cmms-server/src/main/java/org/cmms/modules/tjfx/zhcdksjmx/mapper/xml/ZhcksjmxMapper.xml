@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.zhcdksjmx.mapper.ZhcksjmxMapper">
+    <select id="getzhjynck"  resultType="java.util.HashMap">
+       SELECT TO_CHAR(TJYF,'YYYY-MM') as type, YE as 余额,YRP as 月日平,NRP as 年日平 FROM V_SYSJMX_QHCKSJMX WHERE TJYF &gt; add_months(sysdate,-12) and ROWNUM &lt;=12 order by tjyf asc
+    </select>
+
+    <select id="getzhdqhqck"  resultType="java.util.HashMap">
+       SELECT TO_CHAR(TJYF,'YYYY-MM') as type, dqye as 定期, hqye  as 活期 FROM V_SYSJMX_QHCKSJMX WHERE TJYF &gt; add_months(sysdate,-12) and ROWNUM &lt;=12 order by tjyf asc
+    </select>
+
+
+    <select id="getzhdgdsck"  resultType="java.util.HashMap">
+       SELECT TO_CHAR(TJYF,'YYYY-MM') as type, dsye as 对私, dgye  as 对公 FROM V_SYSJMX_QHCKSJMX WHERE TJYF &gt; add_months(sysdate,-12) and ROWNUM &lt;=12 order by tjyf asc
+    </select>
+
+
+    <select id="getzhanlqjck"  resultType="java.util.HashMap">
+       SELECT * FROM v_sysjmx_qhanlqjfb where tjyf=#{tjyf}
+    </select>
+
+
+    <select id="getzhdhckqj"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_QHDHCKQJ where tjyf=#{tjyf}
+    </select>
+
+
+    <select id="getjynck"  resultType="java.util.HashMap">
+       SELECT TO_CHAR(TJYF,'YYYY-MM') as type, YE as 余额,YRP as 月日平,NRP as 年日平 FROM SYSJMX_ZHCKSJMX WHERE JGDM=#{jgdm} and TJYF &gt; add_months(sysdate,-12) and ROWNUM &lt;=12 order by tjyf asc
+    </select>
+
+    <select id="getdqhqck"  resultType="java.util.HashMap">
+       SELECT TO_CHAR(TJYF,'YYYY-MM') as type, dqye as 定期, hqye  as 活期 FROM SYSJMX_ZHCKSJMX WHERE JGDM=#{jgdm} and  TJYF &gt; add_months(sysdate,-12) and ROWNUM &lt;=12 order by tjyf asc
+    </select>
+
+
+    <select id="getdgdsck"  resultType="java.util.HashMap">
+       SELECT TO_CHAR(TJYF,'YYYY-MM') as type, dsye as 对私, dgye  as 对公 FROM SYSJMX_ZHCKSJMX WHERE JGDM=#{jgdm} and  TJYF &gt; add_months(sysdate,-12) and ROWNUM &lt;=12 order by tjyf asc
+    </select>
+
+    <select id="getanlqjck"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_ZHANLQJFB where tjyf=#{tjyf} and JGDM=#{jgdm}
+    </select>
+
+    <select id="getdhckqj"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_ZHDHCKQJ where tjyf=#{tjyf} and JGDM=#{jgdm}
+    </select>
+
+
+    <select id="getAnlqjcRq"  resultType="Date">
+       SELECT max(TJYF)  FROM SYSJMX_ZHANLQJFB
+    </select>
+
+    <select id="getZhdksjrq"  resultType="Date">
+       SELECT max(TJYF)  FROM SYSJMX_ZHDKSJMX
+    </select>
+
+
+    <select id="getZhcksjrq"  resultType="Date">
+       SELECT max(TJYF)  FROM SYSJMX_ZHCKSJMX
+    </select>
+
+
+    <select id="getzhjyndksj"  resultType="java.util.HashMap">
+       SELECT TO_CHAR(TJYF,'YYYY-MM') as type, DKYE as 余额,YRP as 月日平,NRP as 年日平 FROM V_SYSJMX_QHDKSJMX  WHERE TJYF &gt; add_months(sysdate,-12) and ROWNUM &lt;=12 order by tjyf asc
+    </select>
+
+    <select id="getjyndksj"  resultType="java.util.HashMap">
+       SELECT TO_CHAR(TJYF,'YYYY-MM') as type, DKYE as 余额,YRP as 月日平,NRP as 年日平 FROM SYSJMX_ZHDKSJMX WHERE JGDM=#{jgdm} and TJYF &gt; add_months(sysdate,-12) and ROWNUM &lt;=12 order by tjyf asc
+    </select>
+
+
+    <select id="getckpm"  resultType="java.util.HashMap">
+           select zzjc, ye from (select t2.zzjc, t1.ye from SYSJMX_ZHCKSJMX t1 left join HR_BAS_ORGANIZATION t2 on t1.jgdm = t2.ywjgdm where t1.tjyf=#{tjyf}   order by ye desc) WHERE rownum &lt; 6
+    </select>
+
+    <select id="getckwclpm"  resultType="java.util.HashMap">
+        SELECT ZZJC,round(CKWCL,2) as CKWCL,YE,RW FROM (
+        SELECT  N1.ZZJC,N1.YE,N2.CKYE as RW ,CASE WHEN N2.CKYE IS NULL THEN 100 ELSE N1.YE/N2.CKYE*100 END CKWCL FROM (
+        SELECT T2.ZZJC, T2.ZZBZ,T1.YE
+        FROM SYSJMX_ZHCKSJMX T1
+        LEFT JOIN HR_BAS_ORGANIZATION T2
+        ON T1.JGDM = T2.YWJGDM
+        WHERE T1.TJYF = #{tjyf}
+        ) N1
+        LEFT JOIN (SELECT  *FROM TJFX_RWSZ WHERE RWNF= TRUNC(#{tjyf},'YYYY') ) N2
+        ON N1.ZZBZ=N2.ZZBZ)   WHERE ROWNUM &lt; 6  ORDER BY CKWCL DESC
+    </select>
+
+
+    <select id="getzhwjfldk"  resultType="java.util.HashMap">
+       SELECT * FROM V_SYSJMX_QHDKSJMX where tjyf=#{tjyf}
+    </select>
+
+    <select id="getwjfldk"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_ZHDKSJMX where tjyf=#{tjyf} and JGDM=#{jgdm}
+    </select>
+
+
+    <select id="getqhcksj"  resultType="java.util.HashMap">
+       SELECT * FROM V_SYSJMX_QHCKSJMX where tjyf=#{tjyf}
+    </select>
+
+    <select id="getzhcksj"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_ZHCKSJMX where tjyf=#{tjyf} and JGDM=#{jgdm}
+    </select>
+
+
+    <select id="getzhanlqjdk"  resultType="java.util.HashMap">
+       SELECT * FROM v_sysjmx_qhanlqjfb_dk where tjyf=#{tjyf}
+    </select>
+
+
+    <select id="getanlqjdk"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_ZHANLQJFB_DK where tjyf=#{tjyf} and JGDM=#{jgdm}
+    </select>
+
+    <select id="getzhdhdkqj"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_QHDHDKQJ where tjyf=#{tjyf}
+    </select>
+
+
+    <select id="getdhdkqj"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_ZHDHDKQJ where tjyf=#{tjyf} and JGDM=#{jgdm}
+    </select>
+
+    <select id="getcdkxzs"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_XZKHZH where  JGDM=#{jgdm}
+    </select>
+    <select id="getqhcdkxzs"  resultType="java.util.HashMap">
+       SELECT * FROM SYSJMX_QHXZKHZH
+    </select>
+
+    <select id="getdkpm"  resultType="java.util.HashMap">
+           select zzjc, dkye from (select t2.zzjc, t1.dkye from SYSJMX_ZHDKSJMX t1 left join HR_BAS_ORGANIZATION t2 on t1.jgdm = t2.ywjgdm where t1.tjyf=#{tjyf}   order by dkye desc) WHERE rownum &lt; 6
+    </select>
+
+    <select id="getdkwclpm"  resultType="java.util.HashMap">
+        SELECT ZZJC,round(DKWCL,2) as DKWCL,DKYE,RW FROM (
+        SELECT  N1.ZZJC,N1.DKYE,N2.DKYE as RW ,CASE WHEN N2.DKYE IS NULL THEN 100 ELSE N1.DKYE/N2.DKYE*100 END DKWCL FROM (
+        SELECT T2.ZZJC, T2.ZZBZ,T1.DKYE
+        FROM SYSJMX_ZHDKSJMX T1
+        LEFT JOIN HR_BAS_ORGANIZATION T2
+        ON T1.JGDM = T2.YWJGDM
+        WHERE T1.TJYF = #{tjyf}
+        ) N1
+        LEFT JOIN (SELECT  *FROM TJFX_RWSZ WHERE RWNF= TRUNC(#{tjyf},'YYYY') ) N2
+        ON N1.ZZBZ=N2.ZZBZ)   WHERE ROWNUM &lt; 6  ORDER BY DKWCL DESC
+    </select>
+
+    <select id="getAnlqjcRqDk"  resultType="Date">
+       SELECT max(TJYF)  FROM SYSJMX_ZHANLQJFB_DK
+    </select>
+
+
+
+    <select id="callSysjmx" statementType="CALLABLE">
+       {call PKG_SYSJMX.P_AUTO_DAY}
+    </select>
+
+
+
+
+
+
+</mapper>

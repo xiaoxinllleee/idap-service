@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.nsb.mapper.CamsNhpjsxNsbMapper">
+
+    <select id="getAllByErrorType" resultType="string">
+        select distinct drwgmc from CAMS_NHPJSX_NSB t where errortype=#{errorType} and drwgmc is not null
+        and sszh =#{sszh}
+    </select>
+
+    <update id="updateByDao">
+        update CAMS_NHPJSX_NSB set
+        updator = 'updater' , update_time = sysdate
+        <if test="dao.khmc != null and dao.khmc != '' ">
+           , khmc = #{dao.khmc}
+        </if>
+
+        <if test="dao.sjhm != null and dao.sjhm != '' ">
+            , sjhm = #{dao.sjhm}
+        </if>
+
+        <if test="dao.cpdj != null and dao.cpdj != '' ">
+            , cpdj = #{dao.cpdj}
+        </if>
+        <if test="dao.cpdj == null  ">
+            , cpdj = null
+        </if>
+
+
+        <if test="dao.cpje != null ">
+            , cpje = #{dao.cpje}
+        </if>
+        <if test="dao.cpje == null">
+            , cpje = null
+        </if>
+
+        <if test="dao.fpdj != null and dao.fpdj != '' ">
+            , fpdj = #{dao.fpdj}
+        </if>
+        <if test="dao.fpdj == null ">
+            , fpdj = null
+        </if>
+
+
+        <if test="dao.fpje != null">
+            , fpje = #{dao.fpje}
+        </if>
+        <if test="dao.fpje == null  ">
+            , fpje = null
+        </if>
+
+        where zjhm = #{dao.zjhm}
+    </update>
+
+    <select id="tq" statementType="CALLABLE">
+        {call PKC_HNKD.P_HNKD_TQ}
+    </select>
+</mapper>

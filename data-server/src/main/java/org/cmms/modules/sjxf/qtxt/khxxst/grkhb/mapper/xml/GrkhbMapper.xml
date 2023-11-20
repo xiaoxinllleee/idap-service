@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.sjxf.qtxt.khxxst.grkhb.mapper.GrkhbMapper">
+
+    <select id="getGrkhbHive" parameterType="java.lang.String" resultType="org.cmms.modules.sjxf.qtxt.khxxst.grkhb.entity.Grkhb">
+        select * from ecif_person where cust_id=#{custid} limit 1
+    </select>
+
+    <select id="getGrkhbOracle" parameterType="java.lang.String" resultType="org.cmms.modules.sjxf.qtxt.khxxst.grkhb.entity.Grkhb">
+        select * from (select * from ecif_person where cust_id=#{custid}) where rownum=1
+    </select>
+</mapper>

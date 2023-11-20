@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.cdkfx.khjlcdktj.mapper.ErpYljcKhjldkkhzbtjMapper">
+
+    <select id="pAutoExec" statementType="CALLABLE">
+        {call PKG_DKFX_KHJLDKTJ.P_AUTO_EXEC(#{jgdm},#{tjyf},#{username})}
+    </select>
+
+    <select id="getSystemConfigParamValue" parameterType="java.lang.String" resultType="java.lang.String">
+        select cfgvalue from sys_bas_cfg where cfgcode = #{cfgcode}
+    </select>
+
+    <select id="getSystemConfigParamValueNumber" parameterType="java.lang.String" resultType="java.lang.String">
+        select cfgvaluenumber from sys_bas_cfg where cfgcode = #{cfgcode}
+    </select>
+
+    <!--计算贷款日平限额-->
+    <select id="getDailyLoanLimit" parameterType="java.lang.String" resultType="java.lang.String">
+        select csz from grade_custstar_cssz where csbm = #{csbm}
+    </select>
+
+</mapper>

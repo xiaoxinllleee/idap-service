@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.bigscreen.mapper.VDpYwhzMapper">
+
+    <select id="getMaxList" resultType="org.cmms.modules.bigscreen.entity.Xzzcsxgzjd">
+        select parent_wgbh as wgbh,sum(zhs)zhs,sum(bmdhs)bmdhs,sum(zhsd_bmdhs)zhsdbmdhs,max(tjrq) tjrq from tjfx_zcsxjdb_cun where tjrq = (
+        select max(tjrq) from tjfx_zcsxjdb_cun) and parent_wgbh in (select  wgbh from yxdygl_main t where wgxz='1') group by parent_wgbh
+    </select>
+
+    <select id="getCunList" resultType="org.cmms.modules.bigscreen.entity.Xzzcsxgzjdcun">
+        select wgbh,zkhjl,zhs,bmdhs,zhsd_bmdhs,zhsd_edhz,hnkd_drhs,hnkd_edhz,dkht_xzkhs,dkht_qyedhz,dkyx_xzkhs,dkyx_edhz,tjrq from tjfx_zcsxjdb_cun where tjrq = (
+            select max(tjrq) from tjfx_zcsxjdb_cun) and parent_wgbh in (select  wgbh from yxdygl_main t where wgxz='1') and parent_wgbh=#{wgbh}
+    </select>
+</mapper>

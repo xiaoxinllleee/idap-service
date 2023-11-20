@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.ckkh.mapper.KhgxglCkzhghxxMapper">
+
+    <select id="getCkzhList" resultType="org.cmms.modules.khgl.ckkh.entity.ZhlbVO">
+        select ckzh, decode(zhlx,
+                            'dshqfhb',
+                            '对私活期',
+                            'dghqfzb',
+                            '对公活期',
+                            'dqfhb',
+                            '定期',
+                            'ybt',
+                            '一本通',
+                            '活期')ckxx,
+               ckye qmye,tzr yxry,
+               ckrpye nrp3,to_char(khrq,'yyyymmdd') khrq,to_char(dqrq,'yyyymmdd') end_date,yxlx,tzbl yxbl from khgxgl_ckzhghxx t
+where zjhm = #{zjhm}
+    </select>
+</mapper>

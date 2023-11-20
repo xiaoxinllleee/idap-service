@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.pad.shxxgl.mapper.FxezhMapper">
+    <select id="getByWgbh" resultType="org.cmms.modules.pad.shxxgl.entity.Fxezh">
+        select t1.* from SHYWXX_FXEZH t1 left join (
+            (
+                select zjhm from  khxxgl_khxq_nh where wgbh =#{wgbh})t2
+            )
+                                                 on t1.drzjhm = t2.zjhm where t2.zjhm is not null
+    </select>
+
+    <select id="getByWgbhList" resultType="org.cmms.modules.pad.shxxgl.entity.Fxezh">
+        select t1.* from SHYWXX_FXEZH t1 left join (
+            (
+                select zjhm from  khxxgl_khxq_nh where wgbh =#{wgbh})t2
+            )
+                                                   on t1.drzjhm = t2.zjhm where t2.zjhm is not null
+    </select>
+
+    <select id="getByWgbhTy" resultType="org.cmms.modules.pad.shxxgl.entity.Fxezh">
+        select
+            MCHNT_NAME as shmc,
+            MCHNT_TYPE as shlx,
+            LEGAL_PERSON as frdbxx,
+            LEGAL_PERSON_ID as drzjhm,
+            CONT_PHONE as shlxdh,
+            BUSI_ADDRESS as yydq,
+            TRANS_ST as jyzt,
+            CHANNEL_FLAG as qd
+        from
+            TGACS_TPS_MCHNT_INFO
+        where
+                LEGAL_PERSON_ID in (select zjhm
+                                    from khxxgl_khxq_nh
+                                    where wgbh in (select wgbh
+                                                   from yxdygl_main t1
+                                                   where wgxz='3'  start with t1.id in
+                                                    <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                                                        #{wgbh}
+                                                    </foreach>
+                                                   connect by prior t1.id = t1.parent_id
+                                                   )
+                                    )
+    </select>
+</mapper>

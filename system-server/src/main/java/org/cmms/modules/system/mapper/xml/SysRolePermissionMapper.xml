@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.system.mapper.SysRolePermissionMapper">
+    <select id="getRolePermission" resultType="org.cmms.modules.system.entity.SysRolePermission">
+        select t1.* from sys_role_permission t1,sys_permission t2
+        where t1.role_id=#{roleId} and t1.permission_id=t2.id
+        <if test='subSystemId !="" and subSystemId !=null'>
+            and t2.sub_system_id=#{subSystemId}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.yxgl.khhfjh.mapper.YxglKhhfjhMapper">
+
+    <select id="extract" parameterType="java.util.Map" statementType="CALLABLE">
+        {call zq.P_yxgl_khhfmx
+        (#{khjl,mode=IN,jdbcType=VARCHAR},
+        #{jhkssj,mode=IN,jdbcType=VARCHAR},
+        #{jhjssj,mode=IN,jdbcType=VARCHAR},
+        #{hfkhdjlx,mode=IN,jdbcType=VARCHAR})}
+    </select>
+
+
+</mapper>

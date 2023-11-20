@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dkjkpt.tjcx.zhajdktj.mapper.ZhajdktjYbMapper">
+
+    <select id="extract" parameterType="java.util.Map" statementType="CALLABLE">
+        {call PKG_DKJKPT.P_DKJKPT_ZHAJDKTJ
+            (#{tjyf,mode=IN,jdbcType=VARCHAR},
+             #{type,mode=IN,jdbcType=VARCHAR},
+             #{tjwd,mode=IN,jdbcType=VARCHAR}
+            )}
+    </select>
+
+</mapper>

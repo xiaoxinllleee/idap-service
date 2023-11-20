@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.clkhxxgl.mapper.ClkhxxglMapper">
+    <update id="initClkhxx" statementType="CALLABLE">
+        {call pkg_khxxgl_jcxx.P_CLKHXX}
+    </update>
+
+    <update id="initClkhxxRC" statementType="CALLABLE">
+        {call pkg_khxxgl.P_CLKHXX}
+    </update>
+
+    <update id="initKhxx" statementType="CALLABLE">
+        {call PKG_KHXXGL.P_AUTO_DAY}
+    </update>
+
+    <update id="initKhxxRC" statementType="CALLABLE">
+        {call PKG_KHXXGL.P_AUTO_DAY(#{zxrkrq})}
+    </update>
+
+    <select id="checkTableExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(TABLE_NAME) FROM USER_TABLES WHERE TABLE_NAME = UPPER(#{tableName})
+    </select>
+
+    <select id="getCsz" parameterType="java.lang.String" resultType="java.lang.String">
+        select CSZ FROM SYSJMX_CSGL WHERE CSBM=#{csbm}
+    </select>
+
+    <insert id="syncYesYwhywxxwl">
+        insert into KHXXGL_YWHYWWLXX_SYNC_YES
+        select id from KHXXGL_YWHYWWLXX where id not in (select id from KHXXGL_YWHYWWLXX_SYNC_YES)
+    </insert>
+
+    <insert id="syncYesYwhywxxwlZh">
+        insert into KHXXGL_YWHYWWLXX_ZH_SYNC_YES
+        select id from KHXXGL_YWHYWWLXX_ZH where id not in (select id from KHXXGL_YWHYWWLXX_ZH_SYNC_YES)
+    </insert>
+
+    <delete id="delYwhxxwlDayBySjrq" parameterType="java.lang.String">
+        delete from  KHXXGL_YWHYWWLXX_DAY where sjrq=to_date(#{sjrq},'yyyymmdd')
+    </delete>
+
+    <delete id="delYwhxxwlDayZhBySjrq" parameterType="java.lang.String">
+        delete from  KHXXGL_YWHYWWLXX_DAY_ZH where sjrq=to_date(#{sjrq},'yyyymmdd')
+    </delete>
+</mapper>

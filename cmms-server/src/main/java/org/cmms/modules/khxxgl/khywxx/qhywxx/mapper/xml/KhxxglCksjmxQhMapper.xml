@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khywxx.zhywxx.mapper.KhxxglCksjmxZhMapper">
+
+    <select id="getCkqsByZjhm" resultType="org.cmms.modules.khxxgl.khywxx.qhywxx.mapper.KhxxglCksjmxQhMapper">
+        select * from KHXXGL_CKSJMX_QH where zjhm =#{zjhm} and tjyf in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            to_date(#{item},'yyyymmdd')
+        </foreach>
+    </select>
+</mapper>

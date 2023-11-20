@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.jtxx.mapper.JtxxMapper">
+
+    <select id="queryJtxx" resultType="org.cmms.modules.jtxx.entity.Jtxx">
+        select * from Jtxx where hhbm = #{hhbm} and id != #{id}
+    </select>
+
+    <select id="queryDict" resultType="org.cmms.modules.base.entity.Dict">
+        select * from SYS_DICT where dict_code = #{dictCode}
+    </select>
+
+    <delete id="deleteJtcyxx">
+        delete from jtxx where hhbm = #{hhbm} and id != #{id}
+    </delete>
+
+    <update id="updateJtcyxx">
+        update jtxx set hhbm = null where id = #{id}
+    </update>
+
+    <select id="selectByHhbm" resultType="org.cmms.modules.jtxx.entity.Jtxx">
+        select * from jtxx where hhbm = #{hhbm} and id !=#{id}
+    </select>
+
+    <select id="selectByZjhm" resultType="org.cmms.modules.jtxx.entity.Jtxx">
+        select * from jtxx where zjhm = #{zjhm}
+    </select>
+
+    <select id="getName" resultType="org.cmms.modules.jtxx.entity.Jtxx">
+        select * from jtxx where hhbm = (select hhbm from jtxx where zjhm = #{zjhm}) and khsf = 1
+    </select>
+
+    <delete id="deleteByzjhm">
+        delete from jtxx where zjhm = #{zjhm}
+    </delete>
+
+    <delete id="myDeleteById">
+        delete from jtxx where id = #{id}
+    </delete>
+
+</mapper>

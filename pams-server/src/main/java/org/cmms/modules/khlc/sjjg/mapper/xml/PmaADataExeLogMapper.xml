@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khlc.sjjg.mapper.PmaADataExeLogMapper">
+    <select id="getMaxTjyf" resultType="java.lang.String">
+        select to_char(min(sjrq),'yyyyMMdd')  sjrq  from  (
+                                          select rwid, max(sjrq) sjrq
+                                          from PMA_A_DATA_EXE_LOG
+                                          where zt = '2'
+                                            and rwid in ( select id from PMA_A_DATA_EXE where sfqy =1 and zxsx &lt; #{zxsx})
+                                          group by rwid
+                                      )
+    </select>
+
+
+    <select id="getMaxCgrq" resultType="java.lang.String">
+        select to_char(min(sjrq),'yyyyMMdd')  sjrq  from  (
+                  select  max(sjrq) sjrq
+                  from PMA_A_DATA_EXE_LOG
+                  where zt = '2'
+                    and rwid = ( select max(id) from PMA_A_DATA_EXE where zxsx =(select max(zxsx) from PMA_A_DATA_EXE))
+              )
+    </select>
+
+
+    <select id="getMaxTjyfByRwid" resultType="java.lang.String">
+        select  to_char(max(sjrq),'yyyyMMdd')  sjrq
+         from PMA_A_DATA_EXE_LOG
+        where zt = '2'
+        and rwid =#{rwid}
+
+    </select>
+
+    <select id="getZxzxss" resultType="java.lang.Integer">
+        select  min(zxsx) zxsx
+        from PMA_A_DATA_EXE
+        where sfqy =1
+    </select>
+</mapper>

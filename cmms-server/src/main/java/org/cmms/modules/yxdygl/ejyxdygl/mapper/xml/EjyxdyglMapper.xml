@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.yxdygl.ejyxdygl.mapper.EjyxdyglMapper">
+
+    <select id="queryDataByDybh" parameterType="java.util.Map" resultType="org.cmms.modules.yxdygl.ejyxdygl.entity.Ejyxdygl">
+        SELECT ID,
+               SSZH,
+               YJYXDYBH,
+               DYBH,
+               DYMC,
+               DYXZ,
+               ZRBS,
+               ZRLD,
+               CREATE_BY,
+               CREATE_TIME FROM YXDYGL_EJYXDYGL WHERE DYBH=#{dybh}
+    </select>
+
+    <select id="queryDataByUser" parameterType="java.lang.String" resultType="org.cmms.modules.yxdygl.ejyxdygl.entity.Ejyxdygl">
+        select t3.dybh,t3.dymc
+        from sys_bas_user t1,yxdygl_pqzrrgl t2,yxdygl_ejyxdygl t3
+        where t1.tellid=t2.khjl and t1.username=#{username} and t2.ejyxdybh=t3.dybh
+        group by t3.dybh,t3.dymc
+    </select>
+
+    <select id="queryDybhBySsyxdy" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT DYBH FROM YXDYGL_EJYXDYGL WHERE DYBH=#{ssyxdy} and rownum = 1
+    </select>
+
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.nhxq.mapper.XxnyztLyMapper">
+
+    <select id="tjfx" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.LyXxnyztTjfxVO">
+        select * from (
+        select * from ( select zh as sszh, updatot ,count(1)ghs,sum(zfs)zfs,sum(xends)xends,sum(fzrysxs)fzrysxs
+        ,sum(pjs)pjs,sum(ddj)dds,sum(khjlsxyx)khjlsxyx,sum(sped)sped,sum(sps)sps,ROUND(sum(zfs)/count(1),2)*100 zfl,
+        ROUND( sum(pjs + ddj )/count(1),2) * 100 jdpjl,ROUND(sum(sps)/count(1),2)*100 spl from (
+        select case when t3.sjzzbz != '1' then t3.sjzzbz else t1.sszh end zh ,nvl(t2.ygxm,'未分配') updatot,decode(jxzt,'1',1,'2','1','3',1,'4',1,0)zfs,decode(sfxend,'1',1,0)xends,nvl(sxje,0)fzrysxs
+        ,decode(pdlx,'1',1,0)pjs,decode(pdlx,'2',1,0)ddj,nvl(khjlsxyx,0)khjlsxyx,nvl(sped,0)sped,decode(sped,null,0,1)sps,sszh from XXNYZT_LY t1
+        left join  hr_bas_staff t2 on t1.updatot = t2.yggh left join hr_bas_organization t3 on t1.sszh = t3.zzbz
+        where 1=1<if test="sszh != null and sszh !=''">
+        and sszh = #{sszh}
+    </if>
+        ) group by zh,updatot
+        )
+        union
+
+        select * from ( select zh,'支行合计',count(1)ghs,sum(zfs)zfs,sum(xends)xends,sum(fzrysxs)fzrysxs
+        ,sum(pjs)pjs,sum(ddj)dds,sum(khjlsxyx)khjlsxyx,sum(sped)sped,sum(sps)sps,ROUND(sum(zfs)/count(1),2)*100 zfl,
+        ROUND( sum(pjs + ddj )/count(1),2) * 100 jdpjl,ROUND(sum(sps)/count(1),2)*100 spl from (
+        select case when t3.sjzzbz != '1' then t3.sjzzbz else t1.sszh end zh ,updatot,decode(jxzt,'1',1,'2','1','3',1,'4',1,0)zfs,decode(sfxend,'1',1,0)xends,nvl(sxje,0)fzrysxs
+        ,decode(pdlx,'1',1,0)pjs,decode(pdlx,'2',1,0)ddj,nvl(khjlsxyx,0)khjlsxyx,nvl(sped,0)sped,decode(sped,null,0,1)sps,sszh from XXNYZT_LY t1
+        left join hr_bas_organization t3 on t1.sszh = t3.zzbz
+        where 1=1<if test="sszh != null and sszh !=''">
+        and sszh = #{sszh}
+    </if>
+        ) group by zh order by sszh    )
+        ) where  1=1<if test="cxlx != null and cxlx == 1">
+        and updatot not in ('支行合计','未分配')
+    </if>
+        <if test="cxlx != null and cxlx == 2">
+            and updatot= '未分配'
+        </if>
+        <if test="cxlx != null and cxlx == 3">
+            and updatot= '支行合计'
+        </if>
+        order by sszh
+    </select>
+
+    <select id="tjfxList" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.LyXxnyztTjfxVO">
+        select * from (
+        select * from ( select zh as sszh, updatot ,count(1)ghs,sum(zfs)zfs,sum(xends)xends,sum(fzrysxs)fzrysxs
+        ,sum(pjs)pjs,sum(ddj)dds,sum(khjlsxyx)khjlsxyx,sum(sped)sped,sum(sps)sps,ROUND(sum(zfs)/count(1),2)*100 zfl,
+        ROUND(sum(pjs + ddj )/count(1),2) * 100 jdpjl,ROUND(sum(sps)/count(1),2)*100 spl from (
+        select case when t3.sjzzbz != '1' then t3.sjzzbz else t1.sszh end zh ,nvl(t2.ygxm,'未分配') updatot,decode(jxzt,'1',1,'2','1','3',1,'4',1,0)zfs,decode(sfxend,'1',1,0)xends,nvl(sxje,0)fzrysxs
+        ,decode(pdlx,'1',1,0)pjs,decode(pdlx,'2',1,0)ddj,nvl(khjlsxyx,0)khjlsxyx,nvl(sped,0)sped, decode(sped,null,0,1)sps,sszh
+        from XXNYZT_LY t1
+        left join  hr_bas_staff t2 on t1.updatot = t2.yggh left join hr_bas_organization t3 on t1.sszh = t3.zzbz
+        where 1=1<if test="sszh != null and sszh !=''">
+        and sszh = #{sszh}
+    </if>
+        ) group by zh,updatot
+        )
+        union
+
+        select * from ( select zh,'支行合计',count(1)ghs,sum(zfs)zfs,sum(xends)xends,sum(fzrysxs)fzrysxs
+        ,sum(pjs)pjs,sum(ddj)dds,sum(khjlsxyx)khjlsxyx,sum(sped)sped,sum(sps)sps,ROUND(sum(zfs)/count(1),2)*100 zfl,
+        ROUND( sum(pjs + ddj )/count(1),2) * 100 jdpjl,ROUND(sum(sps)/count(1),2)*100 spl from (
+        select case when t3.sjzzbz != '1' then t3.sjzzbz else t1.sszh end zh ,updatot,decode(jxzt,'1',1,'2','1','3',1,'4',1,0)zfs,decode(sfxend,'1',1,0)xends,nvl(sxje,0)fzrysxs
+        ,decode(pdlx,'1',1,0)pjs,decode(pdlx,'2',1,0)ddj,nvl(khjlsxyx,0)khjlsxyx,nvl(sped,0)sped,decode(sped,null,0,1)sps,sszh from XXNYZT_LY t1
+        left join hr_bas_organization t3 on t1.sszh = t3.zzbz
+        where 1=1<if test="sszh != null and sszh !=''">
+        and sszh = #{sszh}
+    </if>
+        ) group by zh order by sszh    )
+        ) where  1=1<if test="cxlx != null and cxlx == 1">
+        and updatot not in ('支行合计','未分配')
+    </if>
+        <if test="cxlx != null and cxlx == 2">
+            and updatot= '未分配'
+        </if>
+        <if test="cxlx != null and cxlx == 3">
+            and updatot= '支行合计'
+        </if>
+        order by sszh
+    </select>
+
+    <select id="tjfx2" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.LyXxnyztTjfxJCBVO">
+
+        select ztlb
+             ,count(1) hs ,sum(hlxq) as xqhs
+             ,sum(jdpj) as jdhs,ceil( sum(jdpj)/count(1) * 100)  as jdhszb
+             ,sum(sxhs) as sxhs,ceil( sum(sxhs)/count(1) * 100) as sxhszb
+             ,sum(sxed) as sxed,sum(dkye) as dkye,sum(xydkye) as xydkye,sum(dkhs) as dkhs,sum(sdh)as sdh,
+            sum(xydkhs)as xydkhs,sum(ljdkje)as dnljdkje,sum(ljxydkje)dnljxydkje
+        from (
+                 select ztlb,case when khqm is not null then 1 else 0 end hlxq,
+                        case when updatot is not null then 1 else 0 end jdpj,
+                        case when khjlsxyx is not null then 1 else 0 end sxhs,
+                        nvl(khjlsxyx,0) sxed ,nvl(dkje,0)+nvl(fzrdkje,0) dkye,
+                        nvl(xydkye1,0)+nvl(xydkye2,0) xydkye,decode(sfsdh,2,1,0)dkhs, decode(sfsdh,1,1,0) sdh,
+                        nvl(dnljdkje1,0)+nvl(dnljdkje2,0) ljdkje, case when  (nvl(xydkye1,0)+nvl(xydkye2,0)) > 0 then 1 else 0 end xydkhs,
+                        nvl(dnljxydkje1,0)+nvl(dnljxydkje2,0) ljxydkje from XXNYZT_LY t where 1=1
+    <if test="dao.ztlb != null and dao.ztlb != ''">
+        and ztlb = #{dao.ztlb}
+    </if>                                                                                        )  group by ztlb
+    </select>
+
+    <select id="tjfx2List" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.LyXxnyztTjfxJCBVO">
+
+        select ztlb
+        ,count(1) hs ,sum(hlxq) as xqhs
+        ,sum(jdpj) as jdhs,ceil( sum(jdpj)/count(1) * 100)  as jdhszb
+        ,sum(sxhs) as sxhs,ceil( sum(sxhs)/count(1) * 100) as sxhszb
+        ,sum(sxed) as sxed,sum(dkye) as dkye,sum(xydkye) as xydkye,sum(dkhs) as dkhs,sum(sdh)as sdh,
+        sum(xydkhs)as xydkhs,sum(ljdkje)as dnljdkje,sum(ljxydkje)dnljxydkje
+        from (
+        select ztlb,case when khqm is not null then 1 else 0 end hlxq,
+        case when updatot is not null then 1 else 0 end jdpj,
+        case when khjlsxyx is not null then 1 else 0 end sxhs,
+        nvl(khjlsxyx,0) sxed ,nvl(dkje,0)+nvl(fzrdkje,0) dkye,
+        nvl(xydkye1,0)+nvl(xydkye2,0) xydkye,decode(sfsdh,2,1,0)dkhs, decode(sfsdh,1,1,0) sdh,
+        nvl(dnljdkje1,0)+nvl(dnljdkje2,0) ljdkje, case when  (nvl(xydkye1,0)+nvl(xydkye2,0)) > 0 then 1 else 0 end xydkhs,
+        nvl(dnljxydkje1,0)+nvl(dnljxydkje2,0) ljxydkje from XXNYZT_LY t where 1=1
+        <if test="dao.ztlb != null and dao.ztlb != ''">
+            and ztlb = #{dao.ztlb}
+        </if>                                                                                        )  group by ztlb
+    </select>
+
+    <select id="tq" statementType="CALLABLE">
+        {call PKC_HNKD.P_XXNYZTLY_TQ}
+    </select>
+
+    <update id="updateSxbscsj">
+        update XXNYZT_LY set sxbscsj = sysdate where id = #{id}
+    </update>
+</mapper>

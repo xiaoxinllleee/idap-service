@@ -1,0 +1,27 @@
+{
+  "status": 200,
+  "success": true,
+  "message": "客户走访统计模拟数据",
+  "result": {
+    "records": [
+      {
+        "tjyf": "2019-09-06",
+        "zhmc": "城关支行",
+        "khjl": "刘某某",
+        "zrs": 243,
+        "hfrs": 131,
+        "whfrs": 112,
+        "wcl": 54.00
+      },
+      {
+        "tjyf": "2019-09-06",
+        "zhmc": "营业部",
+        "khjl": "赵某某",
+        "zrs": 300,
+        "hfrs": 150,
+        "whfrs": 150,
+        "wcl": 50.00
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.sjxf.hxxt.dkzdkb.mapper.DkzdkbMapper">
+
+    <select id="queryMaxDataDate" resultType="java.lang.String">
+        select data_date from cbs_borm_base limit 1
+    </select>
+
+    <select id="queryDkye" parameterType="java.lang.String" resultType="java.lang.Double">
+        select nvl(sum(loan_bal),0) as dkye from cbs_borm_base where ident_no=#{zjhm}
+    </select>
+
+</mapper>

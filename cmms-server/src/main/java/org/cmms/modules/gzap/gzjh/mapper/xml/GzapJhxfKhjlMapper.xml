@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.gzap.gzjh.mapper.GzapJhxfKhjlMapper">
+
+    <delete id="deleteByMainId" parameterType="java.lang.String">
+		DELETE
+		FROM  GZAP_JHXF_KHJL
+		WHERE
+			 order_id = #{id}
+	</delete>
+	
+	<select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.gzap.gzjh.entity.GzapJhxfKhjl">
+		SELECT * 
+		FROM  GZAP_JHXF_KHJL
+		WHERE
+			 order_id = #{id}
+	</select>
+
+</mapper>

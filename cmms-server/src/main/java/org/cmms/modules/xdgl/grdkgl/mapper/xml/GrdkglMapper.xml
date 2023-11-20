@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.GrdkglMapper">
+
+    <!--根据"HHBM"提取"与我行业务往来信息"-->
+    <select id="CountYwhywxxDataByHhbm" parameterType="java.lang.String" statementType="CALLABLE">
+        { CALL PKG_KHZHSJ.P_YWHYWXXDRTQ(#{hhbm,mode=IN,jdbcType=VARCHAR}) }
+    </select>
+
+</mapper>

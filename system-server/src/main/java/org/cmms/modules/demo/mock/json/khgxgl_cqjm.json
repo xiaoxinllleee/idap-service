@@ -1,0 +1,34 @@
+{
+  "status": 200,
+  "success": true,
+  "message": "",
+  "result": {
+    "records":[
+      {
+        "sszh": 1,
+        "ssyxdy": "钓鱼岛银行",
+        "cqjmbm": 213,
+        "dhbh": 213,
+        "khmc": 123,
+        "zjhm": 3213,
+        "ccrq": "2019-11-04",
+        "xb ": 123,
+        "hyzk": 213,
+        "lxfs": 123,
+        "nl": 213,
+        "zz": 213,
+        "sqah": 213,
+        "gzdw": 3213,
+        "gzdd": 321,
+        "hyfl": 21,
+        "khzycd ": 213,
+        "ktwhcp": 123,
+        "gskhjl": 123,
+        "zcfzqk": 123,
+        "yxqk": 123,
+        "fjxx": 123,
+        "qzyw": 123
+      }
+    ]
+  }
+}

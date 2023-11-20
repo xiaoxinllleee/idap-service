@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.pad.shxxgl.mapper.KhglShhmcxxMapper">
+    <select id="getYwxxByZjhm" resultType="java.util.HashMap">
+        select nvl(t1.ident_no,t2.ident_no) zjhm,nvl(t1.ckye,0) ckye,nvl(t2.dkye,0) dkye from (
+            select ident_no,sum(curr_bal) ckye from cbs_invm_base where ident_no=#{zjhm} group by ident_no
+        ) t1
+        full join (
+          select ident_no,sum(loan_bal) dkye from cbs_borm_base where ident_no=#{zjhm} group by ident_no
+        ) t2
+        on t1.ident_no=t2.ident_no
+    </select>
+
+    <update id="init" parameterType="java.util.Map" statementType="CALLABLE">
+        { CALL PKG_TJFX.P_TJFX_SHZFTJ(#{shid}, #{yggh}, #{lrr})}
+    </update>
+</mapper>

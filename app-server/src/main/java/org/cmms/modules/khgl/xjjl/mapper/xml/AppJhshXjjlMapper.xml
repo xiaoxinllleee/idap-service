@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.xjjl.mapper.AppJhshXjjlMapper">
+    <select id="getAllList" resultType="org.cmms.modules.khgl.jhsh.entity.TgacsTpsMchntInfo">
+        select * from (select h.*,rownum as r from
+        (select t.simp_mchnt_name,t.org_nm,t.mcc,t.legal_person,t.contphone,t.s_date,t.e_date,t.license,t.mer_id,t.mchnt_id,t.mchnt_name,t.contaddr
+        from  RAODS.TGACS_TPS_MCHNT_INFO t
+        <where>
+            <if test="namecn != null and namecn != ''">
+                and instr(t.simp_mchnt_name,#{namecn}) > 0
+            </if>
+        </where>
+        )h)
+        where r between #{start} and #{end}
+    </select>
+
+    <select id="getXjsj" resultType="org.cmms.modules.khgl.xjjl.entity.AppJhshXjjl">
+        select * from APP_JHSH_XJJL t
+        left join RAODS.TGACS_TPS_MCHNT_INFO t1
+        on t.mchnt_id = t1.mchnt_id
+        where t.xjsj <![CDATA[ >= ]]> sysdate-30
+        and t.mchnt_id= #{mchntId}
+    </select>
+
+    <select id="showXJ" resultType="org.cmms.modules.khgl.jhsh.entity.TgacsTpsMchntInfo">
+    select * from (select h.*,rownum as r from
+        (select * from  RAODS.TGACS_TPS_MCHNT_INFO where mchnt_id
+        not in (select mchnt_id from APP_JHSH_XJJL where xjsj>=sysdate-30)
+        <where>
+            <if test="namecn != null and namecn != ''">
+                and instr(t1.hm,#{namecn}) > 0
+            </if>
+        </where>
+        )h)
+        where r between #{start} and #{end}
+    </select>
+</mapper>
+
+
+

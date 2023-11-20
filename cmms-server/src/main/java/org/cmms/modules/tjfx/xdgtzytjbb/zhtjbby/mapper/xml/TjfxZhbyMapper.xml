@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbby.mapper.TjfxZhbyMapper">
+
+    <select id="extract" parameterType="java.util.Map" statementType="CALLABLE">
+        {call PKG_TJFX.P_tjbbzhby
+        (#{ksrq,mode=IN,jdbcType=VARCHAR},
+        #{jsrq,mode=IN,jdbcType=VARCHAR},
+        #{jgdm,mode=IN,jdbcType=VARCHAR})}
+    </select>
+
+    <!--通过查询指定table的 text code key 获取字典值-->
+    <select id="queryTableDictTextByKey" parameterType="String"  resultType="String">
+        select ${text} as "text" from ${table} where ${code}= #{key} AND ROWNUM = 1
+    </select>
+
+</mapper>

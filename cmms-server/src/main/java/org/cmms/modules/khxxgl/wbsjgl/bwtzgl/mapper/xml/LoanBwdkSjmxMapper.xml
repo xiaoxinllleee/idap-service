@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.wbsjgl.bwtzgl.mapper.LoanBwdkSjmxMapper">
+
+    <delete id="deleteByDkzh">
+        delete from LOAN_BWDK_SJMX where xh = ${xh}
+    </delete>
+
+    <select id="queryByDkzh" resultType="org.cmms.modules.khxxgl.wbsjgl.bwtzgl.entity.LoanBwdkSjmx" >
+        select * from LOAN_BWDK_SJMX where xh = #{xh}
+    </select>
+
+    <select id="queryXh" resultType="Integer">
+        select max(xh) from LOAN_BWDK_SJMX
+    </select>
+</mapper>

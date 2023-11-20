@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.yxdygl.yxdyglmain.mapper.YxdyglMenuMapper">
+
+    <select id="getKhjlList" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMenu">
+        select * from YXDYGL_MENU t where id in (select distinct menu_Id from YXDYGL_PQQXGL where khjl=#{khjl})
+        order by menu_level
+    </select>
+</mapper>

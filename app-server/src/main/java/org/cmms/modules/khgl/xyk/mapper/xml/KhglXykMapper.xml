@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.xyk.mapper.KhglXykMapper">
+
+
+    <select id="getDate" resultType="string">
+        select max(t.tjrq) from Erp_dzyhgl_xyk t where
+        <if test="jgdm != null and jgdm != ''">
+            jgdm = #{jgdm}
+        </if>
+        <if test="jgdm == null and jgdm == ''">and yggh=#{yggh}</if>
+    </select>
+
+
+</mapper>

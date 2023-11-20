@@ -1,0 +1,20 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"areaname": "爱莲商圈",
+		"zkhs": "9,283",
+		"qzkhs": "2,895",
+		"hxkhs": "523",
+		"ckhs": "8,242",
+		"dkhs": "1,242",
+		"ckje": "7,264万元",
+		"ckrp": "6,721万元",
+		"dkye": "4,252万元",
+		"byzfcs": "225",
+		"ljzfcs": "1,852",
+		"zzbz": "2",
+		"dybh": "10008"
+	}
+}

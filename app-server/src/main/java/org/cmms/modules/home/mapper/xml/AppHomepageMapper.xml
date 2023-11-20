@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.home.mapper.AppHomepageMapper">
+
+    <select id="getByUserName"  resultType="org.cmms.modules.home.entity.AppHomepage">
+        select * from app_homepage where id in (
+            select PERMISSION_id from SYS_ROLE_PERMISSION_APP where role_id in (
+                select role_id from sys_user_role where user_id =(
+                    select id from sys_user where username=#{usernmae})))
+        ORDER BY TYPE,PX
+    </select>
+    <select id="getFootByUserName" resultType="org.cmms.modules.home.entity.AppHomepage">
+        select * from app_homepage where id in (
+            select PERMISSION_id from SYS_ROLE_PERMISSION_APP where role_id in (
+                select role_id from sys_user_role where user_id =(
+                    select id from sys_user where username=#{usernmae}))) and type='0'
+        ORDER BY TYPE,PX
+    </select>
+</mapper>

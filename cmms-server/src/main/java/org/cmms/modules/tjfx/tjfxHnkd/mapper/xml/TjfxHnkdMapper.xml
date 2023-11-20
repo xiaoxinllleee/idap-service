@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.tjfxHnkd.mapper.TjfxHnkdMapper">
+    <select id="getByHhbm" resultType="org.cmms.modules.tjfx.tjfxHnkd.entity.TjfxHnkd">
+        select * from erp_tjfx_hnkd
+        where sjrq = (select max(sjrq) from erp_tjfx_hnkd)
+          and khsfzhm in (select zjhm from khxxgl_khxq_nh where hhbm=#{hhbm})
+    </select>
+</mapper>

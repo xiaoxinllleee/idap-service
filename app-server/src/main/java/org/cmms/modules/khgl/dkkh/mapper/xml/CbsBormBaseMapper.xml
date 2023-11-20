@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.dkkh.mapper.CbsBormBaseMapper">
+
+    <select id="getCardNoIsNotNull" resultType="org.cmms.modules.khgl.dkkh.entity.CbsBormBase">
+        select *  from cbs_borm_base t where ident_no =#{zjhm} and  card_no is not null order by qx_date
+    </select>
+</mapper>

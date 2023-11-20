@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.rwzx.rwwcmx.mapper.TjfxTaskWcmxLsMapper">
+    <select id="getMaxDate" resultType="java.util.Date">
+        select max(tjrq) from TJFX_TASK_WCMX_LS
+    </select>
+
+    <select id="initRwwcqk" statementType="CALLABLE">
+        {call PKG_RWZX.P_TJFX_RWWCQKTJ_AUTO_LS(#{tjrq})}
+    </select>
+
+    <select id="getRwwcmx" resultType="org.cmms.modules.rwzx.zfyxmx.entity.TaskZfyxmx">
+        select  n2.*
+        from(
+            select
+                 t2.id,t1.yggh,t1.zzbz,t2.rwlx,t2.start_time,t2.end_time,t2.title,t1.gwbz,t3.mxsjid
+            from (select
+                        zzbz,yggh,gwbz,row_number() over(partition by yggh order by rgrq desc) pk
+                  from hr_bas_staff_post
+                  where rgrq &lt;= trunc(to_date(#{tjrq},'yyyymmdd'),'DD') and (lgrq is null or lgrq &gt;= trunc(to_date(#{tjrq},'yyyymmdd'),'DD'))
+                 ) t1,TASK_CREATE t2,TASK_RWMX t3
+                 where t1.pk=1
+                 and (fn_split_str_db(t2.dxid,',',t1.zzbz)=1 or t2.dxid='1' or fn_split_str_db(t2.dxid,',',t1.yggh)=1 or fn_split_str_db(t2.dxid,',',t1.gwbz)=1)
+                 and (t2.rwlx in ('1','2') or (t2.rwlx='3' and t2.dxlx!='0'))
+                 and t2.id=t3.rwid
+            union all
+            select
+                 t2.id,t1.yggh,t1.zzbz,t2.rwlx,t2.start_time,t2.end_time,t2.title,t1.gwbz,t3.mxsjid
+            from (select
+                        zzbz,yggh,gwbz,row_number() over(partition by yggh order by rgrq desc) pk
+                  from hr_bas_staff_post
+                  where rgrq &lt;= trunc(to_date(#{tjrq},'yyyymmdd'),'DD') and (lgrq is null or lgrq &gt;= trunc(to_date(#{tjrq},'yyyymmdd'),'DD'))
+                  ) t1,TASK_CREATE t2,(select a1.rwid,a2.id,a2.dxid ghr,a2.id mxsjid
+                                       from TASK_RWMX a1
+                                       left join task_zzrwsjb_rwfp a2 on a1.rwid=a2.rwid and a1.mxsjid=a2.sjid
+                                     ) t3
+                  where t1.pk=1
+                  and t3.id is not null
+                  and t3.ghr=t1.yggh
+                  and t2.rwlx='3'
+                  and t2.dxlx='0'
+                  and t2.id=t3.rwid
+        )n1
+        left join (
+                  select
+                        m1.id,m1.rwid,m1.yxzfr,m2.rwlx,m1.zjhm,m1.yxjg,m1.create_time,m1.sfyywxz,m1.sfyyxcpxz,
+                        m1.yxlx,m1.yxcp,m1.khyx,m1.bz,m1.yxsbyy,m1.ywzhsfyz,m1.mxsjid,m1.khmc,m2.title
+                    from (select
+                                mxsjid,id,rwid,yxzfr,create_time,zjhm,yxjg,sfyywxz,sfyyxcpxz,yxlx,yxcp,khyx,bz,yxsbyy,ywzhsfyz,khmc,
+                                row_number() over(partition by mxsjid,rwid,yxzfr,zjhm order by create_time) pk
+                          from TASK_ZFYXMX
+                          where trunc(create_time,'DD') &lt;= trunc(to_date(#{tjrq},'yyyymmdd'),'DD')
+        ) m1
+        left join TASK_CREATE m2 on m2.id=m1.rwid
+        where  m1.pk=1
+        ) n2 on n2.rwid=n1.id and n2.yxzfr=n1.yggh and n2.rwlx=n1.rwlx and n1.mxsjid=n2.mxsjid and n1.title=n2.title
+        where 1=1 and n2.rwid is not null
+        <if test="lx !=null and lx !=''">
+            <choose>
+                <when test="lx.trim()=='1'.toString()">
+                    and n1.start_time &lt;= to_date(#{tjrq},'YYYYMMDD')
+                    and n1.end_time &gt;= to_date(#{tjrq},'YYYYMMDD')
+                    and n2.create_time is not null
+                    and to_char(n2.create_time,'YYYYMMDD')=#{tjrq}
+                    and n2.yxlx='2'
+                </when>
+                <when test="lx.trim()=='2'.toString()">
+                    and n1.start_time &lt;= to_date(#{tjrq},'YYYYMMDD')
+                    and n1.end_time &gt;= to_date(#{tjrq},'YYYYMMDD')
+                    and n2.create_time is not null
+                    and to_char(n2.create_time,'YYYYMMDD')=#{tjrq}
+                    and n2.yxlx='1'
+                    and n2.yxjg='1'
+                </when>
+                <when test="lx.trim()=='3'.toString()">
+                    and n1.start_time &lt;= to_date(#{tjrq},'YYYYMMDD')
+                    and n1.end_time &gt;= to_date(#{tjrq},'YYYYMMDD')
+                    and n2.create_time is not null
+                    and to_char(n2.create_time,'YYYYMMDD')=#{tjrq}
+                    and n2.yxlx='1'
+                    and n2.yxjg='2'
+                </when>
+                <when test="lx.trim()=='4'.toString()">
+                    and n2.create_time is not null
+                    and n2.yxlx='2'
+                </when>
+                <when test="lx.trim()=='5'.toString()">
+                    and n2.create_time is not null
+                    and n2.yxlx='1'
+                    and n2.yxjg='1'
+                </when>
+                <otherwise>
+                    and n2.create_time is not null
+                    and n2.yxlx='1'
+                    and n2.yxjg='2'
+                </otherwise>
+            </choose>
+        </if>
+        <if test="yggh !=null and yggh !='' and tjwd !=null and tjwd !='' and tjwd == 'khjl'.toString()">
+            and n2.yxzfr=#{yggh}
+        </if>
+        <if test="sszh !=null and sszh !=''">
+            and n1.zzbz=#{sszh}
+        </if>
+        <if test="rwlx !=null and rwlx !=''">
+            and n2.rwlx=#{rwlx}
+        </if>
+    </select>
+</mapper>

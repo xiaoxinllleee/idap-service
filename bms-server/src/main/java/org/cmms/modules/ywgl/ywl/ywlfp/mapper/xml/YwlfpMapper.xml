@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.ywl.ywlfp.mapper.YwlfpMapper">
+    <insert id="insertYwlmxBYday">
+        insert into Erp_assess_ywlmx_jgfpmx
+        (zzbz,Yggh,fpid,tjrq,atmfpywbs,atmfpxjll,jgfpywbs,jgfpxjll,fpsj,Fpczy,yggw)
+        select
+              zzbz,yggh,#{ywlfpVo.fpid},to_date(#{ywlfpVo.fprq},'yyyymmdd'),#{ywlfpVo.atmywbs},#{ywlfpVo.atmxjll},#{ywlfpVo.qtywbs},#{ywlfpVo.qtxjll},sysdate,#{ywlfpVo.fpczy},gwbz
+        from Hr_bas_staff_post
+        where zzbz = #{ywlfpVo.zzbz} and sfcykh = 1
+        and rgrq &lt;= to_date(#{ywlfpVo.fprq},'yyyymmdd') and (lgrq is null or lgrq &gt;= to_date(#{ywlfpVo.fprq},'yyyymmdd'))
+        and instr(#{ywlfpVo.ygghListString},yggh)>0
+    </insert>
+
+    <insert id="insertYwlmxQhBYMonth">
+        insert into Erp_assess_ywlmx_jgfpmx
+        (zzbz,Yggh,fpid,tjrq,atmfpywbs,atmfpxjll,jgfpywbs,jgfpxjll,fpsj,Fpczy,yggw)
+        select t1.zzbz,
+               t4.yggh,
+               t1.fpid,
+               t1.tjrq,
+               case when 1=#{atmywbs} then 0 else trunc(t1.atmywbs/t4.rs,2) end,
+               case when 1=#{atmxjll} then 0 else trunc(t1.atmxjll/t4.rs,2) end,
+               case when 1=#{qtywbs} then 0 else trunc(t1.qtywbs/t4.rs,2) end,
+               case when 1=#{qtxjll} then 0 else trunc(t1.qtxjll/t4.rs,2) end,
+               sysdate,
+               #{fpczy},
+               t4.gwbz
+        from ( select *
+               from ERP_ASSESS_YWLMX_JGDFP t
+               where fpzt = 0
+               and tjrq &gt;= trunc(to_date(#{fprq},'yyyymmdd'),'MM')
+               and tjrq &lt;= last_day(to_date(#{fprq},'yyyymmdd'))
+            ) t1
+        left join (select t1.* ,
+                          t2.rs
+                   from (select yggh,
+                                gwbz,
+                                zzbz
+                         from Hr_bas_staff_post
+                         where sfcykh = 1
+                         and rgrq &lt;= to_date(#{fprq},'yyyymmdd')
+                         and (lgrq is null or lgrq &gt;= to_date(#{fprq},'yyyymmdd'))
+                         and instr(#{gwxx},gwbz)>0  and yggh is not null and gwbz is not null
+                       ) t1
+                   left join (select  zzbz,
+                                     count(1) rs
+                              from Hr_bas_staff_post
+                              where sfcykh = 1
+                              and rgrq &lt;= to_date(#{fprq},'yyyymmdd')
+                              and (lgrq is null or lgrq &gt;= to_date(#{fprq},'yyyymmdd'))
+                              and instr(#{gwxx},gwbz)>0 group by zzbz
+                            ) t2 on t1.zzbz = t2.zzbz
+                   )t4 on t1.zzbz =t4.zzbz
+        where t4.yggh is not null and t4.gwbz is not null
+    </insert>
+
+    <insert id="insertYwlmxZhBYMonth">
+        insert into Erp_assess_ywlmx_jgfpmx
+        (zzbz,Yggh,fpid,tjrq,atmfpywbs,atmfpxjll,jgfpywbs,jgfpxjll,fpsj,Fpczy,yggw)
+        select t1.zzbz,
+               t2.yggh,
+               t1.fpid,
+               t1.tjrq,
+               case when 1=#{atmywbs} then 0 else trunc(t1.atmywbs/#{rs},2) end,
+               case when 1=#{atmxjll} then 0 else trunc(t1.atmxjll/#{rs},2) end,
+               case when 1=#{qtywbs} then 0 else trunc(t1.qtywbs/#{rs},2) end,
+               case when 1=#{qtxjll} then 0 else trunc(t1.qtxjll/#{rs},2) end,
+               sysdate,
+               #{fpczy},
+               t2.gwbz
+        from (select *
+              from ERP_ASSESS_YWLMX_JGDFP t
+              where fpzt = 0
+              and zzbz =#{zzbz}
+              and tjrq &gt;= trunc(to_date(#{fprq},'yyyymmdd'),'MM')
+              and tjrq &lt;= last_day(to_date(#{fprq},'yyyymmdd'))
+            ) t1
+        left join (select yggh,gwbz,zzbz
+                   from Hr_bas_staff_post
+                   where zzbz = #{zzbz} and sfcykh = 1
+                   and rgrq &lt;= to_date(#{fprq},'yyyymmdd')
+                   and (lgrq is null or lgrq &gt;= to_date(#{fprq},'yyyymmdd'))
+                   and instr(#{ygghListString},yggh)>0
+                 )t2 on t1.zzbz =t2.zzbz
+    </insert>
+</mapper>

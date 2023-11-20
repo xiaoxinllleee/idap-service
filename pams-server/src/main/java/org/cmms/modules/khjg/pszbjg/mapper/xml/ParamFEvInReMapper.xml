@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khjg.pszbjg.mapper.ParamFEvInReMapper">
+    <select id="getgz" resultType="org.cmms.modules.khjg.pszbjg.entity.ParamFEvInRe">
+        select  round(sum(index_value),2) index_value,evl_obj_id,stat_date from PMA_F_EVL_INDEX_RES t where 1 = 1
+        <if test="dao.startTime != null and dao.startTime !=''">
+            and stat_date <![CDATA[ >= ]]> #{dao.startTime}
+        </if >
+        <if test="dao.endTime != null and dao.endTime !=''">
+            and stat_date <![CDATA[ <= ]]> #{dao.endTime}
+        </if >
+        <if test="dao.evlObjId != null and dao.evlObjId !=''">
+            and evl_obj_id <![CDATA[ = ]]> #{dao.evlObjId}
+        </if >
+        group by evl_obj_id,stat_date
+    </select>
+
+    <select id="getgzbyfa" resultType="org.cmms.modules.khjg.pszbjg.entity.ParamFEvInRe">
+        select  round(sum(index_value),2) index_value,evl_obj_id,stat_date,scheme_id from PMA_F_EVL_INDEX_RES t where 1 = 1
+        <if test="dao.startTime != null and dao.startTime !=''">
+            and stat_date <![CDATA[ >= ]]> #{dao.startTime}
+        </if >
+        <if test="dao.endTime != null and dao.endTime !=''">
+            and stat_date <![CDATA[ <= ]]> #{dao.endTime}
+        </if >
+        <if test="dao.evlObjId != null and dao.evlObjId !=''">
+            and evl_obj_id <![CDATA[ = ]]> #{dao.evlObjId}
+        </if >
+        group by evl_obj_id,stat_date,scheme_id
+    </select>
+
+    <select id="getgzbyjg" resultType="org.cmms.modules.khjg.pszbjg.entity.ParamFEvInRe">
+        select  round(sum(index_value),2) index_value,evl_obj_id,stat_date,scheme_id,jgdm from PMA_F_EVL_INDEX_RES t where 1 = 1
+        <if test="dao.startTime != null and dao.startTime !=''">
+            and stat_date <![CDATA[ >= ]]> #{dao.startTime}
+        </if >
+        <if test="dao.endTime != null and dao.endTime !=''">
+            and stat_date <![CDATA[ <= ]]> #{dao.endTime}
+        </if >
+        <if test="dao.evlObjId != null and dao.evlObjId !=''">
+            and evl_obj_id <![CDATA[ = ]]> #{dao.evlObjId}
+        </if >
+        group by evl_obj_id,stat_date,scheme_id,jgdm
+    </select>
+</mapper>

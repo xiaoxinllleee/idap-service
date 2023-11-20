@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.pad.lsdxxcx.mapper.LsdxxcxMapper">
+
+    <select id="getMaxData" resultType="org.cmms.modules.pad.lsdxxcx.entity.Lsdxxcx">
+        select * from (select t.ksrq,t.jsrq,t.khmc,t.zjhm,t.lsrp,t.zjghl
+        from tjfx_khlstj t
+        <where> 1=1
+        <if test="khmc != null and khmc != ''" >
+          and   t.khmc=#{khmc}
+        </if>
+        <if test="zjhm != null and zjhm != ''" >
+          and zjhm=#{zjhm}
+        </if>
+        </where>
+        order by ksrq desc
+        ) where rownum=1
+    </select>
+
+</mapper>

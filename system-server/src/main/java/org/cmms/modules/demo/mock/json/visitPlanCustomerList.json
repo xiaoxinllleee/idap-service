@@ -1,0 +1,56 @@
+{
+  "message": "",
+  "success": true,
+  "result": {
+    "pageSize": 10,
+    "pageNo": 0,
+    "total": 1,
+    "totalPage": 1,
+    "records": [
+      {
+        "id": "d8488dsadsad123123",
+        "jgmc": "营业部",
+        "khjl": "张三",
+        "yxdy": "麓谷街道",
+        "khmc": "客户1",
+        "zjhm": "432542198501239091",
+        "khxz": 1,
+        "khxz_dictText": "商户",
+        "khlx": 1,
+        "khlx_dictText": "潜在客户",
+        "sfwchf": 1,
+        "sfwchf_dictText": "是",
+        "hfrq": "2019-09-01",
+        "hffs": 1,
+        "hffs_dictText": "面谈",
+        "jhksyf": "2019-06",
+        "jhjsyf": "2019-07",
+        "cjr": "操作员1",
+        "cjsj": "2019-05-30 11:44:32"
+      },
+      {
+        "id": "gg400glasdlsadwe",
+        "jgmc": "营业部",
+        "khjl": "张三",
+        "yxdy": "麓谷街道",
+        "khmc": "客户2",
+        "zjhm": "487739198711045692",
+        "khxz": 1,
+        "khxz_dictText": "商户",
+        "khlx": 1,
+        "khlx_dictText": "潜在客户",
+        "sfwchf": 2,
+        "sfwchf_dictText": "否",
+        "hfrq": "",
+        "hffs": "",
+        "hffs_dictText": "",
+        "jhksyf": "2019-06",
+        "jhjsyf": "2019-07",
+        "cjr": "操作员1",
+        "cjsj": "2019-05-30 11:44:32"
+      }
+    ]
+  },
+  "status": 200,
+  "timestamp": 1534955098193
+}

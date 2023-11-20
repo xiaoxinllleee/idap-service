@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.JtcyxxMapper">
+
+	<delete id="deleteByMainId" parameterType="java.lang.String">
+		DELETE FROM  KHGL_KHHMCXX_GRXD 	WHERE hhbm = #{hhbm}
+	</delete>
+
+	<delete id="deleteByMainHhbmAzjhm" parameterType="java.lang.String">
+		DELETE FROM  KHGL_KHHMCXX_GRXD 	WHERE hhbm = #{hhbm} and zjhm!=#{zjhm}
+	</delete>
+
+	<select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Jtcyxx">
+		SELECT * FROM  KHGL_KHHMCXX_GRXD WHERE hhbm = #{hhbm}  and zjhm!=#{zjhm}
+	</select>
+
+	<!--根据"户号编码"&"ID"获取家庭成员信息-->
+	<select id="queryFamilyListByHhbmAndId" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Jtcyxx">
+		SELECT ID,KHMC,ZJHM,YHZGX,CSZY,SJHM
+  		  FROM KHGL_KHHMCXX_GRXD
+ 		 WHERE hhbm = #{hhbm} AND zjhm != (SELECT zjhm FROM CAMS_ZCSX_GRXDCJXX WHERE id = #{id})
+	</select>
+
+	<!--贷款审批详情：根据"户号编码"&"ID"获取家庭成员信息-->
+	<select id="queryFamilyDataByHhbmAndID" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Jtcyxx">
+		SELECT KHMC,ZJHM,YHZGX,CSZY,SJHM
+		  FROM KHGL_KHHMCXX_GRXD
+		 WHERE hhbm = #{hhbm}
+		   AND zjhm != (SELECT zjhm FROM CAMS_ZCSX_GRXDCJXX_SPJL WHERE id=#{id})
+	</select>
+
+	<!--根据"id"删除家庭成员信息-->
+	<delete id="deleteFamilyInfoById" parameterType="java.lang.String">
+        DELETE FROM DKJKPT_DKQXCSSZ WHERE id=#{id}
+    </delete>
+
+</mapper>

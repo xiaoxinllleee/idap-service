@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.pad.shxxgl.mapper.XykMapper">
+
+    <select id="getByWgbh" resultType="org.cmms.modules.pad.shxxgl.entity.XykVO">
+        select t2.khmc,t1.CUSTR_NBR,t1.issue_Day,t1.card_Nbr from Ccd_card t1 left join (
+            select zjhm,khmc from  khxxgl_khxq_nh where wgbh in (
+                select wgbh from yxdygl_main start with wgbh in
+                <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                    #{wgbh}
+                </foreach>
+                connect by prior    wgbh=parent_id
+            )
+        )t2
+        on t1.CUSTR_NBR = t2.zjhm
+        where t2.zjhm is not null
+        group by t2.khmc,t1.CUSTR_NBR,t1.issue_Day,t1.card_Nbr
+    </select>
+
+    <select id="getByWgbhList" resultType="org.cmms.modules.pad.shxxgl.entity.XykVO">
+        select t2.khmc,t1.CUSTR_NBR,t1.issue_Day,t1.card_Nbr from Ccd_card t1 left join (
+            select zjhm,khmc from  khxxgl_khxq_nh where wgbh in (
+                select wgbh from yxdygl_main start with wgbh in
+                <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                    #{wgbh}
+                </foreach>
+                connect by prior    wgbh=parent_id
+            )
+        )t2
+         on t1.CUSTR_NBR = t2.zjhm
+        where t2.zjhm is not null
+        group by t2.khmc,t1.CUSTR_NBR,t1.issue_Day,t1.card_Nbr
+    </select>
+
+    <select id="getWktByWgbhList" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+        select t1.khmc,t1.zjhm, t1.xb, t1.nl, t1.sjhm,t1.hjdz from  khxxgl_khxq_nh t1
+        where t1.wgbh in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+        and not exists(select 1 from Ccd_card t2 where t1.zjhm=t2.CUSTR_NBR)
+    </select>
+</mapper>

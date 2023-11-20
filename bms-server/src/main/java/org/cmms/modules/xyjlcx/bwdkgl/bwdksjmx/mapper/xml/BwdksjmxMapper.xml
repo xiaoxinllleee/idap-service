@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xyjlcx.bwdkgl.bwdksjmx.mapper.BwdksjmxMapper">
+    <select id="pBwdksjmx" statementType="CALLABLE">
+       {call PKG_CREDIT.P_BWDKSJMX}
+    </select>
+
+    <!--<select id="queryContainsBwtmdk" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.bwdkgl.bwdksjmx.entity.Bwdksjmx">
+        select * from credit_bwdksjmx
+         where khmc = #{name}
+           and exists (select 1 from credit_bwdksjmx x where khmc = x.khmc)
+           and (zjlx is null or zjlx = 0)
+           and (to_char(dkrq, 'YYYY') - #{csnf}) >= #{age}
+    </select>-->
+
+    <select id="queryBwtmdkHive" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.bwdkgl.bwdksjmx.entity.Bwdksjmx">
+        select * from credit_bwdksjmx
+         where khmc = #{name}
+           and exists (select 1 from credit_bwdksjmx x where khmc = x.khmc)
+           and (zjlx is null or zjlx = 0)
+           and (cast(substr(cast(dkrq as String),1,4) as bigint) - cast(#{csnf} as bigint)) >= cast(#{age} as bigint)
+    </select>
+
+    <select id="queryBwtmdkOracle" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.bwdkgl.bwdksjmx.entity.Bwdksjmx">
+        select * from credit_bwdksjmx
+        where khmc = #{name}
+          and exists (select 1 from credit_bwdksjmx x where khmc = x.khmc)
+          and (zjlx is null or zjlx = 0)
+          and (cast(substr(to_char(dkrq,'YYYYMMDD'),1,4) as number) - cast(#{csnf} as number)) >= cast(#{age} as number)
+    </select>
+
+    <!--to_char(dkrq,'yyyy')-->
+
+</mapper>

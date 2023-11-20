@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.system.mapper.SysRoleMapper">
+
+    <select id="getListByUserId" resultType="org.cmms.modules.system.entity.SysRole">
+        select * from sys_role where id in(
+            select role_id from SYS_USER_ROLE t where user_id=#{userId})
+    </select>
+    <select id="getListByUsername" resultType="org.cmms.modules.system.entity.SysRole">
+        select * from sys_role where id in(
+            select role_id from SYS_USER_ROLE t where user_id = (
+                select id from sys_user where username=#{username}
+                ))
+    </select>
+</mapper>

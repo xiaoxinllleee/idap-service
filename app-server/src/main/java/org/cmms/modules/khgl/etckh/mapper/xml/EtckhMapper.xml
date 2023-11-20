@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.etckh.mapper.EtckhMapper">
+    <!--    <select id="getKhxxList" resultType="org.cmms.modules.khgl.etckh.entity.BdxxbVO">-->
+    <!--        select * from (select h.*,rownum as r from-->
+    <!--        (select t.khmc,t.khjg,t.operno,t.cphm,t.lxfs,t.xtkh,t.obuid,t.status,t.cllx-->
+    <!--         from IBUS_ETC_BDXXB t)h)-->
+    <!--         where r between #{start} and #{end}-->
+    <!--    </select>-->
+
+    <select id="getKhxxList" resultType="org.cmms.modules.khgl.etckh.entity.BdxxbVO">
+        select max(t.khmc)khmc,max(t.khjg)khjg,max(t.operno)operno,max(t.lxfs)lxfs,max(t.zh)zh,t.zjhm,max(t1.dkje)dkje
+        from IBUS_ETC_BDXXB t
+        left join IBUS_ETC_DJKDKJL t1
+        on t.xtkh = t1.xtkh
+        <where>
+            <if test="username != null and username != ''">
+                and t.operno = #{username}
+            </if>
+            <if test="khmc != null and khmc != ''">
+                and instr(t.khmc,#{khmc}) > 0
+            </if>
+        </where>
+        group by t.zjhm
+    </select>
+
+    <select id="getSbxxList" resultType="org.cmms.modules.khgl.etckh.entity.SbxxVO">
+         select t.xtkh,t.status,t.obuid,t.cphm,t.cllx,t.workdate,t.yjbrq
+         from RAODS.IBUS_ETC_BDXXB t
+         where t.zjhm = #{zjhm}
+    </select>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.ClxxMapper">
+
+	<delete id="deleteByMainId" parameterType="java.lang.String">
+		DELETE
+		FROM  CAMS_ZCSX_CL
+		WHERE
+			 zjhm = #{zjhm}
+	</delete>
+
+	<select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Clxx">
+		SELECT *
+		FROM  CAMS_ZCSX_CL
+		WHERE
+			 zjhm = #{zjhm}
+	</select>
+
+	<!--根据"ID"获取固定资产信息:车辆信息-->
+	<select id="queryVehicleInfoById" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Clxx">
+        SELECT CLPZ,PJGZ,CLLX FROM CAMS_ZCSX_CL
+         WHERE zjhm=(SELECT zjhm FROM CAMS_ZCSX_GRXDCJXX WHERE id = #{id})
+    </select>
+
+	<!--根据"ID"获取固定资产信息:车辆信息-->
+	<select id="queryVehicleDataById" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Clxx">
+        SELECT CLPZ,PJGZ,CLLX
+          FROM CAMS_ZCSX_CL
+         WHERE zjhm=(SELECT zjhm FROM CAMS_ZCSX_GRXDCJXX_SPJL WHERE id=#{id})
+    </select>
+
+	<select id="getPljzByZjhm" parameterType="java.lang.String" resultType="java.lang.String">
+		select SUM(PJGZ) from CAMS_ZCSX_CL where zjhm=#{zjhm}
+	</select>
+
+</mapper>

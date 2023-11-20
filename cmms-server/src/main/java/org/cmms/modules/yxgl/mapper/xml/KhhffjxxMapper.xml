@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.yxgl.mapper.KhhffjxxMapper">
+
+	<delete id="deleteByMainId" parameterType="java.lang.String">
+		DELETE 
+		FROM  Yxgl_khhf_fjxxb 
+		WHERE
+			 hf_id = #{id} 		
+	</delete>
+	
+	<select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.yxgl.entity.Khhffjxx">
+		SELECT * 
+		FROM  Yxgl_khhf_fjxxb
+		WHERE
+			 hf_id = #{id} 		
+	</select>
+</mapper>

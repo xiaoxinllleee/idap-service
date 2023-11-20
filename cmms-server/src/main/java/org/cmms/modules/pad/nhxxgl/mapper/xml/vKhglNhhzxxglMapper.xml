@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.pad.nhxxgl.mapper.vKhglNhhzxxglMapper">
+
+    <update id="init" parameterType="java.util.Map" statementType="CALLABLE">
+        { CALL PKG_TJFX.P_TJFX_NHZFTJ(#{hhbm},#{zjhm},#{yggh},#{username}, #{zfrq})}
+    </update>
+
+    <update id="init1" parameterType="java.util.Map" statementType="CALLABLE">
+        { CALL PKG_TJFX.P_TJFX_SXLXTJ1(#{hhbm})}
+    </update>
+
+    <update id="init2" parameterType="java.util.Map" statementType="CALLABLE">
+        { CALL PKG_TJFX.P_TJFX_SXLXTJ2(#{hhbm})}
+    </update>
+    
+    <select id="init3" resultType="java.lang.Integer">
+        select count(1) from khxxgl_sxlxmx_nh where hhbm=#{hhbm}
+    </select>
+
+    <select id="getLrryList" resultType="String">
+        select lrry from Khgl_nhhzxxgl where lrry is not null group by lrry
+    </select>
+
+    <select id="getPfrList" resultType="String">
+        select pfr from Khgl_nhhzxxgl where pfr is not null group by pfr
+    </select>
+</mapper>

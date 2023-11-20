@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.khhmc.mapper.KhhmcMapper">
+    <select id="queryByZjhm" parameterType="string" resultType="org.cmms.modules.khgl.khhmc.entity.Khhmc">
+        select * from khgl_khhmcxx where upper(zjhm) = upper(#{zjhm})
+    </select>
+
+    <select id="queryByZjhmAndHhbm" resultType="org.cmms.modules.khgl.khhmc.entity.Khhmc">
+        select * from khgl_khhmcxx where zjhm = #{zjhm} and hhbm = #{hhbm}
+    </select>
+
+    <update id="initKhhmcxx" statementType="CALLABLE">
+        {call pkg_khxxgl.P_KHHMCXX}
+    </update>
+
+    <select id="selectByFrzjhm" resultType="org.cmms.modules.khgl.khhmc.entity.Khhmc">
+        select * from khgl_khhmcxx where hhbm in (select hhbm from khgl_khhmcxx where zjhm =#{zjhm})
+    </select>
+</mapper>

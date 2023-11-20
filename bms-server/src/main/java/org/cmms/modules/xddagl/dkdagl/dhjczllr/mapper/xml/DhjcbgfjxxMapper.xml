@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xddagl.dkdagl.dhjczllr.mapper.DhjcbgfjxxMapper">
+
+	<delete id="deleteByMainId" >
+		DELETE 
+		FROM  Dkjkpt_dhjcbgfjxx 
+		WHERE
+			 zjhm = #{mainId}
+	</delete>
+	
+	<select id="selectByMainId"  resultType="org.cmms.modules.xddagl.dkdagl.dhjczllr.entity.Dhjcbgfjxx">
+		SELECT * 
+		FROM  Dkjkpt_dhjcbgfjxx
+		WHERE
+			 zjhm = #{mainId}
+	</select>
+</mapper>

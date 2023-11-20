@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.system.mapper.HrBasOrganizationMapper">
+    <select id="queryUserDeparts" parameterType="String" resultType="org.cmms.modules.system.entity.HrBasOrganization">
+      select *from HR_BAS_ORGANIZATION where zzbz IN ( select dep_id from sys_user_depart where user_id = #{userId} )
+	</select>
+
+    <select id="queryByYwjgdm" parameterType="String" resultType="org.cmms.modules.system.entity.HrBasOrganization">
+      select * from HR_BAS_ORGANIZATION where ywjgdm = #{ywjgdm}
+	</select>
+
+    <select id="queryByZzbz" parameterType="String" resultType="org.cmms.modules.system.entity.HrBasOrganization">
+      select * from HR_BAS_ORGANIZATION where zzbz = #{zzbz}
+	</select>
+
+    <select id="queryAuthOrgList" parameterType="String" resultType="org.cmms.modules.system.entity.HrBasOrganization">
+        select * from HR_BAS_ORGANIZATION start with zzbz = #{zzbz} connect by prior zzbz=sjzzbz
+    </select>
+
+    <select id="queryZzxxTreeByZzbz" parameterType="String" resultType="org.cmms.modules.system.entity.HrBasOrganization">
+        select * from HR_BAS_ORGANIZATION start with zzbz = #{zzbz} connect by prior zzbz = sjzzbz
+    </select>
+
+    <select id="queryZhbyZzbz" resultType="org.cmms.modules.system.entity.HrBasOrganization" >
+        select  * from HR_BAS_ORGANIZATION where zzbz = (   select sjzzbz from HR_BAS_ORGANIZATION t where zzbz = #{zzbz} ) and sjzzbz != 0
+    </select>
+
+    <select id="getTreeData" parameterType="String" resultType="org.cmms.modules.system.entity.HrBasOrganization">
+        select level,t1.* from hr_bas_organization t1
+        start with t1.zzbz in (select dep_id from sys_user_depart where user_id = #{userId})
+        connect by prior zzbz = sjzzbz
+    </select>
+
+    <select id="queryZzbzZh" resultType="org.cmms.modules.system.entity.HrBasOrganization">
+        select * from hr_bas_organization t where sjzzbz ='1' and zzlb ='4'
+    </select>
+
+    <select id="queryYwjgdmByZzjcLike" parameterType="java.lang.String" resultType="java.lang.String">
+        select ${text} from hr_bas_organization t where ${code} like '%${branchName}%' and (sjzzbz='0' or sjzzbz='1')
+    </select>
+</mapper>

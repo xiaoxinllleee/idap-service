@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.dkyw.dksjzrgl.mapper.DksjzrglMapper">
+
+<delete id="deleteDkzh" parameterType="java.util.List">
+    delete from ${tableName} where dkzh=#{dkzh}
+</delete>
+
+
+    <insert id="saveTjyf" parameterType="java.util.List">
+        insert into ${tableName} values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.dkzh},#{item.jobnumberzr},#{item.sfyybjs},#{item.DataDate},#{item.zzbz},#{item.zzrq})
+        </foreach>
+    </insert>
+
+
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.nhxq.mapper.KhxxglHnkdMapper">
+    <select id="updateHongMingDan"  statementType="CALLABLE">
+        { CALL PKG_CMMS_TOOL.P_UPDATEHNKDTYPE }
+    </select>
+
+    <update id="updateResult">
+        update KHXXGL_HNKD set imp_result = #{impResult}
+        where id = #{id}
+    </update>
+</mapper>

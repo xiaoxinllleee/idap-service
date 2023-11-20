@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.jx.common.mapper.TbJjfxJgdksjMapper">
+    <select id="getAllByMap" parameterType="map" resultType="map">
+        select tb.* from tb_tjfx_jgdksj tb
+        <where>
+            <if test="zzbz!=null and zzbz.trim()!=''">
+                and tb.zzbz = #{zzbz}
+            </if>
+            <if test="tjrq!=null">
+                and tb.tjrq = #{tjrq}
+            </if>
+        </where>
+        order by qmdkhs desc
+
+    </select>
+</mapper>

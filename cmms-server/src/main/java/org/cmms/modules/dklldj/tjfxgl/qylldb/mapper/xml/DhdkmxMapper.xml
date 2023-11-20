@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dklldj.tjfxgl.qylldb.mapper.DhdkmxMapper">
+
+    <select id="queryDhdkmx" resultType="org.cmms.modules.dklldj.tjfxgl.qylldb.entity.Dhdkmx">
+        select * from rate_lldj_dhdkmx where tjyf=#{tjyf} and jgdm=#{jgdm} and zjhm=#{zjhm} and ywbh=#{ywbh}
+    </select>
+
+</mapper>

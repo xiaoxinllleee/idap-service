@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.system.mapper.SysPermissionMapper">
+
+
+	<resultMap id="TreeModel" type="org.cmms.modules.system.model.TreeModel" >
+		<result column="id" property="key" jdbcType="VARCHAR"/>
+		<result column="name" property="title" jdbcType="VARCHAR"/>
+		<result column="icon" property="icon" jdbcType="VARCHAR"/>
+		<result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+		<result column="leaf_flag" property="isLeaf" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<!-- 通过<resultMap>映射实体类属性名和表的字段名对应关系 -->
+	<resultMap id="SysPermission" type="org.cmms.modules.system.entity.SysPermission">
+	   <!-- result属性映射非匹配字段 -->
+	    <result column="is_route" property="route"/>
+	    <result column="keep_alive" property="keepAlive"/>
+	    <result column="is_leaf" property="leaf"/>
+	</resultMap>
+
+
+	
+	
+	<select id="queryListByParentId" parameterType="Object"  resultMap="TreeModel">
+		   SELECT   
+                   id
+                   ,parent_id
+                   ,name
+                   ,icon
+                   ,leaf_flag
+		   FROM   sys_permission
+		   WHERE 1=1
+		    <choose>
+		   		<when test="parentId != null and parentId != ''">
+		   			AND parent_id =  #{parentId,jdbcType=VARCHAR}
+		   		</when>
+		   		<otherwise>
+		   			AND parent_id is null
+		   		</otherwise>
+		    </choose>
+	</select>
+	
+	<!-- 获取登录用户拥有的权限 -->
+	<select id="queryByUser" parameterType="Object"  resultMap="SysPermission">
+		   SELECT * FROM (
+			   SELECT p.*
+			   FROM  sys_permission p
+			   WHERE (exists(
+						select a.id from sys_role_permission a
+						join sys_role b on a.role_id = b.id
+						join sys_user_role c on c.role_id = b.id
+						join sys_user d on d.id = c.user_id
+						where p.id = a.permission_id AND d.username = #{username,jdbcType=VARCHAR}
+					)
+					<!--update begin Author:taoyan  Date:20200225 for：默认授权online的auto动态隐藏路由 -->
+					<!--update by liuwei 2022-12-28 09:23:07 暂时去掉 影响效率
+					or (p.url like '%:code' and p.url like '/online%' and p.hidden = 1)
+					or (p.url = '/online') -->
+					)
+					<!--update end Author:taoyan  Date:20200213 for：默认授权online的auto动态隐藏路由  -->
+			   and p.del_flag = 0
+			   <if test="subSystemId != null">
+				   and p.sub_system_id = #{subSystemId,jdbcType=VARCHAR}
+			   </if>
+			<!--update begin Author:lvdandan  Date:20200225 for：加入部门权限 -->
+			   UNION
+			   SELECT p.*
+			   FROM  sys_permission p
+			   WHERE exists(
+					select a.id from sys_depart_role_permission a
+					join sys_depart_role b on a.role_id = b.id
+					join sys_depart_role_user c on c.drole_id = b.id
+					join sys_user d on d.id = c.user_id
+					where p.id = a.permission_id AND d.username = #{username,jdbcType=VARCHAR}
+			   )
+			   and p.del_flag = 0
+				<if test="subSystemId != null">
+					and p.sub_system_id = #{subSystemId,jdbcType=VARCHAR}
+				</if>
+			<!--update end Author:lvdandan  Date:20200213 for：加入部门权限 -->
+		   ) h order by h.sort_no ASC
+	</select>
+
+	<select id="queryAllPermissionByUser" parameterType="Object"  resultMap="SysPermission">
+		SELECT * FROM (
+		    SELECT p.*
+		    FROM  sys_permission p
+		    WHERE (exists(
+				select a.id from sys_role_permission a
+				join sys_role b on a.role_id = b.id
+				join sys_user_role c on c.role_id = b.id
+				join sys_user d on d.id = c.user_id
+				where p.id = a.permission_id AND d.username = #{username,jdbcType=VARCHAR}
+		    )
+		    <!--update begin Author:taoyan  Date:20200225 for：默认授权online的auto动态隐藏路由 -->
+		    <!--update by liuwei 2022-12-28 09:23:07 暂时去掉 影响效率
+		    or (p.url like '%:code' and p.url like '/online%' and p.hidden = 1)
+		    or (p.url = '/online') -->
+		    )
+		    <!--update end Author:taoyan  Date:20200213 for：默认授权online的auto动态隐藏路由  -->
+		    and p.del_flag = 0
+		    <if test="subSystemList != null">
+				and p.sub_system_id in (${subSystemList})
+		    </if>
+			<!--update begin Author:lvdandan  Date:20200225 for：加入部门权限 -->
+			UNION
+			SELECT p.*
+			FROM  sys_permission p
+			WHERE exists(
+			select a.id from sys_depart_role_permission a
+			join sys_depart_role b on a.role_id = b.id
+			join sys_depart_role_user c on c.drole_id = b.id
+			join sys_user d on d.id = c.user_id
+			where p.id = a.permission_id AND d.username = #{username,jdbcType=VARCHAR}
+			)
+			and p.del_flag = 0
+			<if test="subSystemList != null">
+				and p.sub_system_id in (${subSystemList})
+			</if>
+			<!--update end Author:lvdandan  Date:20200213 for：加入部门权限 -->
+		) h order by h.sort_no ASC
+	</select>
+
+	<select id="querySubSystemByUser" parameterType="Object"  resultType="org.cmms.modules.system.entity.SysSubSystem">
+		<!-- 查询用户有权限的子系统列表，子系统中需要分配有菜单-->
+		select * from sys_sub_system where id in (
+			select t3.sub_system_id
+			from sys_user t1,sys_user_role t2,sys_role_sub_system t3
+			where t1.username = #{username,jdbcType=VARCHAR} and t1.id = t2.user_id
+			  and t2.role_id = t3.role_id
+		) and id in (select distinct t3.sub_system_id
+			from sys_user t1,sys_user_role t2,sys_permission t3,sys_role_permission t4
+			where t1.username = #{username,jdbcType=VARCHAR} and t1.id = t2.user_id
+			  and t2.role_id = t4.role_id and t3.id=t4.permission_id
+		) and sfqy = 1
+		order by sx asc
+	</select>
+
+	<select id="queryHomePage" resultMap="SysPermission">
+		select * from  SYS_PERMISSION where sub_system_id in ( select id from sys_sub_system where xtjc='HPMS')
+	</select>
+
+	<select id="queryNavList" resultType="string">
+		select id from SYS_PERMISSION where menu_type=1  and instr(component,'layouts/RouteView') = 0 and component is not null and url is not null
+	</select>
+
+	<select id="queryHomePageByUserName" resultMap="SysPermission">
+		select * from sys_permission where id in(
+			select distinct PERMISSION_id from SYS_ROLE_PERMISSION t where role_id in (
+				select role_id from sys_user_role t where user_id in (select id from sys_user where username =#{username})
+			)and PERMISSION_id in (select id from sys_permission t where sub_system_id =(select id from sys_sub_system where xtjc='HPMS')
+			))
+	</select>
+
+	<select id="queryPadRouters" resultMap="SysPermission">
+		select *
+		from SYS_PERMISSION
+		where id in
+			  (select permission_id
+			   from SYS_ROLE_PERMISSION
+			   where role_id in
+					 (select role_id
+					  from sys_user_role t
+					  where user_id in
+							(select id from sys_user where username = #{username})))
+		  and sub_system_id =
+			  (select id from SYS_SUB_SYSTEM where xtjc = 'IPADMS') order by sort_no
+	</select>
+</mapper>

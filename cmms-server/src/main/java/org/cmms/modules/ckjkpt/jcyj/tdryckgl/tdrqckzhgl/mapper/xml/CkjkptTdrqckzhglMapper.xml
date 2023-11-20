@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ckjkpt.jcyj.tdryckgl.tdrqckzhgl.mapper.CkjkptTdrqckzhglMapper">
+
+    <select id="queryByZjhm" parameterType="string" resultType="org.cmms.modules.ckjkpt.jcyj.tdryckgl.tdrqckzhgl.entity.CkjkptTdrqckzhgl">
+        select * from CKJKPT_TDRYCKGL where ident_no = #{zjhm}
+    </select>
+
+    <select id="extract" parameterType="java.util.Map" statementType="CALLABLE">
+        {call PKG_CKJKPT.P_CKJKPT_TDRYCKZHGL(#{sub_Acct_No,mode=IN,jdbcType=VARCHAR},#{ident_no,mode=IN,jdbcType=VARCHAR},#{lx,mode=IN,jdbcType=VARCHAR})}
+    </select>
+</mapper>

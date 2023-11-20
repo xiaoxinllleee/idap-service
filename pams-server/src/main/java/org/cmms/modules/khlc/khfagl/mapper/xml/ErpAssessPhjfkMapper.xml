@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khlc.khfagl.mapper.ErpAssessPhjfkMapper">
+    <select id="phjfkGw" parameterType="java.lang.String" resultType="org.cmms.modules.khlc.zbljgl.entity.ErpBasSjxArea">
+        select t.* from erp_bas_sjx_area t where zblx =3 and khfs =1 and sfqy='1'
+        <if test="zbid != null and zbid != ''">
+            and zbid=#{zbid}
+        </if>
+    </select>
+    <select id="phjfkJg" parameterType="java.lang.String" resultType="org.cmms.modules.khlc.zbljgl.entity.ErpBasSjxArea">
+        select t.* from erp_bas_sjx_area t where zblx =1 and khfs =1 and sfqy='1'
+        <if test="zbid != null and zbid != ''">
+            and zbid=#{zbid}
+        </if>
+    </select>
+
+    <select id="getZbxxBySchemeId" parameterType="java.lang.String" resultType="org.cmms.modules.khlc.khfagl.entity.ErpAssessPhjfk">
+        select scheme_id,zbid,zbwd,null zbfz
+        from erp_assess_phjfk where scheme_id=#{schemeId}
+        group by scheme_id,zbid,zbwd
+        order by zbid
+    </select>
+</mapper>

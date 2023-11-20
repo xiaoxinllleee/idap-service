@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.hr.yggl.ygxxgl.mapper.VhrbasstaffpostMapper">
+    <select id="selectByYggh" parameterType="java.lang.String" resultType="org.cmms.modules.hr.yggl.ygxxgl.entity.Vhrbasstaffpost">
+		SELECT * FROM v_hr_bas_staff_post WHERE yggh=#{yggh}
+	</select>
+
+	<select id="selectYgList" parameterType="java.lang.String" resultType="org.cmms.modules.hr.yggl.ygxxgl.entity.Vhrbasstaffpost">
+		select t1.zzbz,t1.gwbz,t1.yggh,t2.ygxm,t1.khjlbz From (
+		select zzbz,
+		gwbz,
+		yggh,
+		khjlbz,
+		row_number() over(partition by yggh order by rgrq desc) pk
+		from hr_bas_staff_post
+		where rgrq &lt;= sysdate
+		and (lgrq is null or lgrq &gt;= trunc(sysdate,'MM'))) t1
+		left join hr_bas_staff t2
+		on t1.yggh=t2.yggh
+		where t1.pk=1 and  t1.yggh=#{yggh} and t1.zzbz=#{zzbz}
+	</select>
+
+	<select id="selectYgByLrsj" parameterType="java.lang.String" resultType="org.cmms.modules.hr.yggl.ygxxgl.entity.Vhrbasstaffpost">
+		select t1.zzbz,t3.zzjc,t1.gwbz,t1.yggh,t2.ygxm,t1.khjlbz From (
+				  select zzbz,
+						 gwbz,
+						 yggh,
+						 khjlbz,
+						 row_number() over(partition by yggh order by rgrq desc) pk
+				  from hr_bas_staff_post
+				  where rgrq &lt;= to_date(#{lrsj},'yyyyMMdd')
+					and (lgrq is null or lgrq &gt;= to_date(#{lrsj},'yyyyMMdd'))) t1
+				  left join hr_bas_staff t2 on t1.yggh=t2.yggh
+		          left join hr_bas_organization t3 on t1.zzbz=t3.zzbz
+		where t1.pk=1 and  t1.yggh=#{yggh}
+	</select>
+
+
+	<select id="geYgxxByZzbz" parameterType="java.lang.String" resultType="org.cmms.modules.hr.yggl.ygxxgl.entity.Vhrbasstaffpost">
+		SELECT * FROM v_hr_bas_staff_post WHERE zzbz=#{zzbz}
+	</select>
+
+	<select id="getZhYgxxByZzbz" parameterType="java.lang.String" resultType="org.cmms.modules.hr.yggl.ygxxgl.entity.Vhrbasstaffpost">
+		SELECT * FROM v_hr_bas_staff_post
+		WHERE zzbz in (
+		    select zzbz from HR_BAS_ORGANIZATION start with zzbz = #{zzbz} connect by prior zzbz=sjzzbz
+		)
+	</select>
+
+
+</mapper>

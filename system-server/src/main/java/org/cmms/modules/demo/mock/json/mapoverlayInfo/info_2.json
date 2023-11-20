@@ -1,0 +1,20 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"areaname": "西洲街道",
+		"zkhs": "10,592",
+		"qzkhs": "872",
+		"hxkhs": "1,129",
+		"ckhs": "9,582",
+		"dkhs": "2,423",
+		"ckje": "5,005万元",
+		"ckrp": "4,234万元",
+		"dkye": "2,423万元",
+		"byzfcs": "423",
+		"ljzfcs": "1,832",
+		"zzbz": "2",
+		"dybh": "10003"
+	}
+}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.etckh.mapper.DkjlMapper">
+    <select id="getDjkDkjlList" resultType="org.cmms.modules.khgl.etckh.entity.DjkdkjlVO">
+        select t.kh,t.xtkh,t.dkje,t.dksj,t.hsrq,t.dklsh
+        from RAODS.IBUS_ETC_DJKDKJL t
+        where t.kh = #{zh}
+    </select>
+
+    <select id="getDkjlList" resultType="org.cmms.modules.khgl.etckh.entity.DjkdkjlbVO">
+        select * from (select h.*,rownum as r from
+        (select t1.hm, t1.dkje,t1.hsrq,t1.dkrq,t1.dksj,t1.dklsh,t.operno,t.lxfs,t.zh,t1.xtkh,t1.sfhq
+        from IBUS_ETC_BDXXB t
+        left join IBUS_ETC_DJKDKJL t1
+        on t.khmc = t1.hm
+        <where>
+            <if test="namecn != null and namecn != ''">
+                and instr(t1.hm,#{namecn}) > 0
+            </if>
+        </where>
+        )h)
+        where r between #{start} and #{end}
+    </select>
+
+    <select id="getSfcs" resultType="org.cmms.modules.khgl.etckh.entity.DjkdkjlbVO">
+        select * from (select h.*,rownum as r from
+        (select t1.hm, t1.dkje,t1.hsrq,t1.dkrq,t1.dksj,t1.dklsh,t.operno,t.lxfs,t.zh,t1.xtkh,t1.sfhq
+        from IBUS_ETC_BDXXB t
+        left join IBUS_ETC_DJKDKJL t1
+        on t.khmc = t1.hm
+        where t1.dkje > 0
+        <if test="namecn != null and namecn != ''">
+            and instr(t1.hm,#{namecn}) > 0
+        </if>)h)
+        where r between #{start} and #{end}
+    </select>
+
+    <select id="getAll" resultType="org.cmms.modules.khgl.etckh.entity.DjkdkjlbVO">
+        select * from (select h.*,rownum as r from
+        (select t1.hm, t1.dkje,t1.hsrq,t1.dkrq,t1.dksj,t1.dklsh,t.operno,t.lxfs,t.zh,t1.xtkh,t1.sfhq
+        from IBUS_ETC_BDXXB t
+        left join IBUS_ETC_DJKDKJL t1
+        on t.khmc = t1.hm
+        <where>
+            <if test="namecn != null and namecn != ''">
+                and instr(t1.hm,#{namecn}) > 0
+            </if>
+        </where>)h)
+        where r between #{start} and #{end}
+    </select>
+</mapper>

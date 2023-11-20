@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.dkkh.mapper.AppDkkhGzListMapper">
+
+    <select id="getZjhms" resultType="string">
+        select distinct zjhm from APP_DKKH_GZ_LIST where yggh = #{yggh}
+        <if test="custType != null and custType != ''">
+            and cust_type = #{custType}
+        </if>
+        <if test="wjfl != null and wjfl != ''">
+            and five_class_type = #{wjfl}
+        </if>
+        <if test="zjhm != null and zjhm != ''">
+            and instr(khmc,#{zjhm}) > 0
+        </if>
+    </select>
+</mapper>

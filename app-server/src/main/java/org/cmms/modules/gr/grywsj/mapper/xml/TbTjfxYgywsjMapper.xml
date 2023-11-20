@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.gr.grywsj.mapper.TbTjfxYgywsjMapper">
+
+
+    <select id="getWqDate"  resultType="org.cmms.modules.gr.grywsj.entity.TbTjfxYgywsj">
+        select t.* from tb_tjfx_ygywsj t join (SELECT zbid,yggh ,max(tjrq) as tjrq FROM tb_tjfx_ygywsj
+                                               where yggh = #{yggh} and zbid = #{zbid}
+                                               GROUP BY to_char(tjrq, 'yyyy-MM-dd'),zbid,yggh ) j on t.yggh = j.yggh and t.zbid = j.zbid and t.tjrq = j.tjrq
+        order by t.tjrq desc
+    </select>
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.system.sjbd.mapper.SjxfJgbdMapper">
+    <select id="getCount" resultType="java.lang.Long">
+        select count(1) from ${tablename}
+    </select>
+
+    <select id="getSum" resultType="java.lang.Double">
+        select sum(nvl(${hzzd},0)) from ${tablename}
+    </select>
+
+  <!--  <select id="getSum" resultType="java.lang.Double">
+        select sum(nvl(${hzzd},0)) from ${tablename} group by ${fzzd}
+    </select>-->
+    <!--<select id="getAvg" resultType="java.lang.Double">
+        select avg(nvl(${hzzd},0)) from ${tablename} group by ${fzzd}
+    </select>-->
+
+    <select id="getAvg" resultType="java.lang.Double">
+        select avg(nvl(${hzzd},0)) from ${tablename}
+    </select>
+</mapper>

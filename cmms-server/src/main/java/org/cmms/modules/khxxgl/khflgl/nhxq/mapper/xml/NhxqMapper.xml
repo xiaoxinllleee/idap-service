@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.nhxq.mapper.NhxqMapper">
+
+    <update id="drhnkdbmd" statementType="CALLABLE">
+        {call PKC_HNKD.P_HNKD_TQ}
+    </update>
+
+    <update id="drhnkdbmdsszh" statementType="CALLABLE">
+        {call PKC_HNKD.P_HNKD_TQ_SSZH(#{sszh})}
+    </update>
+
+    <update id="init" statementType="CALLABLE">
+        {call pkg_khxxgl.P_NHXXXX}
+    </update>
+
+    <select id="getHByZjhm" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+        select * from KHXXGL_KHXQ_NH  where hhbm in (select hhbm from KHXXGL_KHXQ_NH where zjhm =#{zjhm}) and zjhm != #{zjhm}
+    </select>
+
+    <select id="getByHnkd" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+
+        select * from KHXXGL_KHXQ_NH where zjhm in (
+        select zjhm from KHXXGL_HNKD where 1 = 1
+        <if test="khxxglHnkd.khlx != null and khxxglHnkd.khlx != ''">
+            and khlx = #{khxxglHnkd.khlx}
+        </if>
+        <if test="khxxglHnkd.khmc != null and khxxglHnkd.khmc != ''">
+            and khmc = #{khxxglHnkd.khmc}
+        </if>
+        <if test="khxxglHnkd.zjhm != null and khxxglHnkd.zjhm != ''">
+            and zjhm = #{khxxglHnkd.zjhm}
+        </if>
+        <if test="khxxglHnkd.sfycdg != null and khxxglHnkd.sfycdg != ''">
+            and sfycdg = #{khxxglHnkd.sfycdg}
+        </if>
+        <if test="khxxglHnkd.wgbh != null and khxxglHnkd.wgbh != ''">
+            and wgbh in (select wgbh from yxdygl_main start with wgbh= #{khxxglHnkd.wgbh} connect by prior wgbh=parent_id)
+        </if>
+        <if test="khxxglHnkd.wgbh == null or khxxglHnkd.wgbh == ''">
+            and wgbh in (select menu_id from YXDYGL_PQQXGL where khjl =#{workNo})
+        </if>)
+    </select>
+
+    <insert id="syncYesNhxx">
+        insert into KHXXGL_KHXQ_NH_SYNC_YES
+        select zjhm from KHXXGL_KHXQ_NH where zjhm not in (select zjhm from KHXXGL_KHXQ_NH_SYNC_YES)
+    </insert>
+
+    <select id="getFxdIndex" resultType="org.cmms.modules.fxd.entity.KhglIndexVO">
+        select sum(rs) rs,sum(hs) hs,sum(ck) ck,sum(dk) dk from (
+                                                        select count(distinct zjhm)rs,null hs,null ck,null dk from khxxgl_khxq_nh
+                                                        union
+                                                        select  null,count(distinct hhbm),null,null from khxxgl_khxq_nh
+                                                        union
+                                                        select null,null,sum(curr_bal),null from cbs_invm_base
+                                                        union
+                                                        select null,null,null,sum(dkje) from (select max(applic_amount) dkje from cbs_borm_base group by business_no)
+                                                    )
+    </select>
+
+    <select id="getFxdIndex2" resultType="org.cmms.modules.fxd.entity.KhglIndexVO">
+   select ceil( nvl(sum( t2.dkje),0))dk  ,ceil( nvl(sum( t3.curr_bal),0))ck,count(1)rs,count(distinct hhbm)hs from
+    (select zjhm,hhbm from  KHXXGL_KHXQ_NH where 1 =1
+        <if test="wgbh != null and wgbh != ''">
+            and wgbh in (select wgbh from yxdygl_main start with wgbh=#{wgbh} connect by prior wgbh=parent_id)
+        </if>
+        <if test="wgbh == null or wgbh ==''">
+            and wgbh in (select menu_id from yxdygl_pqqxgl where khjl =#{yggh} )
+        </if>)t1
+
+                                                                    left join  (
+            select max(applic_amount) dkje,max(ident_no)ident_no from cbs_borm_base group by business_no
+
+        ) t2
+                                                                               on t1.zjhm = t2.ident_no
+                                                                    left join cbs_invm_base t3
+                                                                              on t1.zjhm = t3.ident_no
+    </select>
+
+    <select id="selectUser" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+        SELECT * FROM KHXXGL_KHXQ_NH
+        WHERE
+           (longitude BETWEEN ${minlng} AND ${maxlng})
+          and (latitude BETWEEN ${minlat} AND ${maxlat})
+    </select>
+    <update id="removeHhbmById">
+        update KHXXGL_KHXQ_NH set hhbm = null where id =#{id}
+    </update>
+
+    <update id="khzyok">
+        update KHXXGL_KHXQ_NH set sskhjl = #{nhxq.zz}
+        where sszh = #{sszh} and sskhjl=#{khjl}
+        <if test="nhxq.zjhm != null and nhxq.zjhm !=''">
+            and zjhm = #{nhxq.zjhm}
+        </if>
+        <if test="nhxq.khmc != null and nhxq.khmc !=''">
+            and khmc = #{nhxq.khmc}
+        </if>
+        <if test="nhxq.wgbh != null and nhxq.wgbh !=''">
+            and wgbh in (select wgbh from yxdygl_main start with wgbh= #{nhxq.wgbh} connect by prior wgbh=parent_id )
+        </if>
+    </update>
+
+    <update id="khzyokList" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=",">
+            update KHXXGL_KHXQ_NH set sskhjl = #{khjl} where id =#{item}
+        </foreach>
+    </update>
+
+    <update id="khzyoid">
+        update KHXXGL_KHXQ_NH set sskhjl = #{khjl} where id =#{id}
+    </update>
+
+    <select id="getHmdData" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.NhHmdDataVo">
+        select t1.hhbm,
+               t1.khmc,
+               t1.zjhm,
+               t1.xtpdsm,
+               nvl(t3.BLDKYE,0) as bldkye,
+               nvl(t3.BWBLDKYE,0) as bwbldkye
+        from khxxgl_khxq_nh t1
+        left join khgl_nhhzxxgl t2 on t1.hhbm=t2.hhbm
+        left join KHXXGL_YWHYWWLXX t3 on t1.zjhm=t3.zjhm
+        where t2.khlx='3' and t1.xtpdjg='3'
+    </select>
+
+    <select id="sj10000" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+        select id,hjdz from KHXXGL_KHXQ_NH020 where  xdjgdm is null and hjdz is not null
+    </select>
+
+    <update id="update10000">
+        update KHXXGL_KHXQ_NH020 set update_time =sysdate ,xdjgdm='1'
+        <if test="dao.wgbh1 !=null and dao.wgbh1 != '' ">
+            ,wgbh1 = #{dao.wgbh1}
+        </if>
+        <if test="dao.wgbh2 !=null and dao.wgbh2 != '' ">
+            ,wgbh2 = #{dao.wgbh2}
+        </if>
+        <if test="dao.wgbh3 !=null and dao.wgbh3 != '' ">
+            ,wgbh3 = #{dao.wgbh3}
+        </if>
+        <if test="dao.wgbh !=null and dao.wgbh != '' ">
+            ,wgbh = #{dao.wgbh3}
+        </if>
+        where id = #{dao.id}
+    </update>
+</mapper>

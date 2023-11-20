@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.yxdygl.yxdyglmain.mapper.YxdyglMainMapper">
+    <select id="getPreviousLevel" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMain">
+        select level,t1.* from yxdygl_main t1 where 1=1
+        <if test="previousLevel !=null">
+            and  level&lt;=#{previousLevel}
+        </if>
+        <if test="queryOrganize != null and queryOrganize == 2">
+            and t1.wgxz!='3'
+        </if>
+        start with t1.parent_id=#{pId} connect by prior t1.id=t1.parent_id
+        order by parent_id
+    </select>
+
+    <select id="getKhjlList" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMain">
+        select
+        t1.id,t1.wgbh_show,t1.create_by,t1.create_time,t1.update_by,t1.update_time,t1.wgbh,t1.wgmc,
+        t1.wgbh_show,t1.wgxz,t1.bz,t1.parent_id,t1.wgmj,t1.wgqk,t1.wgtdfx,t1.wgwz,t1.wggjr1,t1.gjrlxfs1,
+        t1.wggjr2,t1.gjrlxfs2,t1.wggjr3,t1.gjrlxfs3,t1.zzbz,t1.zrbs,t1.zrld,t1.zrwd,t1."level",
+        t2.menu_id as qxwgbh
+        from (
+        select level as "level",SYS_CONNECT_BY_PATH(t1.wgbh, '-') wgbh_show,t1.*
+        from yxdygl_main t1
+        start with t1.parent_id = '0'
+        connect by prior t1.id = t1.parent_id)
+        t1 left join (SELECT MENU_ID
+        FROM YXDYGL_PQQXGL
+        WHERE KHJL =  #{khjl}
+        ) t2
+        on t1.wgbh=t2.menu_id
+
+    </select>
+
+    <select id="getAllList" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMain">
+        select * from yxdygl_main where level=1
+        start with parent_id=#{pId}
+        connect by prior id=parent_id
+    </select>
+
+    <select id="getWgbhParentWgbh" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMain">
+        select * from yxdygl_main where wgbh in (select parent_id from yxdygl_main where wgbh = #{wgbh})
+    </select>
+
+    <select id="getWgxxTreeDateBySskhjl" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMain">
+        select t1.*,t2.menu_id as qxwgbh
+        from (
+          select level as "level",SYS_CONNECT_BY_PATH(t1.wgbh, '-') wgbh_show,t1.*
+          from yxdygl_main t1
+          where 1=1
+          <if test="wgxz==null or !wgxz.contains('8'.toString())">
+              and wgxz!='8'
+          </if>
+          <if test="zzbz !=null and zzbz !=''" >
+              and t1.zzbz=#{zzbz} or t1.parent_id = '0'
+          </if>
+          start with t1.parent_id = '0'
+          connect by prior t1.id = t1.parent_id)
+        t1 left join (SELECT MENU_ID
+        FROM YXDYGL_PQQXGL
+        WHERE KHJL =  #{sskhjl}
+        <if test="wgxz !=null and wgxz !=''">
+            <if test='wgxzType == null or wgxzType == "" or wgxzType == "1"'>
+                and MENU_ID in (select id from yxdygl_main where wgxz=#{wgxz})
+            </if>
+            <if test='wgxzType == "2"'>
+                and MENU_ID not in (select id from yxdygl_main where wgxz in (${wgxz}))
+            </if>
+        </if>
+        ) t2
+        on t1.wgbh=t2.menu_id
+    </select>
+
+
+
+    <select id="getWgxxTreeDateAll" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMain">
+        select t1.*,t2.menu_id as qxwgbh
+        from (
+        select level as "level",SYS_CONNECT_BY_PATH(t1.wgbh, '-') wgbh_show,t1.*
+        from yxdygl_main t1
+        start with t1.parent_id = '0'
+        connect by prior t1.id = t1.parent_id)
+        t1 left join (SELECT MENU_ID
+        FROM YXDYGL_PQQXGL
+        WHERE 1=1
+        <if test="wgxz !=null and wgxz !=''">
+            <if test='wgxzType == null or wgxzType == "" or wgxzType == "1"'>
+                and MENU_ID in (select id from yxdygl_main where wgxz=#{wgxz})
+            </if>
+            <if test='wgxzType == "2"'>
+                and MENU_ID not in (select id from yxdygl_main where wgxz=#{wgxz})
+            </if>
+        </if>
+        ) t2
+        on t1.wgbh=t2.menu_id
+    </select>
+
+
+    <select id="getAppList" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.AppYxdyglMain">
+        select a.*,t.ckhs,t.ckye,t.dkhs,t.dkje from (
+        select t1.*,t2.sszh,t2.menu_id,t2.khjl,t2.sfzkhjl,t2.sjqx from
+        (select BZ1,ZRWD,ZRLD,ZRBS,ZZBZ,GJRLXFS3,WGGJR3,GJRLXFS2,WGGJR2,GJRLXFS1,WGGJR1,
+                WGWZ,WGTDFX,WGQK,WGMJ,PARENT_ID,BZ,case when WGXZ='7' then '0' else wgxz end as wgxz,
+                WGBH,WGMC,UPDATE_TIME,UPDATE_BY,CREATE_TIME,CREATE_BY,ID,LATITUDE,LONGITUDE from YXDYGL_MAIN t
+        where 1=1 and wgxz!=8
+        <if test="dao.wgmc !=null and dao.wgmc !=''">
+            and t.wgmc=#{dao.wgmc}
+        </if>
+        <if test="dao.wgxz !=null">
+            and t.wgxz=#{dao.wgxz}
+        </if>
+        <if test="queryOrganize == 2">
+            and t.wgxz!='3'
+        </if>
+        <if test="dao.zzbz != null">
+            and t.zzbz=#{dao.zzbz}
+        </if>
+        <if test="dao.wgbh !=null and dao.wgbh !='' ">
+            start with t.id = #{dao.wgbh}
+            connect by prior t.id = t.parent_id
+        </if>
+        ) t1,YXDYGL_PQQXGL t2
+        where t1.id=t2.menu_id and t2.khjl=#{workNo}
+        order by t1.wgxz)a
+        left join (
+            select a1.wgbh,a1.ckhs,a1.ckye,a1.dkhs,a1.dkje from khxxgl_tjfx_wgywtj a1,
+            (select max(tjrq) as tjrq from khxxgl_tjfx_wgywtj)a2
+            where a1.tjrq=to_date(to_char(a2.tjrq,'yyyyMMdd'),'yyyyMMdd')
+            ) t on t.wgbh=a.wgbh
+        order by a.wgxz,a.wgbh
+    </select>
+
+    <select id="getByQydm" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMain">
+        select * from ${qydm}
+    </select>
+
+    <select id="getByQydmAndDao" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMain">
+        select * from ${qydm} where 1=1
+        <if test="dao.wgxz != null and dao.wgxz !=''">
+            and wgxz = #{dao.wgxz}
+        </if>
+        <if test="dao.parentId != null and dao.parentId !=''">
+            and parent_id = #{dao.parentId}
+        </if>
+    </select>
+
+    <select id="getAll" resultType="org.cmms.modules.yxdygl.yxdyglmain.entity.YxdyglMain">
+        select t1.*,t1.wgbh as qxwgbh
+        from (
+                 select level as "level",SYS_CONNECT_BY_PATH(t1.wgbh, '-') wgbh_show,t1.*
+                 from yxdygl_main t1
+                 where 1=1
+
+                     start with t1.parent_id = '0'
+                 connect by prior t1.id = t1.parent_id)
+                 t1
+    </select>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xyjlcx.xybg.xybgcx.mapper.CreditReportQueryMapper">
+
+    <!--<select id="getXytssjHive" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.TmpCreditXytssjVO">
+        select * from credit_xyts where zjhm = #{zjhm}
+    </select>-->
+
+    <select id="getDksjmxOracle" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.TmpCreditDksjVO">
+        select * from tmp_credit_dksj where zjhm = #{zjhm} order by jkrq asc
+    </select>
+
+    <select id="getDksjmxHive" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.TmpCreditDksjVO">
+        select * from credit_dksj where zjhm = #{zjhm} order by jkrq asc
+    </select>
+
+    <select id="getDksjmx" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.TmpCreditDksjVO">
+        select * from credit_dksj where zjhm = #{zjhm} order by jkrq asc
+    </select>
+
+    <!--<select id="getDbxxHive" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.TmpCreditDbxxVO">
+        select t1.jgdm, t2.zzjc as jgmc, t1.zjhm, t1.dkzh, t1.jkrq, t1.dqrq, t1.jkrxm, t1.dkje, t1.hxye, t1.zxqxr, t1.wjflbz,
+               case when t1.wjflbz = '1' then '正常'
+                    when t1.wjflbz = '2' then '关注'
+                    when t1.wjflbz = '3' then '次级'
+                    when t1.wjflbz = '4' then '可疑'
+                    when t1.wjflbz = '5' then '损失'
+                    else t1.wjflbz
+               end as wjflmc, t1.ljqxcs, t1.khjl, t3.ygxm as khjlxm
+          from preset.tmp_credit_dbxx t1
+          left join ods_020.hr_bas_organization t2 on t1.jgdm = t2.ywjgdm
+          left join ods_020.hr_bas_staff t3 on t1.khjl = t3.khjlbh
+    </select>-->
+
+    <!--<select id="getDklxshmxHive" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.TmpCreditDklxshmxVO">
+        select * from tmp_credit_dklxshmx where zh = #{zh} and shbz = #{shbz}
+    </select>-->
+
+    <select id="CreditInitExtract" parameterType="java.lang.String" statementType="CALLABLE">
+        {call PKG_CREDIT.P_CREDIT_INIT(#{zjhm, mode=IN, jdbcType=VARCHAR})}
+    </select>
+
+
+
+    <select id="getJbxxSfxx" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.JbxxSfxx">
+        select khmc,xb,substr(zjhm,7,8) as csrq,hyzk,sjhm,null as zzdh,whcd as xl,zz as txdz
+          from khxxgl_khxq_nh where zjhm=#{zjhm}
+    </select>
+
+    <select id="getJbxxGlrxx" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.JbxxGlrxx">
+        select khmc,null as zjlx,zjhm,yhzgx
+          from khxxgl_khxq_nh where zjhm<![CDATA[ <> ]]>#{zjhm} and hhbm=#{hhbm}
+    </select>
+
+    <select id="getdbxxOracle" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.TmpCreditDbxxVO">
+       select * from TMP_CREDIT_DBXX where zjhm=#{zjhm}
+    </select>
+
+    <select id="getXytssjOracle" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.xybg.xybgcx.vo.TmpCreditXytssjVO">
+        select * from TMP_CREDIT_XYTSSJ where zjhm = #{zjhm}
+    </select>
+
+    <select id="initZx" statementType="CALLABLE">
+        {call PKG_CREDIT.P_AUTO_EXEC_DAY()}
+    </select>
+
+    <select id="getqxmxOracle" resultType="org.cmms.modules.xyjlcx.xybg.qxmx.entity.Qxmx">
+        select * from TMP_CREDIT_QXMX where ident_no=#{zjhm} order by yqyf desc
+    </select>
+</mapper>

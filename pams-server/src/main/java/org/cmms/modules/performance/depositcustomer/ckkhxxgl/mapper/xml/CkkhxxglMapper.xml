@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.performance.depositcustomer.ckkhxxgl.mapper.CkkhxxglMapper">
+
+    <select id="init" statementType="CALLABLE">
+        {call PKG_KHGXGL.P_CKKHGHXX_INIT }
+    </select>
+
+    <select id="rlckkhxx" statementType="CALLABLE">
+        {call PKG_KHGXGL.P_RLCKKHXX(#{jgdm}) }
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dkjkpt.cssz.dkqxcssz.mapper.Dkjkpt_dkqxcsszMapper">
+
+    <select id="selectByCsbh" resultType="org.cmms.modules.dkjkpt.cssz.dkqxcssz.entity.Dkjkpt_dkqxcssz">
+        select * from DKJKPT_DKQXCSSZ where csbh = #{csbh}
+    </select>
+
+    <delete id="deleteByCsbh">
+        delete from DKJKPT_DKQXCSSZ where csbh = #{csbh}
+    </delete>
+
+    <update id="updateByCsbh">
+        update DKJKPT_DKQXCSSZ set cszq=#{cs.cszq},cszz=#{cs.cszz},tzz=#{cs.tzz},bz=#{cs.bz} where csbh = #{cs.csbh}
+    </update>
+</mapper>

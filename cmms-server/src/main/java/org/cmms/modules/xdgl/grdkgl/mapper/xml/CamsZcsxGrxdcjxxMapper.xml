@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.CamsZcsxGrxdcjxxMapper">
+
+    <update id="updateMt" parameterType="org.cmms.modules.word.entity.GrdkMtDTO">
+        update CAMS_ZCSX_GRXDCJXX set
+        UPDATE_TIME =#{dao.updateTime},UPDATE_BY=#{dao.updateBy}
+
+        <if test='dao.sqje !="" and dao.sqje !=null'>
+         ,SQJE = #{dao.sqje}
+        </if>
+
+        <if test='dao.jkyt !="" and dao.jkyt !=null'>
+            ,JKYT = #{dao.jkyt}
+        </if>
+        <if test='dao.jkqx !="" and dao.jkqx !=null'>
+            ,JKQX = #{dao.jkqx}
+        </if>
+        <if test='dao.zczeHjBig !=null'>
+            ,ZCZE_HJ = #{dao.zczeHjBig}
+        </if>
+        where id = #{dao.id}
+    </update>
+
+    <update id="updateGt" parameterType="org.cmms.modules.word.entity.GrdkGtDTO">
+        update CAMS_ZCSX_GRXDCJXX set
+        UPDATE_TIME =#{dao.updateTime},UPDATE_BY=#{dao.updateBy}
+
+        <if test='dao.dwdb !="" and dao.dwdb !=null'>
+            ,DWDB = #{dao.dwdb}
+        </if>
+
+        <if test='dao.dbdx !="" and dao.dbdx !=null'>
+            ,DBDX = #{dao.dbdx}
+        </if>
+        <if test='dao.qtyx !="" and dao.qtyx !=null'>
+            ,QTYX = #{dao.qtyx}
+        </if>
+        <if test='dao.gtjkr !="" and dao.gtjkr !=null'>
+            ,GTJKR = #{dao.gtjkr}
+        </if>
+        <if test='dao.zdqsr !="" and dao.zdqsr !=null'>
+            ,ZDQSR = #{dao.zdqsr}
+        </if>
+        <if test='dao.qsrsj !="" and dao.qsrsj !=null'>
+            ,QSRSJ = #{dao.qsrsj}
+        </if>
+        <if test='dao.qsrcz !="" and dao.qsrcz !=null'>
+            ,QSRCZ = #{dao.qsrcz}
+        </if>
+        <if test='dao.qsryx !="" and dao.qsryx !=null'>
+            ,QSRYX = #{dao.qsryx}
+        </if>
+        <if test='dao.qsrwx !="" and dao.qsrwx !=null'>
+            ,QSRWX = #{dao.qsrwx}
+        </if>
+        <if test='dao.qtqsfs !="" and dao.qtqsfs !=null'>
+            ,QTQSFS = #{dao.qtqsfs}
+        </if>
+        where id = #{dao.id}
+    </update>
+</mapper>

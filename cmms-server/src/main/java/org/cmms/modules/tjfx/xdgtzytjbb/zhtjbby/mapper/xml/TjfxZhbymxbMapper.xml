@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbby.mapper.TjfxZhbymxbMapper">
+
+    <select id="queryTableDictTextByKey"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbby.entity.TjfxZhbymxb">
+       select * from TJFX_ZHBYMXB where ksrq = #{ksrq}
+        and jsrq = #{jsrq}
+        and ${zdmc} = #{xzc}
+        and ${code} = #{zkhjl}
+        and khlx = #{khlx}
+        and qfbs = #{qfbs}
+    </select>
+
+    <select id="querykhzfmx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbby.entity.TjfxZhbymxb">
+        select * from TJFX_ZHBYMXB where  pysj &gt;= #{ksrq}
+        and pysj  &lt;= #{jsrq}
+        and ${zdmc} = #{xzc}
+        and ${code} = #{zkhjl}
+        and khlx = #{khlx}
+        and qfbs = #{qfbs}
+        and fjsl &gt; 0
+    </select>
+
+    <select id="queryljkhzfmx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbby.entity.TjfxZhbymxb">
+        select * from TJFX_ZHBYMXB where ksrq= #{ksrq}
+        and jsrq = #{jsrq}
+        and ${zdmc} = #{xzc}
+        and ${code} = #{zkhjl}
+        and khlx = #{khlx}
+        and qfbs = #{qfbs}
+        and fjsl &gt; 0
+    </select>
+
+    <select id="querypjsxjdmx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbby.entity.TjfxZhbymxb">
+        select * from TJFX_ZHBYMXB where pysj &gt;= #{ksrq}
+        and pysj  &lt;= #{jsrq}
+        and ${zdmc}  = #{xzc}
+        and ${code} = #{zkhjl}
+        and qfbs = #{qfbs}
+        and nhzzsxed &gt; 0
+    </select>
+
+    <select id="queryljpjsxjdmx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbby.entity.TjfxZhbymxb">
+        select * from TJFX_ZHBYMXB where  ksrq = #{ksrq}
+        and jsrq = #{jsrq}
+        and ${zdmc} = #{xzc}
+        and ${code} = #{zkhjl}
+        and qfbs = #{qfbs}
+        and nhzzsxed &gt; 0
+    </select>
+
+
+    <select id="querypjsxjdyxjemx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbby.entity.TjfxZhbymxb">
+        select * from TJFX_ZHBYMXB where pysj &gt;= #{ksrq}
+        and pysj  &lt;= #{jsrq}
+        and ${zdmc} = #{xzc}
+        and ${code} = #{zkhjl}
+        and qfbs = #{qfbs}
+        and yxje is not NULL
+    </select>
+
+    <select id="queryljpjsxjdyxjemx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbby.entity.TjfxZhbymxb">
+        select * from TJFX_ZHBYMXB where ksrq = #{ksrq}
+        and jsrq = #{jsrq}
+        and ${zdmc}  = #{xzc}
+        and ${code} = #{zkhjl}
+        and qfbs = #{qfbs}
+        and yxje is not NULL
+    </select>
+
+
+
+</mapper>

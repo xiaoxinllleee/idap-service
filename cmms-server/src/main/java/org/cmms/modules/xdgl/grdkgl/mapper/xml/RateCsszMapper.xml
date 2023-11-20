@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.RateCsszMapper">
+
+    <select id="querycssz"  resultType="org.cmms.modules.xdgl.grdkgl.entity.RateCssz">
+		SELECT * FROM  Rate_cssz
+		WHERE csid in ('CS0005','CS0006','CS0007','CS0008','CS0009','CS0010','CS0011','CS0012','CS0013','CS0014','CS0015')
+	</select>
+
+</mapper>

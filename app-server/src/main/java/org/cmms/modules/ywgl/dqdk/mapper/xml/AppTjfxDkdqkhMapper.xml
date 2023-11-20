@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.dqdk.mapper.AppTjfxDkdqkhMapper">
+
+    <select id="getListByPage" resultType="org.cmms.modules.ywgl.dqdk.entity.AppDqdkVO">
+        select zjhm,zjhm zjhm2,cust_name,dkzh,dqrq,dkje,dkye,five_class_type from TB_DK_YGDKZHSJMX t where
+                                                                 yggh = #{yggh}
+        <if test="khlx == 1">
+            and cust_type ='01'
+        </if>
+        <if test="khlx == 2">
+            and cust_type ='02'
+        </if>
+            and
+                dqrq &lt;= (trunc(sysdate, 'DD')+ (select to_number(csz)
+                                                from Tb_tjfx_cssz
+                                                where csbm = 'CS0002') )
+
+            and dqrq >= trunc(sysdate, 'DD')
+        <if test="ye == '1'">
+            and dkye > 0
+        </if>
+        order by
+                                                <if test="dqrq == 'asc'">
+                                                    dqrq asc
+                                                </if>
+        <if test="dqrq == 'desc'">
+            dqrq desc
+        </if>
+        <if test="dkye == 'desc'">
+            ,dkye desc
+        </if>
+        <if test="dkye == 'asc'">
+            ,dkye asc
+        </if>
+
+    </select>
+</mapper>

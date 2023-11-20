@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xddaglxt.dkdagl.ygmrscs.mapper.YgmrscsMapper">
+    <select id="pYgmrscs" statementType="CALLABLE">
+        {call PKG_XDDAGL.P_YGMRSCS_TJ(#{tjrqBegin},#{tjrqEnd},#{username})}
+    </select>
+</mapper>

@@ -1,0 +1,48 @@
+{
+  "message": "",
+  "success": true,
+  "result": {
+    "pageSize": 10,
+    "pageNo": 0,
+    "total": 1,
+    "totalPage": 1,
+    "records": [
+      {
+        "id": "d8488dsadsad123123",
+        "jgmc": "营业部",
+        "khjl": "张三",
+        "yxdy": "麓谷街道",
+        "khmc": "客户1",
+        "zjhm": "432542198501239091",
+        "khxz": 1,
+        "khxz_dictText": "商户",
+        "hfrq": "2019-09-01",
+        "hffs": 1,
+        "hffs_dictText": "面谈",
+        "status": 1,
+        "status_dictText": "未提交",
+        "sjly": 1,
+        "sjly_dictText": "PC端录入"
+      },
+      {
+        "id": "gg400glasdlsadwe",
+        "jgmc": "营业部",
+        "khjl": "张三",
+        "yxdy": "麓谷街道",
+        "khmc": "客户2",
+        "zjhm": "487739198711045692",
+        "khxz": 1,
+        "khxz_dictText": "商户",
+        "hfrq": "2019-09-02",
+        "hffs": 1,
+        "hffs_dictText": "面谈",
+        "status": 2,
+        "status_dictText": "已提交",
+        "sjly": 2,
+        "sjly_dictText": "平板录入"
+      }
+    ]
+  },
+  "status": 200,
+  "timestamp": 1534955098193
+}

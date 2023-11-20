@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.dkyw.dkzhzy.mapper.DkzhzyMapper">
+    <select id="pDkzhzy1" statementType="CALLABLE">
+        {call PKG_DKFX_KHJLDKTJ.P_DKZHZY_ZHINIT( #{org},#{custManagerId},null)}
+    </select>
+    <select id="pDkzhzy2" statementType="CALLABLE">
+        {call PKG_DKFX_KHJLDKTJ.P_DKZHZY_ZHINIT( #{org},null,#{acctNo})}
+    </select>
+
+    <select id="pDkzhzy3" statementType="CALLABLE">
+        {call PKG_DKFX_KHJLDKTJ.P_DKZHZY_ZHINIT( #{org},#{custManagerId},#{acctNo})}
+    </select>
+    <select id="dkzhzy1" statementType="CALLABLE">
+        {call PKG_DKFX_KHJLDKTJ.P_DKZHZY( #{oldjgdm},#{oldcustid},#{newjgdm},#{newcustid},#{newyggh},#{newgwbz}, #{newgyh},#{dkzh},#{czy})}
+    </select>
+
+    <select id="dkzhzy2" statementType="CALLABLE">
+        {call PKG_DKFX_KHJLDKTJ.P_DKZHZY( #{oldjgdm},#{oldcustid},#{newjgdm},#{newcustid},#{newyggh},#{newgwbz}, #{newgyh},null,#{czy})}
+    </select>
+
+    <select id="getDzysByKhjlOrDkzh" resultType="org.cmms.modules.ywgl.dkyw.dkzhzy.entity.DzyzhsVO">
+        select count(1) as ZHS, max(cust_manager_id) KHJLBZ
+        from TMP_DKYEB_CUST
+        where org = #{jgdm}
+        <if test="khjlbz !=null">
+            and cust_manager_id=#{khjlbz}
+        </if>
+        <if test="dkzh !=null">
+            and acct_no=#{dkzh}
+        </if>
+    </select>
+
+    <select id="getGlid" resultType="java.lang.String">
+        select nvl(max(glid)+1,1) from erp_bas_ckzhglxx
+    </select>
+
+</mapper>

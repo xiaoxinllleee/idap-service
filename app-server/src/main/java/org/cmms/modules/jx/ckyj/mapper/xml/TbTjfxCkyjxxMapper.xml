@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.jx.ckyj.mapper.TbTjfxCkyjxxMapper">
+
+    <select id="queryListByYggh" resultType="org.cmms.modules.jx.ckyj.entity.TbTjfxCkyjxxVo">
+        select distinct tb.*,NVL2(watch.khbh,0,1) as isWatch,org.ZZJC as zzjc,org.ZZMC as ZZMC
+from tb_tjfx_ckyjxx tb left join hr_bas_organization org
+on tb.jgdm=org.YWJGDM and tb.yggh=#{yggh}
+left join
+app_ckkh_watch watch on
+(watch.khbh=tb.khbh and watch.yggh=tb.yggh)
+order by tb.ncckye,tb.ycckye,tb.khbh asc
+    </select>
+
+
+    <select id="getWatchList" resultType="org.cmms.modules.jx.ckyj.entity.TbTjfxCkyjxxVo">
+        select distinct ckyjxx.*,org.ZZJC as zzjc,org.ZZMC as ZZMC
+        from app_ckkh_watch tb inner join tb_tjfx_ckyjxx ckyjxx
+        on (ckyjxx.khbh=tb.khbh and ckyjxx.yggh=tb.yggh) inner join hr_bas_organization org
+        on ckyjxx.jgdm=org.YWJGDM
+        and tb.yggh=#{yggh}
+        <where>
+            <if test="khbh !=null">
+                and tb.khbh=#{khbh}
+            </if>
+        </where>
+    </select>
+
+</mapper>

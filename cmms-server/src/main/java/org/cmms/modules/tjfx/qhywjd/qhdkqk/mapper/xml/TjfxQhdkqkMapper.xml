@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.qhywjd.qhdkqk.mapper.TjfxQhdkqkMapper">
+    <select id="initData" statementType="CALLABLE">
+        {call PKG_TJFX.P_TJFX_QHDKQK(#{sjrq},#{yggh})}
+    </select>
+
+    <select id="getMaxDate" resultType="java.util.Date">
+        select max(sjrq)
+        from TJFX_QHDKQK
+    </select>
+
+    <select id="getHjDate" resultType="org.cmms.modules.tjfx.qhywjd.qhdkqk.entity.TjfxQhdkqk">
+        select sum(nvl(dqdkze,0)) dqdkze,
+        sum(nvl(ycdkze,0)) ycdkze,
+        sum(nvl(jycjzj,0)) jycjzj,
+        sum(nvl(ncdkze,0)) ncdkze,
+        sum(nvl(jncjzj,0)) jncjzj,
+        sum(nvl(gzdk_dqye,0)) gzdkDqye,
+        sum(nvl(gzdk_ycye,0)) gzdkYcye,
+        sum(nvl(gzdk_bycjzj,0)) gzdkBycjzj,
+        sum(nvl(gzdk_ncye,0)) gzdkNcye,
+        sum(nvl(gzdk_bncjzj,0)) gzdkBncjzj,
+        case when sum(nvl(dqdkze,0))>0 then round(sum(nvl(gzdk_dqye,0))/sum(nvl(dqdkze,0))*100,2) else 0 end gzdkZb,
+        sum(nvl(bldk_cjdk_dqye,0)) bldkCjdkDqye,
+        sum(nvl(bldk_cjdk_ycye,0)) bldkCjdkYcye,
+        sum(nvl(bldk_cjdk_bycjzj,0)) bldkCjdkBycjzj,
+        sum(nvl(bldk_cjdk_ncye,0)) bldkCjdkNcye,
+        sum(nvl(bldk_cjdk_bncjzj,0)) bldkCjdkBncjzj,
+        case when sum(nvl(dqdkze,0))>0 then round(sum(nvl(bldk_cjdk_dqye,0))/sum(nvl(dqdkze,0))*100,2) else 0 end bldkCjdkZb,
+        sum(nvl(bldk_kydk_dqye,0)) bldkKydkDqye,
+        sum(nvl(bldk_kydk_ycye,0)) bldkKydkYcye,
+        sum(nvl(bldk_kydk_bycjzj,0)) bldkKydkBycjzj,
+        sum(nvl(bldk_kydk_ncye,0)) bldkKydkNcye,
+        sum(nvl(bldk_kydk_bncjzj,0)) bldkKydkBncjzj,
+        case when sum(nvl(dqdkze,0))>0 then round(sum(nvl(bldk_kydk_dqye,0))/sum(nvl(dqdkze,0))*100,2) else 0 end bldkKydkZb,
+        sum(nvl(bldk_ssdk_dqye,0)) bldkSsdkDqye,
+        sum(nvl(bldk_ssdk_ycye,0)) bldkSsdkYcye,
+        sum(nvl(bldk_ssdk_bycjzj,0)) bldkSsdkBycjzj,
+        sum(nvl(bldk_ssdk_ncye,0)) bldkSsdkNcye,
+        sum(nvl(bldk_ssdk_bncjzj,0)) bldkSsdkBncjzj,
+        case when sum(nvl(dqdkze,0))>0 then round(sum(nvl(bldk_ssdk_dqye,0))/sum(nvl(dqdkze,0))*100,2) else 0 end bldkSsdkZb,
+        sum(nvl(bldkhj,0)) bldkhj,
+        case when sum(nvl(dqdkze,0))>0 then round(sum(nvl(bldkhj,0))/sum(nvl(dqdkze,0))*100,2) else 0 end bldkzb
+        from TJFX_QHDKQK
+        where 1=1
+        <if test="sjrq !=null and sjrq !=''">
+            and sjrq=to_date(#{sjrq},'yyyymmdd')
+        </if>
+        <if test="sszh !=null and sszh !=''">
+            and sszh=#{sszh}
+        </if>
+    </select>
+</mapper>

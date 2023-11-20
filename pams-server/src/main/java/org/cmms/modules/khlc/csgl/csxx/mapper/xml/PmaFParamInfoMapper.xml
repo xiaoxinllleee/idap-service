@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khlc.csgl.csxx.mapper.PmaFParamInfoMapper">
+    <select id="getParamInfoByJdId" resultType="org.cmms.modules.khlc.csgl.csxx.entity.PmaFParamInfo">
+        select * from PMA_F_PARAM_INFO where area = '0' and  dir_id IN (select id from PMA_F_PARAM_MENU start with id=#{jdid} connect by prior id = PARENT_DIR_ID)
+        <if test="csmc!=null and csmc!=''">
+            and param_name like '%${csmc}%'
+        </if>
+        <if test="csbh!=null and csbh!=''">
+            and param_id = '${csbh}'
+        </if>
+
+    </select>
+</mapper>

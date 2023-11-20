@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.gzap.gzrl.mapper.GzrlMapper">
+    <select id="getgzrlxx"  resultType="java.util.HashMap">
+           SELECT *FROM V_GZAP_GZRL where dx=#{dx}
+    </select>
+</mapper>

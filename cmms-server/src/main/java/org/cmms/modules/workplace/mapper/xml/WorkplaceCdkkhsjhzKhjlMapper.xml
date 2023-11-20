@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.workplace.mapper.WorkplaceCdkkhsjhzKhjlMapper">
+
+    <select id="getCdkkhsjForKhjlByYggh" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT NVL(CKYE,0) CKYE,
+               NVL(QZDQCKYE,0) QZDQCKYE,
+               NVL(DNCKRP,0) DNCKRP,
+               NVL(CKKHS,0) CKKHS,
+               NVL(DKYE,0) DKYE,
+               NVL(BNBLDKYE,0) BNBLDKYE,
+               NVL(BWBLDKYE,0) BWBLDKYE,
+               NVL(DKKHS,0) DKKHS
+          FROM WORKPLACE_CDKKHSJHZ_KHJL WHERE KHJL=#{yggh}
+    </select>
+
+</mapper>

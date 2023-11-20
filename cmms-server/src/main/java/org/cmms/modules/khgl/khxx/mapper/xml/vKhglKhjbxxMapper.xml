@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.khxx.mapper.vKhglKhjbxxMapper">
+    <!--查询客户评议信息-->
+    <select id="selectByHhbm" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select sum(t1.ckye)ckye,sum(t1.hqckye)hqckye,sum(t1.dqckye)dqckye,min(ckzzkhrq)ckzzkhrq,sum(dkje)dkje,sum(dkye)dkye,sum(BLDKYE)BLDKYE,sum(bwbldkye)bwbldkye
+          from KHXXGL_YWHYWWLXX t1,khgl_khhmcxx t2
+         where t1.zjhm = t2.zjhm and  t2.hhbm = #{hhbm}
+    </select>
+
+</mapper>

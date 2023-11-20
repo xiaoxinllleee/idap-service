@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.pjsxtjbb.mapper.PjsxtjbbMapper">
+    <select id="init" statementType="CALLABLE">
+        {call PKG_KHXXGL.P_PJSXTJBB(#{tjyf})}
+    </select>
+
+    <select id="pjsxtjbbMx" parameterType="java.lang.String" resultType="org.cmms.modules.tjfx.pjsxtjbb.vo.NhPjsxxxMx">
+    select distinct t1.hhbm,t2.sszh,t2.ssyxdy,t1.khmc,t1.zjhm,t1.nhzzsxed,t1.zpdfxj,t1.lrr,t1.lrsj from cams_zcsx_nhpjsxxx t1
+     left join KHGL_NHHZXXGL t2
+     on t1.hhbm=t2.hhbm
+     where t1.lrsj &lt;=to_date(#{sjrq},'yyyy-mm-dd hh24:mi:ss')
+     and ssyxdy in(select wgbh from yxdygl_main t start with id = #{sswg} connect by parent_id = prior id)
+    </select>
+
+
+
+</mapper>

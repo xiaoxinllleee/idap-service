@@ -1,0 +1,155 @@
+package org.cmms.modules.ywgl.ckyw.ckzhgl.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.cmms.common.aspect.annotation.Dict;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.jeecgframework.poi.excel.annotation.Excel;
+
+/**
+ * @Description: 存款账号关联管理
+ * @Author: jeecg-boot
+ * @Date:   2021-10-08
+ * @Version: V1.0
+ */
+@Data
+@TableName("ERP_BAS_CKZHGLXX")
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@ApiModel(value="ERP_BAS_CKZHGLXX对象", description="存款账号关联管理")
+public class Ckzhgl {
+
+	/**预约编号*/
+	@Excel(name = "预约编号", width = 15)
+    @ApiModelProperty(value = "预约编号")
+	private Long yybh;
+	/**卡号*/
+	@Excel(name = "卡号", width = 15)
+    @ApiModelProperty(value = "卡号")
+	private String kh;
+	/**zjhm*/
+	@Excel(name = "zjhm", width = 15)
+    @ApiModelProperty(value = "zjhm")
+	private String zjhm;
+	/**dz*/
+	@Excel(name = "dz", width = 15)
+    @ApiModelProperty(value = "dz")
+	private String dz;
+	/**关联id*/
+	@Excel(name = "关联id", width = 15)
+    @ApiModelProperty(value = "关联id")
+	private Long glid;
+	/**组织标识*/
+	@Excel(name = "组织标识", width = 15)
+    @ApiModelProperty(value = "组织标识")
+	@Dict(dicCode = "zzbz", dictTable = "HR_BAS_ORGANIZATION", dicText = "zzjc")
+	private String zzbz;
+	/**岗位标识*/
+	@Excel(name = "岗位标识", width = 15)
+    @ApiModelProperty(value = "岗位标识")
+	@Dict(dicCode = "gwbz",dictTable = "Hr_bas_post",dicText = "gwmc")
+	private Integer gwbz;
+	/**员工工号*/
+	@Excel(name = "员工工号", width = 15)
+    @ApiModelProperty(value = "员工工号")
+	@Dict(dicCode = "yggh",dictTable = "Hr_bas_staff",dicText = "ygxm")
+	private String yggh;
+	/**柜员号*/
+	@Excel(name = "柜员号", width = 15)
+    @ApiModelProperty(value = "柜员号")
+	private String gyh;
+	/**客户经理标识*/
+	@Excel(name = "客户经理标识", width = 15)
+    @ApiModelProperty(value = "客户经理标识")
+	private String khjlbz;
+	/**存款账号*/
+	@Excel(name = "存款账号", width = 15)
+    @ApiModelProperty(value = "存款账号")
+	private String ckzh;
+	/**账号名称*/
+	@Excel(name = "账号名称", width = 15)
+    @ApiModelProperty(value = "账号名称")
+	private String zhmc;
+	/**关联标识（0：自动关联 1：手工关联）*/
+	@Excel(name = "关联标识", width = 15)
+    @ApiModelProperty(value = "关联标识")
+	@Dict(dicCode = "glbz")
+	private Integer glbz;
+	/**账号性质（1：对私活期 2：对公活期 3：对私定期 4：对公定期 8：存款保证金）*/
+	@Excel(name = "账号性质", width = 15)
+    @ApiModelProperty(value = "账号性质")
+	@Dict(dicCode = "zhxz")
+	private Integer zhxz;
+	/**关联比率*/
+	@Excel(name = "关联比率", width = 15)
+    @ApiModelProperty(value = "关联比率")
+	private java.math.BigDecimal glbl;
+	/**有效标识（0；无效 1：有效）*/
+	@Excel(name = "有效标识", width = 15)
+    @ApiModelProperty(value = "有效标识")
+	private Integer yxbz;
+	/**录入标识（0：导入 1：录入 2：修改）*/
+	@Excel(name = "录入标识", width = 15)
+    @ApiModelProperty(value = "录入标识")
+	@Dict(dicCode = "lrbz")
+	private Integer lrbz;
+	/**录入时间*/
+	@Excel(name = "录入时间", width = 15, format = "yyyy-MM-dd")
+	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @ApiModelProperty(value = "录入时间")
+	private Date lrsj;
+	/**录入操作员*/
+	@Excel(name = "录入人", width = 15)
+    @ApiModelProperty(value = "录入人")
+	private String lrczy;
+	/**修改时间*/
+	@Excel(name = "修改时间", width = 15, format = "yyyy-MM-dd")
+	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @ApiModelProperty(value = "修改时间")
+	private Date xgsj;
+	/**修改操作员*/
+	@Excel(name = "修改人", width = 15)
+    @ApiModelProperty(value = "修改人")
+	private String xgczy;
+	/**业务机构代码*/
+	@Excel(name = "账号所在机构码", width = 15)
+    @ApiModelProperty(value = "账号所在机构码")
+	@Dict(dicCode = "ywjgdm", dictTable = "HR_BAS_ORGANIZATION", dicText = "zzjc")
+	private String ywjgdm;
+	/**贷款账号*/
+	@Excel(name = "贷款账号", width = 15)
+    @ApiModelProperty(value = "贷款账号")
+	private String dkzh;
+	/**存量存款余额*/
+	@Excel(name = "存量存款余额", width = 15)
+    @ApiModelProperty(value = "存量存款余额")
+	private java.math.BigDecimal clckye;
+	/**存量存款日平余额*/
+	@Excel(name = "存量存款日平余额", width = 15)
+    @ApiModelProperty(value = "存量存款日平余额")
+	private java.math.BigDecimal clckrpye;
+	/**存款日平余额*/
+	@Excel(name = "存款日平余额", width = 15)
+    @ApiModelProperty(value = "存款日平余额")
+	private java.math.BigDecimal ckrpye;
+	/**年存款日平余额*/
+	@Excel(name = "年存款日平余额", width = 15)
+    @ApiModelProperty(value = "年存款日平余额")
+	private java.math.BigDecimal nckrpye;
+	/**ckye*/
+	@Excel(name = "存款余额", width = 15)
+    @ApiModelProperty(value = "存款余额")
+	private java.math.BigDecimal ckye;
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.jcsjgl.dkye.mapper.TjfxXddkyebXdxtsjMapper">
+
+    <select id="queryMsg" resultType="org.cmms.modules.tjfx.jcsjgl.dkye.entity.TjfxXddkyebXdxtsj">
+        select * from TJFX_XDDKYEB_XDXTSJ where
+        zjhm = #{zjhm}
+        and jgdm = #{jgdm}
+        and tjyf =  to_date(#{tjyf},'yyyy/MM/dd')
+
+    </select>
+
+    <delete id="deleteMsg" >
+        delete  from TJFX_XDDKYEB_XDXTSJ where
+        tjyf =  to_date(#{tjyf},'yyyy/MM/dd')
+
+    </delete>
+
+
+    <delete id="deletemain" >
+        delete  from TJFX_XDDKYEB_XDXTSJ where
+        tjyf =  #{tjyf}
+    </delete>
+
+
+
+</mapper>

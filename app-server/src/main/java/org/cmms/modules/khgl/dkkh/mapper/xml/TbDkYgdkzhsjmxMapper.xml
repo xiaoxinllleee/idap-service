@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.dkkh.mapper.TbDkYgdkzhsjmxMapper">
+
+    <select id="getAppList" resultType="org.cmms.modules.khgl.dkkh.entity.TbDkYgdkzhsjmx">
+        select t1.*  from
+            (select * from TB_DK_YGDKZHSJMX where yggh = #{yggh}
+                                             <if test="dao.custType != null and dao.custType !=''">
+                                                 and cust_type= #{dao.custType}
+                                             </if>
+        <if test="dao.fiveClassType != null and dao.fiveClassType !=''">
+            and five_class_type= #{dao.fiveClassType}
+        </if>
+        <if test="dao.custName != null and dao.custName !=''">
+            and instr(cust_name,#{dao.custName}) > 0
+        </if>
+             ) t1 inner join (
+                select hth from KHGXGL_DKKHGHLSB where ghr=#{yggh}  and ghlx=#{dao.lrbz}
+        )t2  on t1.hth = t2.hth
+    </select>
+
+    <select id="dbfs" resultType="string">
+        select vouch_type from CBS_BORM_BASE t where BUSINESS_NO = #{hth} and rownum = 1
+    </select>
+
+</mapper>

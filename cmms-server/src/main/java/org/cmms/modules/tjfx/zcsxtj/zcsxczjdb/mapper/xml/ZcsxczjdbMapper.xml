@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.zcsxtj.zcsxczjdb.mapper.ZcsxczjdbMapper">
+    <select id="getHnkdDrxxPage" resultType="org.cmms.modules.tjfx.tjfxHnkd.entity.TjfxHnkd">
+        select t1.* from
+        ( select POXM,DCZRRGH1,KHLJGH,KHFQ,SXQX,JD,EY,KHSFZHM,KHXM,SJRQ,
+        XYDJ,XHBZ,GRNSR,JTNSR,TYSHXYDM,GTGSHMC,ZHPJBZ,CXNX,ZC,ZY,
+        JKRHKYY,CPSCXQQK,JYQKSFZC,HY,XDRZW,XGZDW,SFFSDXTX,SFHZ,SJHM,
+        ZDYZBM,XZQHDM,TXDZ,CZDZ,ZGXL,JZZK,JZNX,JTRK,POSFZHM,HYZK,JKZK,YWZN,XZ,
+        KHLX2,KHLX1,MZ,DYZRRBL,DYZRRGH,ZZSPZRRBL,ZZSPZRRGH,SCZRRBL,SCZRRGH,GLZRRBL,
+        GLZRRGH,DCZRRBL2,DCZRRGH2,DCZRRBL1,LDNL
+        from (
+        select POXM,DCZRRGH1,KHLJGH,KHFQ,SXQX,JD,EY,KHSFZHM,KHXM,SJRQ,
+        XYDJ,XHBZ,GRNSR,JTNSR,TYSHXYDM,GTGSHMC,ZHPJBZ,CXNX,ZC,ZY,
+        JKRHKYY,CPSCXQQK,JYQKSFZC,HY,XDRZW,XGZDW,SFFSDXTX,SFHZ,SJHM,
+        ZDYZBM,XZQHDM,TXDZ,CZDZ,ZGXL,JZZK,JZNX,JTRK,POSFZHM,HYZK,JKZK,YWZN,XZ,
+        KHLX2,KHLX1,MZ,DYZRRBL,DYZRRGH,ZZSPZRRBL,ZZSPZRRGH,SCZRRBL,SCZRRGH,GLZRRBL,
+        GLZRRGH,DCZRRBL2,DCZRRGH2,DCZRRBL1,LDNL,row_number() over (partition by khsfzhm order by ey desc) pk
+        from erp_tjfx_hnkd
+        where sjrq &lt;= to_date(#{sjrq},'yyyyMMdd')
+        )
+        where pk=1
+        ) t1,
+        khxxgl_khxq_nh t2
+        where t1.khsfzhm=t2.ZJHM
+        <if test="lx!=null and lx=='2'.toString()">
+            and t2.zfyxfs='2'
+            and t2.sfwcjzyx='1'
+            and trunc(t2.wcjzyxsj,'DD') &lt;= to_date(#{sjrq},'yyyyMMdd')
+        </if>
+        <if test="type!=null and (type=='cun' or type=='zu')">
+            and t2.wgbh in (select wgbh
+            from yxdygl_main
+            where wgxz='3' start with id =#{wgbh} connect by prior id = parent_id)
+        </if>
+        <if test="type!=null and type=='zh' and sszh!=null">
+            and t2.sszh=#{sszh}
+        </if>
+        <if test="type!=null and type=='pc' and nf!=null">
+            and t2.wgbh in (
+              select n1.wgbh from yxdygl_main n1,tjfx_zcsxjdb_tjfw n2
+              where n2.nf=#{nf} and n2.pc=#{pc} and n1.parent_id=n2.wgbh
+            )
+        </if>
+    </select>
+
+    <select id="getHnkdDrxxList" resultType="org.cmms.modules.tjfx.tjfxHnkd.entity.TjfxHnkd">
+        select t1.* from
+        ( select POXM,DCZRRGH1,KHLJGH,KHFQ,SXQX,JD,EY,KHSFZHM,KHXM,SJRQ,
+        XYDJ,XHBZ,GRNSR,JTNSR,TYSHXYDM,GTGSHMC,ZHPJBZ,CXNX,ZC,ZY,
+        JKRHKYY,CPSCXQQK,JYQKSFZC,HY,XDRZW,XGZDW,SFFSDXTX,SFHZ,SJHM,
+        ZDYZBM,XZQHDM,TXDZ,CZDZ,ZGXL,JZZK,JZNX,JTRK,POSFZHM,HYZK,JKZK,YWZN,XZ,
+        KHLX2,KHLX1,MZ,DYZRRBL,DYZRRGH,ZZSPZRRBL,ZZSPZRRGH,SCZRRBL,SCZRRGH,GLZRRBL,
+        GLZRRGH,DCZRRBL2,DCZRRGH2,DCZRRBL1,LDNL
+        from (
+        select POXM,DCZRRGH1,KHLJGH,KHFQ,SXQX,JD,EY,KHSFZHM,KHXM,SJRQ,
+        XYDJ,XHBZ,GRNSR,JTNSR,TYSHXYDM,GTGSHMC,ZHPJBZ,CXNX,ZC,ZY,
+        JKRHKYY,CPSCXQQK,JYQKSFZC,HY,XDRZW,XGZDW,SFFSDXTX,SFHZ,SJHM,
+        ZDYZBM,XZQHDM,TXDZ,CZDZ,ZGXL,JZZK,JZNX,JTRK,POSFZHM,HYZK,JKZK,YWZN,XZ,
+        KHLX2,KHLX1,MZ,DYZRRBL,DYZRRGH,ZZSPZRRBL,ZZSPZRRGH,SCZRRBL,SCZRRGH,GLZRRBL,
+        GLZRRGH,DCZRRBL2,DCZRRGH2,DCZRRBL1,LDNL,row_number() over (partition by khsfzhm order by ey desc) pk
+        from erp_tjfx_hnkd
+        where sjrq &lt;= to_date(#{sjrq},'yyyyMMdd')
+        )
+        where pk=1
+        ) t1,
+        khxxgl_khxq_nh t2
+        where t1.khsfzhm=t2.ZJHM
+        <if test="lx=='2'.toString()">
+            and t2.zfyxfs='2'
+            and t2.sfwcjzyx='1'
+            and trunc(t2.wcjzyxsj,'DD') &lt;= to_date(#{sjrq},'yyyyMMdd')
+        </if>
+        <if test="type!=null and (type=='cun' or type=='zu')">
+            and t2.wgbh in (select wgbh
+            from yxdygl_main
+            where wgxz='3' start with id =#{wgbh} connect by prior id = parent_id)
+        </if>
+        <if test="type!=null and type=='zh' and sszh!=null">
+            and t2.sszh=#{sszh}
+        </if>
+        <if test="type!=null and type=='pc' and nf!=null">
+            and t2.wgbh in (
+            select n1.wgbh from yxdygl_main n1,tjfx_zcsxjdb_tjfw n2
+            where n2.nf=#{nf} and n2.pc=#{pc} and n1.parent_id=n2.wgbh
+            )
+        </if>
+    </select>
+
+
+    <select id="getHnkdQyxxPage" resultType="org.cmms.modules.tjfx.zcsxtj.zcsxczjdb.entity.TjfxZcsxjdbXzdk">
+        select *
+        from tjfx_zcsxjdb_xzdk
+        where htffrq &lt;= to_date(#{sjrq}, 'yyyyMMdd')
+          and htdqrq &gt; to_date(#{sjrq}, 'yyyyMMdd')
+          and dkzh is null
+          and sfhnkd = '1'
+        <if test="type!=null and (type=='cun' or type=='zu')">
+            and wgbh in (select wgbh
+            from yxdygl_main
+            where wgxz='3' start with id =#{wgbh} connect by prior id = parent_id)
+        </if>
+        <if test="type!=null and type=='zh' and sszh!=null">
+            and jgdm=(select ywjgdm from hr_bas_organization where zzbz=#{sszh})
+        </if>
+        <if test="type!=null and type=='pc' and nf!=null">
+            and wgbh in (
+            select n1.wgbh from yxdygl_main n1,tjfx_zcsxjdb_tjfw n2
+            where n2.nf=#{nf} and n2.pc=#{pc} and n1.parent_id=n2.wgbh
+            )
+        </if>
+    </select>
+
+    <select id="getHnkdQyxxList" resultType="org.cmms.modules.tjfx.zcsxtj.zcsxczjdb.entity.TjfxZcsxjdbXzdk">
+        select *
+        from tjfx_zcsxjdb_xzdk
+        where htffrq &lt;= to_date(#{sjrq}, 'yyyyMMdd')
+          and htdqrq &gt; to_date(#{sjrq}, 'yyyyMMdd')
+          and dkzh is null
+          and sfhnkd = '1'
+        <if test="type!=null and (type=='cun' or type=='zu')">
+            and wgbh in (select wgbh
+            from yxdygl_main
+            where wgxz='3' start with id =#{wgbh} connect by prior id = parent_id)
+        </if>
+        <if test="type!=null and type=='zh' and sszh!=null">
+            and jgdm=(select ywjgdm from hr_bas_organization where zzbz=#{sszh})
+        </if>
+        <if test="type!=null and type=='pc' and nf!=null">
+            and wgbh in (
+            select n1.wgbh from yxdygl_main n1,tjfx_zcsxjdb_tjfw n2
+            where n2.nf=#{nf} and n2.pc=#{pc} and n1.parent_id=n2.wgbh
+            )
+        </if>
+    </select>
+
+    <select id="getDkhtxxList" resultType="org.cmms.modules.tjfx.zcsxtj.zcsxczjdb.entity.TjfxZcsxjdbXzdk">
+        select *
+        from tjfx_zcsxjdb_xzdk
+        where htffrq &lt;= to_date(#{sjrq},'yyyyMMdd')
+        and htdqrq &gt; to_date(#{sjrq},'yyyyMMdd')
+        and dkzh is null
+        <if test="type!=null and (type=='cun' or type=='zu')">
+            and wgbh in (select wgbh
+            from yxdygl_main
+            where wgxz='3' start with id =#{wgbh} connect by prior id = parent_id)
+        </if>
+        <if test="type!=null and type=='zh' and sszh!=null">
+            and jgdm=(select ywjgdm from hr_bas_organization where zzbz=#{sszh})
+        </if>
+        <if test="type!=null and type=='pc' and nf!=null">
+            and wgbh in (
+            select n1.wgbh from yxdygl_main n1,tjfx_zcsxjdb_tjfw n2
+            where n2.nf=#{nf} and n2.pc=#{pc} and n1.parent_id=n2.wgbh
+            )
+        </if>
+        <if test="otherlx!=null and otherlx=='dkht_byxz'">
+            and htffrq &gt;= trunc(to_date(#{sjrq},'yyyyMMdd'), 'MM')
+        </if>
+        <if test="otherlx!=null and otherlx=='dkht_bzxz'">
+            and htffrq &gt;= trunc(to_date(#{sjrq},'yyyyMMdd'), 'd') + 1
+        </if>
+        <if test="otherlx!=null and otherlx=='dkht_nqkh'">
+            and substr(zjhm,7,8)>='19830101'
+        </if>
+    </select>
+
+    <select id="getDkhtxxPage" resultType="org.cmms.modules.tjfx.zcsxtj.zcsxczjdb.entity.TjfxZcsxjdbXzdk">
+        select *
+        from tjfx_zcsxjdb_xzdk
+        where htffrq &lt;= to_date(#{sjrq},'yyyyMMdd')
+        and htdqrq &gt; to_date(#{sjrq},'yyyyMMdd')
+        and dkzh is null
+        <if test="type!=null and (type=='cun' or type=='zu')">
+            and wgbh in (select wgbh
+            from yxdygl_main
+            where wgxz='3' start with id =#{wgbh} connect by prior id = parent_id)
+        </if>
+        <if test="type!=null and type=='zh' and sszh!=null">
+            and jgdm=(select ywjgdm from hr_bas_organization where zzbz=#{sszh})
+        </if>
+        <if test="type!=null and type=='pc' and nf!=null">
+            and wgbh in (
+            select n1.wgbh from yxdygl_main n1,tjfx_zcsxjdb_tjfw n2
+            where n2.nf=#{nf} and n2.pc=#{pc} and n1.parent_id=n2.wgbh
+            )
+        </if>
+        <if test="otherlx!=null and otherlx=='dkht_byxz'">
+            and htffrq &gt;= trunc(to_date(#{sjrq},'yyyyMMdd'), 'MM')
+        </if>
+        <if test="otherlx!=null and otherlx=='dkht_bzxz'">
+            and htffrq &gt;= trunc(to_date(#{sjrq},'yyyyMMdd'), 'd') + 1
+        </if>
+        <if test="otherlx!=null and otherlx=='dkht_nqkh'">
+            and substr(zjhm,7,8)>='19830101'
+        </if>
+    </select>
+
+    <select id="getYXPage" resultType="org.cmms.modules.tjfx.zcsxtj.zcsxczjdb.entity.TjfxZcsxjdbXzdk">
+        select *
+        from tjfx_zcsxjdb_xzdk
+        where dkffrq &lt;= to_date(#{sjrq},'yyyyMMdd')
+        and dkzh is not null
+        <if test="otherlx!=null and (otherlx=='yx_xz' or otherlx=='yx_byxz')">
+            and dkye>0
+            <if test="otherlx=='yx_byxz'">
+                and htffrq &gt;= trunc(to_date(#{sjrq},'yyyyMMdd'), 'MM')
+            </if>
+        </if>
+        <if test="otherlx!=null and (otherlx=='yxyx_xz' or otherlx=='yxyx_byxz')">
+            and sfyxyx='1'
+            and yxyxrq &lt;= to_date(#{sjrq},'yyyyMMdd')
+            <if test="otherlx=='yxyx_byxz'">
+                and yxyxrq &gt;= trunc(to_date(#{sjrq},'yyyyMMdd'), 'MM')
+            </if>
+        </if>
+        <if test="type!=null and (type=='cun' or type=='zu')">
+            and wgbh in (select wgbh
+            from yxdygl_main
+            where wgxz='3' start with id =#{wgbh} connect by prior id = parent_id)
+        </if>
+        <if test="type!=null and type=='zh' and sszh!=null">
+            and jgdm=(select ywjgdm from hr_bas_organization where zzbz=#{sszh})
+        </if>
+        <if test="type!=null and type=='pc' and nf!=null">
+            and wgbh in (
+            select n1.wgbh from yxdygl_main n1,tjfx_zcsxjdb_tjfw n2
+            where n2.nf=#{nf} and n2.pc=#{pc} and n1.parent_id=n2.wgbh
+            )
+        </if>
+    </select>
+
+    <select id="getYxList" resultType="org.cmms.modules.tjfx.zcsxtj.zcsxczjdb.entity.TjfxZcsxjdbXzdk">
+        select *
+        from tjfx_zcsxjdb_xzdk
+        where dkffrq &lt;= to_date(#{sjrq},'yyyyMMdd')
+        and dkzh is not null
+        <if test="otherlx!=null and (otherlx=='yx_xz' or otherlx=='yx_byxz')">
+            and dkye>0
+            <if test="otherlx=='yx_byxz'">
+                and htffrq &gt;= trunc(to_date(#{sjrq},'yyyyMMdd'), 'MM')
+            </if>
+        </if>
+        <if test="otherlx!=null and (otherlx=='yxyx_xz' or otherlx=='yxyx_byxz')">
+            and sfyxyx='1'
+            and yxyxrq &lt;= to_date(#{sjrq},'yyyyMMdd')
+            <if test="otherlx=='yxyx_byxz'">
+                and yxyxrq &gt;= trunc(to_date(#{sjrq},'yyyyMMdd'), 'MM')
+            </if>
+        </if>
+        <if test="type!=null and (type=='cun' or type=='zu')">
+            and wgbh in (select wgbh
+            from yxdygl_main
+            where wgxz='3' start with id =#{wgbh} connect by prior id = parent_id)
+        </if>
+        <if test="type!=null and type=='zh' and sszh!=null">
+            and jgdm=(select ywjgdm from hr_bas_organization where zzbz=#{sszh})
+        </if>
+        <if test="type!=null and type=='pc' and nf!=null">
+            and wgbh in (
+            select n1.wgbh from yxdygl_main n1,tjfx_zcsxjdb_tjfw n2
+            where n2.nf=#{nf} and n2.pc=#{pc} and n1.parent_id=n2.wgbh
+            )
+        </if>
+    </select>
+</mapper>

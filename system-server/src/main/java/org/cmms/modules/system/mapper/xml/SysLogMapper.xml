@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.system.mapper.SysLogMapper">
+
+	<!-- 清空所有日志记录 -->
+	<delete id="removeAll">
+		DELETE FROM sys_log
+	</delete>
+
+	<!-- 获取访问总数 -->
+	<select id="findTotalVisitCount" resultType="long">
+        select count(1) from sys_log where log_type = 1
+    </select>
+
+	<!-- 获取今日访问总数 -->
+    <select id="findTodayVisitCount" resultType="long">
+        select count(1) from sys_log where log_type = 1 and create_time &gt;= #{dayStart} and create_time &lt; #{dayEnd}
+    </select>
+
+	<!-- 获取今日访问总IP数 -->
+    <select id="findTodayIp" resultType="long">
+        select count(distinct(ip)) from sys_log where log_type = 1 and create_time &gt;= #{dayStart} and create_time &lt; #{dayEnd}
+    </select>
+
+   	<!-- 首页访问统计 -->
+    <select id="findVisitCount" resultType="java.util.HashMap">
+         select count(*) as visit, count(distinct(ip)) as ip, tian, type
+           from (select ip,
+                        to_char(create_time, 'yyyy-mm-dd') as tian,
+                        to_char(create_time, 'mm-dd') as type
+                   from sys_log
+                  where log_type = 1 and create_time &gt;= #{dayStart} and create_time &lt; #{dayEnd})
+          group by tian, type
+          order by tian asc
+    </select>
+    <select id="khCount" resultType="java.util.HashMap">
+        select (
+          SELECT count(distinct(ident_no))
+            from (SELECT ident_no
+            FROM cbs_invm_base
+            where BRANCH_NO=#{jgdm}
+            UNION ALL
+            SELECT ident_no
+            FROM cbs_borm_base
+            WHERE BR_NO=#{jgdm}) and SUBJ_NO like '13%') zkh,
+            (select count(distinct(ident_no)) from cbs_invm_base WHERE BRANCH_NO=#{jgdm}) ckkh,
+            (select count(distinct(ident_no)) from cbs_borm_base WHERE BR_NO=#{jgdm} and SUBJ_NO like '13%') dkkh
+       from dual
+    </select>
+    <select id="zhkhCount" resultType="java.util.HashMap">
+            select (
+                  SELECT count(distinct(ident_no))
+                    from (SELECT ident_no
+                    FROM cbs_invm_base
+                    UNION ALL
+                    SELECT ident_no
+                    FROM cbs_borm_base ) and SUBJ_NO like '13%') zkh,
+                    (select count(distinct(ident_no)) from cbs_invm_base ) ckkh,
+                    (select count(distinct(ident_no)) from cbs_borm_base where SUBJ_NO like '13%' ) dkkh
+             from dual
+    </select>
+
+    <select id="ckye" resultType="long">
+         select sum(curr_bal) from CBS_INVM_BASE where BRANCH_NO=#{jgdm}
+    </select>
+
+
+
+    <select id="zhckye" resultType="long">
+         select sum(curr_bal) from CBS_INVM_BASE
+    </select>
+
+    <select id="dkye" resultType="long">
+         select sum(loan_bal) from cbs_borm_base where BR_NO=#{jgdm} and SUBJ_NO like '13%'
+    </select>
+
+    <select id="zhdkye" resultType="long">
+         select sum(loan_bal) from cbs_borm_base where SUBJ_NO like '13%'
+    </select>
+
+
+    <select id="zrckye" resultType="long">
+         select sum(curr_bal) from ${tablename} where BRANCH_NO=#{jgdm}
+    </select>
+
+    <select id="zrzhckye" resultType="long">
+         select sum(curr_bal) from ${tablename}
+    </select>
+
+    <select id="zrdkye" resultType="long">
+         select sum(loan_bal) from ${tablename} where BR_NO=#{jgdm} and SUBJ_NO like '13%'
+    </select>
+
+    <select id="zrzhdkye" resultType="long">
+         select sum(loan_bal) from ${tablename} where SUBJ_NO like '13%'
+    </select>
+
+
+    <select id="cksjrqBig" resultType="java.lang.String">
+         select data_date from cbs_invm_base limit 1
+    </select>
+
+    <select id="dksjrqBig" resultType="java.lang.String">
+         select data_date from cbs_borm_base limit 1
+    </select>
+
+    <select id="cksjrkrq" resultType="String">
+         select data_date from cbs_invm_base where rownum = 1
+    </select>
+
+    <select id="dksjrkrq" resultType="String">
+         select data_date from cbs_borm_base where rownum = 1
+    </select>
+
+    <select id="zrcksjrq" resultType="String">
+         select to_CHAR(TO_DATE(MAX(DATA_DATE),'YYYY-MM-DD')-1,'YYYYMMDD') from CBS_INVM_BASE
+    </select>
+    <select id="nccksjrq" resultType="String">
+         select to_CHAR(TRUNC(TO_DATE(MAX(DATA_DATE),'YYYY-MM-DD'),'YYYY')-1,'YYYYMMDD') from CBS_INVM_BASE
+    </select>
+    <select id="cksjrq" resultType="Date">
+         select TO_DATE(MAX(DATA_DATE),'YYYY-MM-DD') from CBS_INVM_BASE
+    </select>
+
+    <select id="dksjrq" resultType="Date">
+         select TO_DATE(MAX(DATA_DATE),'YYYY-MM-DD') from cbs_borm_base
+    </select>
+
+    <select id="zrdksjrq" resultType="String">
+         select to_CHAR(TO_DATE(MAX(DATA_DATE),'YYYY-MM-DD')-1,'YYYYMMDD') from cbs_borm_base
+    </select>
+
+    <select id="ncdksjrq" resultType="String">
+         select to_CHAR(TRUNC(TO_DATE(MAX(DATA_DATE),'YYYY-MM-DD'),'YYYY')-1,'YYYYMMDD') from cbs_borm_base
+    </select>
+
+
+    <select id="shlx" resultType="long">
+       select sum(lx) from CMS_LXHSDJB where to_date(sxr,'yyyy/mm/dd')=#{sxr} and jgm=#{jgdm}
+    </select>
+
+    <select id="zhshlx" resultType="long">
+       select sum(lx) from CMS_LXHSDJB where to_date(sxr,'yyyy/mm/dd')=#{sxr}
+    </select>
+
+
+    <select id="getywjgdm" resultType="String">
+         select ywjgdm from HR_BAS_ORGANIZATION where zzbz=#{zzbz}
+    </select>
+
+    <select id="getsjzzbz" resultType="String">
+         select sjzzbz from HR_BAS_ORGANIZATION where zzbz=#{zzbz}
+    </select>
+    <select id="getzzlb" resultType="String">
+         select zzlb from HR_BAS_ORGANIZATION where zzbz=#{zzbz}
+    </select>
+    <select id="getzzjb" resultType="java.lang.String">
+         select zzjb from HR_BAS_ORGANIZATION where zzbz=#{zzbz}
+    </select>
+    <select id="getPjsxxx" resultType="java.util.HashMap">
+        select zfhs,sxhs,sxje from sysjmx_pjsxxx where tjyf=#{tjyf}
+    </select>
+
+    <select id="getQhZfhs" resultType="long">
+        select YXZFHS from TJFX_ZFSJMX_QH where tjyf=#{tjyf}
+    </select>
+
+    <select id="getZhZfhs" resultType="long">
+        select YXZFHS from TJFX_ZFSJMX_ZH where tjyf=#{tjyf} and SSZH=#{zzbz}
+    </select>
+
+    <select id="getQhJdrs" resultType="long">
+        select JDRS from TJFX_KHJDLTJ_QH where tjyf=#{tjyf}
+    </select>
+
+    <select id="getZhJdrs" resultType="long">
+        select JDRS from TJFX_KHJDLTJ_ZHMX where tjyf=#{tjyf} and SSZH=#{zzbz}
+    </select>
+
+
+    <select id="getQhPjsxxx" resultType="java.util.HashMap">
+        select YSXED,YSXHS,YXED,YXHS from TJFX_KHSXYXTJ_QH where tjyf=#{tjyf}
+    </select>
+
+    <select id="getZhPjsxxx" resultType="java.util.HashMap">
+        select YSXED,YSXHS,YXED,YXHS from TJFX_KHSXYXTJ_ZHMX where tjyf=#{tjyf} and SSZH=#{zzbz}
+    </select>
+
+    <select id="getNdzbrw" resultType="java.util.HashMap">
+       select CKRPYE,CKYE,DKYE,CKHSJZ,DKHSJZ,DKBLL From TJFX_RWSZ  where RWNF=#{rwnd} AND ZZBZ=#{zzbz}
+    </select>
+</mapper>

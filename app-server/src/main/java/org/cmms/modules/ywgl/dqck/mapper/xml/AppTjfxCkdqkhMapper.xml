@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.dqck.mapper.AppTjfxCkdqkhglMapper">
+
+    <select id="getAppList" resultType="org.cmms.modules.ywgl.dqck.entity.AppDqckVO">
+
+
+        select ckzh,int_to_dt,cust_name,acct_grp,qmye,cq,zjhm,zjhm zjhm2
+        from TB_CK_YGZHCKSJMX t
+        where qmye > 0
+        and acct_desc = 'T' and int_to_dt is not null  and int_to_dt != '99999999'
+        and length(int_to_dt)=8
+        and int_to_dt >= to_char(sysdate,'yyyymmdd')
+        and to_date(int_to_dt, 'yyyymmdd')  &lt;= (trunc(sysdate, 'DD') + (select to_number(csz) from Tb_tjfx_cssz where csbm = 'CS0001'))
+        and yggh=#{yggh}
+        <if test=" type == 1">
+            order by int_to_dt asc
+        </if>
+        <if test=" type == 2">
+            order by int_to_dt desc
+        </if>
+
+        <if test=" type == 3">
+            order by qmye asc
+        </if>
+        <if test=" type == 4">
+            order by qmye desc
+        </if>
+    </select>
+</mapper>

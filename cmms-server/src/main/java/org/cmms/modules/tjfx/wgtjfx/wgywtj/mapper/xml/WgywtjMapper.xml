@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.wgtjfx.wgywtj.mapper.WgywtjMapper">
+    <select id="getWgywxxByWgbh" resultType="org.cmms.modules.tjfx.wgtjfx.wgywtj.entity.Wgywtj">
+        select * from khxxgl_tjfx_wgywtj
+        where wgbh=#{wgbh}
+          and tjrq=(select max(tjrq) from khxxgl_tjfx_wgywtj where wgbh=#{wgbh})
+    </select>
+
+    <select id="getWgywxxByWgbhTy" resultType="org.cmms.modules.tjfx.wgtjfx.wgywtj.entity.Wgywtj">
+        select tjrq,
+               sum(nvl(zkhs,0)) zkhs,
+               sum(nvl(clkhs,0)) clkhs,
+               sum(nvl(qzkhs,0)) qzkhs,
+               sum(nvl(ckhs,0)) ckhs,
+               sum(nvl(ckkhs,0)) ckkhs,
+               sum(nvl(ckye,0)) ckye,
+               sum(nvl(ckyrp,0)) ckyrp,
+               sum(nvl(cknrp,0)) cknrp,
+               sum(nvl(dkhs,0)) dkhs,
+               sum(nvl(dkkhs,0)) dkkhs,
+               sum(nvl(dkje,0)) dkje,
+               sum(nvl(dkye,0)) dkye,
+               sum(nvl(bldkhs,0)) bldkhs,
+               sum(nvl(bldkkhs,0)) bldkkhs,
+               sum(nvl(bldkkhs_Wjq,0)) bldkkhsWjq,
+               sum(nvl(bldkkhs_Yjq,0)) bldkkhsYjq,
+               sum(nvl(bldkye,0)) bldkye,
+               sum(nvl(bwbldkhs,0)) bwbldkhs,
+               sum(nvl(bwbldkkhs,0)) bwbldkkhs,
+               sum(nvl(bwbldkye,0)) bwbldkye,
+               sum(nvl(sjyhkhs,0)) sjyhkhs,
+               sum(nvl(wsyhkhs,0)) wsyhkhs,
+               sum(nvl(etckhs,0)) etckhs,
+               sum(nvl(xykkhs,0)) xykkhs,
+               sum(nvl(sbkkhs,0)) sbkkhs,
+               sum(nvl(ezfkhs,0)) ezfkhs,
+               sum(nvl(fxezkhs,0)) fxezkhs,
+               sum(nvl(poskhs,0)) poskhs
+        from khxxgl_tjfx_wgywtj
+        where wgbh in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+        and tjrq=(
+            select max(tjrq) from khxxgl_tjfx_wgywtj where wgbh in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+            )
+        group by tjrq
+    </select>
+
+    <select id="getFxezf" parameterType="java.util.List" resultType="java.lang.Integer">
+        select
+               count(*)
+        from
+             TGACS_TPS_MCHNT_INFO
+        where
+              LEGAL_PERSON_ID in (select zjhm
+                                  from khxxgl_khxq_nh
+                                  where wgbh in (select wgbh
+                                                 from yxdygl_main t1
+                                                 where wgxz='3'  start with t1.id in
+                                                <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                                                    #{wgbh}
+                                                </foreach>
+                                                 connect by prior t1.id = t1.parent_id
+                                                 )
+                                  )
+    </select>
+
+    <select id="getDzyhByjz" parameterType="java.util.List" resultType="org.cmms.modules.tjfx.wgtjfx.wgywtj.entity.DzyhByjzVo">
+     select nvl(t1.sjyhkhs,0)-nvl(t2.sjyhkhs,0) as sjyhjzkhs,
+            nvl(t1.wsyhkhs,0)-nvl(t2.wsyhkhs,0) as wsyhjzkhs,
+            nvl(t1.etckhs,0)-nvl(t2.etckhs,0) as etcjzkhs,
+            nvl(t1.xykkhs,0)-nvl(t2.xykkhs,0) as xykjzkhs,
+            nvl(t1.sbkkhs,0)-nvl(t2.sbkkhs,0) as sbkjzkhs,
+            0 as fxetfjzkhs,
+            nvl(t1.dkkhs,0)-nvl(t2.dkkhs,0) as dkkhsbyjz,
+            nvl(t1.dkye,0)-nvl(t2.dkye,0) as dkyebyjz,
+            nvl(t1.ckkhs,0)-nvl(t2.ckkhs,0) as ckkhsbyjz,
+            nvl(t1.ckye,0)-nvl(t2.ckye,0) as ckyebyjz,
+            nvl(t1.bldkkhs,0)-nvl(t2.bldkkhs,0) as bnbldkkhsbyjz,
+            nvl(t1.bldkye,0)-nvl(t2.bldkye,0) as bnbldkyebyjz,
+            nvl(t1.bwbldkkhs,0)-nvl(t2.bwbldkkhs,0) as bwbldkkhsbyjz,
+            nvl(t1.bwbldkye,0)-nvl(t2.bwbldkye,0) as bwbldkyebyjz
+     from
+        (select sum(nvl(sjyhkhs,0)) sjyhkhs,
+                sum(nvl(wsyhkhs,0)) wsyhkhs,
+                sum(nvl(etckhs,0)) etckhs,
+                sum(nvl(xykkhs,0)) xykkhs,
+                sum(nvl(sbkkhs,0)) sbkkhs,
+                sum(nvl(dkkhs,0)) dkkhs,
+                sum(nvl(dkye,0)) dkye,
+                sum(nvl(ckkhs,0)) ckkhs,
+                sum(nvl(ckye,0)) ckye,
+                sum(nvl(bldkkhs,0)) bldkkhs,
+                sum(nvl(bldkye,0)) bldkye,
+                sum(nvl(bwbldkkhs,0)) bwbldkkhs,
+                sum(nvl(bwbldkye,0)) bwbldkye
+         from khxxgl_tjfx_wgywtj
+         where wgbh in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+         and tjrq=(select max(tjrq) from khxxgl_tjfx_wgywtj where wgbh in
+                    <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                        #{wgbh}
+                    </foreach>
+                 )
+        )t1,
+        (select sum(nvl(sjyhkhs,0)) sjyhkhs,
+                sum(nvl(wsyhkhs,0)) wsyhkhs,
+                sum(nvl(etckhs,0)) etckhs,
+                sum(nvl(xykkhs,0)) xykkhs,
+                sum(nvl(sbkkhs,0)) sbkkhs,
+                sum(nvl(dkkhs,0)) dkkhs,
+                sum(nvl(dkye,0)) dkye,
+                sum(nvl(ckkhs,0)) ckkhs,
+                sum(nvl(ckye,0)) ckye,
+                sum(nvl(bldkkhs,0)) bldkkhs,
+                sum(nvl(bldkye,0)) bldkye,
+                sum(nvl(bwbldkkhs,0)) bwbldkkhs,
+                sum(nvl(bwbldkye,0)) bwbldkye
+         from khxxgl_tjfx_wgywtj where wgbh in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+         and tjrq=(
+                    select max(t1.tjrq) as tjrq from khxxgl_tjfx_wgywtj t1,
+                    (select max(tjrq) as tjrq from khxxgl_tjfx_wgywtj where wgbh in
+                    <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                        #{wgbh}
+                    </foreach>
+                    )t2
+                    where t1.tjrq &gt;= trunc(add_months(trunc(t2.tjrq), -1), 'mm') and t1.tjrq &lt;= last_day(add_months(trunc(t2.tjrq), -1))
+                    and t1.wgbh in
+                    <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                        #{wgbh}
+                    </foreach>
+             )
+        )t2
+    </select>
+
+    <select id="getPyxx" parameterType="java.util.List" resultType="org.cmms.modules.tjfx.wgtjfx.wgywtj.entity.PyxxVo">
+        select sum(nvl(t1.wchs,0)) as cjhs,
+               sum(nvl(t1.bkbcp_bmd_wchs,0)) as cphs,
+               sum(nvl(t1.bkbcp_edhz,0)) as cpje,
+               sum(nvl(t1.bkbfp_wchs,0)) as fphs,
+               sum(nvl(t1.bkbfp_edhz,0)) as fpje,
+               sum(nvl(t1.zhsd_bmdhs,0)) as sdhs,
+               sum(nvl(t1.zhsd_edhz,0)) as sdje,
+               sum(nvl(t1.BKBCP_SXDXRS,0)) as bkbcpSxdxrs,
+               sum(nvl(t1.BKBFP_SXDXRS,0)) as bkbfpSxdxrs,
+               sum(nvl(t1.ZHSD_SXDXRS,0)) as zhsdSxdxrs,
+               sum(nvl(t1.HNKD_DRHS,0)) as hnkddrhs,
+               sum(nvl(t1.HNKD_EDHZ,0)) as hnkdedhz,
+               sum(nvl(t1.HNKD_QYHS,0)) as hnkdqyhs,
+               sum(nvl(t1.HNKD_QYEDHZ,0)) as hnkdqyedhz,
+               sum(nvl(t1.DKHT_XZKHS,0)) as dkhtxzkhs,
+               sum(nvl(t1.DKHT_QYEDHZ,0)) as dkhtqyedhz,
+               sum(nvl(t1.BMDHS,0)) as bmdhs,
+               sum(nvl(t1.HEIMDHS,0)) as hmdhs,
+               sum(nvl(t1.HMDHS,0)) as huimdhs,
+               sum(nvl(t1.CLHS,0)) as clhs
+        from tjfx_zcsxjdb_zu t1,
+             (select max(tjrq) tjrq from tjfx_zcsxjdb_zu) t2
+        where t1.wgbh in (select wgbh from yxdygl_main where wgxz='3' start with id in
+                          <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                              #{wgbh}
+                          </foreach>
+                          connect by prior id = parent_id
+                          )
+        and t1.tjrq=t2.tjrq
+    </select>
+
+    <select id="getZnzdHs" resultType="java.lang.Integer" >
+        select count(*) from ${tableName}
+        where shmc in (select zjhm
+                       from khxxgl_khxq_nh
+                        where wgbh in (select wgbh
+                                       from yxdygl_main t1
+                                       where wgxz='3' start with t1.id in
+                                        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                                            #{wgbh}
+                                        </foreach>
+                                        connect by prior t1.id = t1.parent_id
+                                       )
+                        )
+    </select>
+
+    <select id="getZnzdInfoByWgbh" resultType="org.cmms.modules.tjfx.wgtjfx.wgywtj.entity.ZnzdVo">
+        select xh as sszh,
+               zh as khmc,
+               shmc as zjhm,
+               cr as dz,
+               lxdh,
+               sbqx as sbdd
+        from ${tableName}
+        where shmc in (select zjhm
+                       from khxxgl_khxq_nh
+                       where wgbh in (select wgbh
+                                      from yxdygl_main t1
+                                      where wgxz='3' start with t1.id in
+                                        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                                            #{wgbh}
+                                        </foreach>
+                                        connect by prior t1.id = t1.parent_id
+            )
+            )
+    </select>
+
+    <select id="getNnzdTableName" parameterType="java.lang.String" resultType="java.lang.String">
+        select table_name
+        from (
+              select table_name,row_number() over(order by table_name desc ) pk
+              from user_tables where table_name like '%DZYH_ZNZD_%'
+            ) where pk=1
+    </select>
+    
+    <select id="getWgxxToNum" parameterType="java.util.List" resultType="org.cmms.modules.tjfx.wgtjfx.wgywtj.entity.WgxxVo">
+        select wgxz,count(*) as wgsl
+        from yxdygl_main t1
+        where wgxz in ('2','3','1','5','7')
+        start with t1.parent_id in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+        connect by prior t1.id = t1.parent_id
+        group by wgxz
+    </select>
+    
+    <select id="getCjdxrsToWgxx" parameterType="java.util.List" resultType="java.lang.Integer">
+        select count(distinct zjhm)
+        from cams_zcsx_nhbkbpy
+        where qydm in (
+            select wgbh
+            from yxdygl_main t1
+            where wgxz='3' start with t1.id in
+            <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                #{wgbh}
+            </foreach>
+            connect by prior t1.id = t1.parent_id
+            )
+    </select>
+</mapper>

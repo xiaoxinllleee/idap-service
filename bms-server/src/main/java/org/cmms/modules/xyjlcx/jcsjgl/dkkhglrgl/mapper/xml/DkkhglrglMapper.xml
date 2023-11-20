@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xyjlcx.jcsjgl.dkkhglrgl.mapper.DkkhglrglMapper">
+    <select id="pDkkhglrgl" statementType="CALLABLE">
+       {call PKG_CREDIT.P_DKKHGLRGL}
+    </select>
+
+    <select id="QueryRelatedPartyInfoOne" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.jcsjgl.dkkhglrgl.entity.Dkkhglrgl">
+        select * from credit_dkkhglrgl where jkrzjhm = #{zjhm}
+    </select>
+
+    <select id="QueryRelatedPartyInfoTwo" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.jcsjgl.dkkhglrgl.entity.Dkkhglrgl">
+        select * from credit_dkkhglrgl where glrzjhm = #{zjhm}
+    </select>
+
+    <select id="queryRelatedPersonInfo" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.jcsjgl.dkkhglrgl.entity.Dkkhglrgl">
+        select glrxm, glrzjlx, glrzjhm, glgx from credit_dkkhglrgl where (jkrzjhm = #{zjhm} or glrzjhm = #{zjhm})
+    </select>
+</mapper>

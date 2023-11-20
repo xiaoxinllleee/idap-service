@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.shxq.mapper.ShxqMapper">
+    <update id="init" statementType="CALLABLE">
+        {call pkg_khxxgl.P_SHXXXX}
+    </update>
+
+    <select id="selectByShxx" parameterType="java.lang.String" resultType="org.cmms.modules.khxxgl.khflgl.shxq.entity.Shxq">
+        select * from KHXXGL_KHXQ_SH t
+        <where>
+            t.frzjhm in (select m.zjhm from KHXXGL_KHXQ_NH m <where>
+            <if test="hhbm!=null and hhbm!=''">
+            hhbm = #{hhbm})
+            </if>
+        </where>
+        </where>
+    </select>
+
+    <select id="getEzfskmBySjjyzZjhm" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(ID_CODE) from SDZX_CMS_MERCHANT_DETAIL where ID_CODE=#{zjhm}
+    </select>
+</mapper>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.wgywsjtj.mapper.VKhxxglTjfxWgywsjtjMapper">
+
+    <select id="getKjbxxListByWgbh" resultType="org.cmms.modules.sjxf.hxxt.jjk.kjbxx.entity.Kjbxx">
+        select t1.sbkkh as "no",t1.zjhm customer,t2.khmc name1,t1.zt status,t2.sjhm phone,t2.hjdz address1 from khywxx_sbk t1,khxxgl_khxq_nh t2
+        where t1.zjhm=t2.zjhm and t2.wgbh = #{wgbh}
+</select>
+</mapper>

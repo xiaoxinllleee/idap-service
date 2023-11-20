@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.ywl.ywltqytj.mapper.YwltqytjMapper">
+    <select id="pYwltqytj" statementType="CALLABLE">
+        {call PKG_YWL_TJ.P_YSYWL_TJ_YGYWL(#{tjyf},#{zzbz})}
+    </select>
+
+    <select id="getMaxFpid" resultType="java.lang.String">
+        select max(fpid) from erp_assess_ywlmx_yg
+    </select>
+
+    <select id="getAssessParamValue" parameterType="java.lang.String" resultType="java.lang.String">
+        select pvalue from erp_bas_assess_param where pid = #{paramcode}
+    </select>
+
+    <select id="conversionConfigInfo" parameterType="java.util.Date" resultType="java.lang.String">
+        select count(1) from erp_bas_ywzsxx_m where tjyf = #{beginOfMonth}
+    </select>
+</mapper>

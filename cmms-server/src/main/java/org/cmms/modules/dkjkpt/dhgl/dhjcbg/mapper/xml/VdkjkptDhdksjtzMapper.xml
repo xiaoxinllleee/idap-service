@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dkjkpt.dhgl.dhjcbg.mapper.VdkjkptDhdksjtzMapper">
+
+    <select id="getListClaim" resultType="org.cmms.modules.dkjkpt.dhgl.dhjcbg.entity.VdkjkptDhdksjtz" parameterType="java.lang.String">
+        select t.jgdm,t.zjhm,t.khmc,t.dhdkje,t.dhdkye,t.zxjkrq from V_DKJKPT_DHDKSJTZ t where 1 = 1
+        <if test="khmc != null and khmc != ''">
+            and t.khmc = #{khmc}
+        </if>
+        <if test="zjhm != null and zjhm != ''">
+            and t.zjhm = #{zjhm}
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.pjsxwcqkmxb.zhwcqkmxb.mapper.PjsxwcqkZhMapper">
+
+    <select id="InitDataToZh" parameterType="java.util.Map" statementType="CALLABLE">
+        { CALL PKG_TJFX.
+            (
+             #{ksrq, mode=IN, jdbcType=VARCHAR},
+             #{jsrq, mode=IN, jdbcType=VARCHAR},
+             #{jgdm, mode=IN, jdbcType=VARCHAR}
+            )
+        }
+    </select>
+
+</mapper>

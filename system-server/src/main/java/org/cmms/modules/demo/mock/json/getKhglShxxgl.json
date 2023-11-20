@@ -1,0 +1,40 @@
+{
+  "status": 200,
+  "success": true,
+  "message": "商户信息管理虚拟数据",
+  "result": {
+    "records": [
+      {
+        "sszh": "营业部",
+        "ssyxdy": "1",
+        "shbh": "02002",
+        "dabh": "02002001",
+        "khmc": "彭某某",
+        "sfzhm": "430521199706090051",
+        "birthday": "1997-06-09",
+        "gender": "男",
+        "age": 22,
+        "hyzc": "未婚",
+        "lxfs": "17673862052",
+        "address": "湖南长沙",
+        "xqah": "游戏",
+        "jynx": "12",
+        "jydz": "岳麓区枫林三路122号",
+        "jyspmc": "GoFun",
+        "jyxm": "汽车租赁",
+        "hyfl": "服务业",
+        "khzycd": "长期客户",
+        "ktwhcp": "网上银行",
+        "ywhywwlqk": "三至五年(含)",
+        "qzyw": "暂无",
+        "gskhjl": "陈某",
+        "jtcyqk": "暂无",
+        "spjyqk": "暂无",
+        "zcfzqk": "无负债",
+        "jrywqk": "暂无",
+        "yxqk": "暂无",
+        "fjxx": "暂无"
+      }
+    ]
+  }
+}

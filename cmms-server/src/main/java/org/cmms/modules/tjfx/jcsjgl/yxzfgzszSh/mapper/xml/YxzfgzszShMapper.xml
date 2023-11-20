@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.jcsjgl.yxzfgzszSh.mapper.YxzfgzszShMapper">
+    <select id="getZfzbxxByShid" resultType="org.cmms.modules.tjfx.jcsjgl.yxzfgzsz.vo.Yxzfmx">
+        select
+          to_char(t1.tjrq, 'YYYY-MM-DD') tjrq,t1.yggh,t1.zbid,t1.zbmc,t1.sfdb,t2.bz
+        from tjfx_yxzfzbmx_sh t1,tjfx_yxzfzbpz_sh t2
+        where t1.shid=#{shid}
+          and (t1.tjrq,t1.yggh)=(
+            select tjrq,yggh from (
+            select tjrq,yggh,row_number() over(order by create_time desc) pk  from tjfx_yxzfzbmx_sh
+            where shid=#{shid}
+            <if test="tjrq !=null and tjrq !=''">
+                and tjrq=to_date(#{tjrq},'yyyymmdd')
+            </if>
+            ) where pk=1
+          )
+          and t1.zbid=t2.zbid
+        order by t1.sfdb desc
+    </select>
+</mapper>

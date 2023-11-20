@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khjg.jczbjg.mapper.PmaFBaseIndexResMapper">
+
+    <select id="getFormulaList"  parameterType="list" resultType="org.cmms.modules.khjg.jczbjg.entity.PmaFBaseIndexRes">
+        select * from (
+                          select t1.stat_date,t1.evl_obj_id,t1.index_id,t1.index_value,t1.jgdm from PMA_F_BASE_INDEX_RES t1 where stat_date=#{statDate}
+                          union
+                          select t2.stat_date,t2.evl_obj_id,t2.index_id,t2.index_value,t2.jgdm  from PMA_F_EVL_INDEX_RES t2 where stat_date=#{statDate})
+        where index_id in
+        <foreach collection="indexList" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        order by evl_obj_id,jgdm,index_id
+    </select>
+</mapper>

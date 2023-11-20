@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbbe.mapper.TjfxZhbemxbMapper">
+
+    <select id="csqueryckyemx"  resultType="java.util.HashMap">
+        select XZC,zkhjl,hhbm,sum(DYCKYE)as dyckye,sum(clckye) as clckye from TJFX_ZHBEMXB where
+        tjyf  = #{tjyf}
+        and ${zdmc} = #{xzc}
+        and ${code} = #{zkhjl} group by XZC,zkhjl,hhbm
+    </select>
+
+    <select id="queryckyemx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbbe.entity.TjfxZhbemxb">
+        select * from TJFX_ZHBEMXB where
+        tjyf  = #{tjyf}
+        and ${zdmc} = #{xzc}
+        and ${code} = #{zkhjl}
+        and qfbs = #{qfbs}
+    </select>
+
+    <select id="queryclhsmx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbbe.entity.TjfxZhbemxb">
+        select * from TJFX_ZHBEMXB where
+        tjyf  = #{tjyf}
+        and ${zdmc} = #{xzc}
+        and ${code} = #{zkhjl}
+        and ${code2} &lt;= clrq
+        and qfbs = #{qfbs}
+    </select>
+
+    <select id="queryzlhsmx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbbe.entity.TjfxZhbemxb">
+        select * from TJFX_ZHBEMXB where
+        tjyf  = #{tjyf}
+        and ${zdmc} = #{xzc}
+        and ${code} = #{zkhjl}
+        and ${code2} &gt; clrq
+        and qfbs = #{qfbs}
+    </select>
+
+
+
+
+    <select id="querycscqckyemx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbbe.entity.TjfxZhbemxb">
+        select * from TJFX_ZHBEMXB where
+        tjyf  = #{tjyf}
+        and ${zdmc} = #{xzc}
+        and qfbs = #{qfbs}
+    </select>
+
+    <select id="querycscqclhsmx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbbe.entity.TjfxZhbemxb">
+        select * from TJFX_ZHBEMXB where
+        tjyf  = #{tjyf}
+        and ${zdmc} = #{xzc}
+        and ${code} &lt;= clrq
+        and qfbs = #{qfbs}
+    </select>
+
+    <select id="querycscqzlhsmx"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.zhtjbbe.entity.TjfxZhbemxb">
+        select * from TJFX_ZHBEMXB where
+        tjyf  = #{tjyf}
+        and ${zdmc} = #{xzc}
+        and ${code} &gt; clrq
+        and qfbs = #{qfbs}
+    </select>
+
+
+</mapper>

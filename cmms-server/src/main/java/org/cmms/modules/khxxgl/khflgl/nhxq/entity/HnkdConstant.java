@@ -1,0 +1,101 @@
+package org.cmms.modules.khxxgl.khflgl.nhxq.entity;
+
+/**
+ * @Date 2022/6/6
+ * @Created by eran
+ */
+public class HnkdConstant {
+    public static final String HNDK_PREFIX = "HNKD";
+    public static final String ROW3 = HNDK_PREFIX + 3;
+    public static final String ROW4 = HNDK_PREFIX + 4;
+    public static final String ROW5 = HNDK_PREFIX + 5;
+    public static final String ROW6 = HNDK_PREFIX + 6;
+    public static final String ROW7 = HNDK_PREFIX + 7;
+    public static final String ROW8 = HNDK_PREFIX + 8;
+    public static final String ROW9 = HNDK_PREFIX + 9;
+    public static final String ROW10 = HNDK_PREFIX + 10;
+    public static final String ROW11 = HNDK_PREFIX + 11;
+    public static final String ROW12 = HNDK_PREFIX + 12;
+    public static final String ROW13 = HNDK_PREFIX + 13;
+    public static final String ROW14 = HNDK_PREFIX + 14;
+    public static final String ROW15 = HNDK_PREFIX + 15;
+    public static final String ROW16 = HNDK_PREFIX + 16;
+    public static final String ROW17 = HNDK_PREFIX + 17;
+    public static final String ROW18 = HNDK_PREFIX + 18;
+    public static final String ROW19 = HNDK_PREFIX + 19;
+    public static final String ROW20 = HNDK_PREFIX + 20;
+    public static final String ROW21 = HNDK_PREFIX + 21;
+    public static final String ROW22 = HNDK_PREFIX + 22;
+    public static final String ROW23 = HNDK_PREFIX + 23;
+    public static final String ROW24 = HNDK_PREFIX + 24;
+    public static final String ROW25 = HNDK_PREFIX + 25;
+    public static final String ROW26 = HNDK_PREFIX + 26;
+    public static final String ROW27 = HNDK_PREFIX + 27;
+    public static final String ROW28 = HNDK_PREFIX + 28;
+    public static final String ROW29 = HNDK_PREFIX + 29;
+    public static final String ROW30 = HNDK_PREFIX + 30;
+    public static final String ROW31 = HNDK_PREFIX + 31;
+    public static final String ROW32 = HNDK_PREFIX + 32;
+    public static final String ROW33 = HNDK_PREFIX + 33;
+    public static final String ROW34 = HNDK_PREFIX + 34;
+    public static final String ROW35 = HNDK_PREFIX + 35;
+    public static final String ROW36 = HNDK_PREFIX + 36;
+    public static final String ROW37 = HNDK_PREFIX + 37;
+    public static final String ROW38 = HNDK_PREFIX + 38;
+    public static final String ROW39 = HNDK_PREFIX + 39;
+    public static final String ROW40 = HNDK_PREFIX + 40;
+    public static final String ROW41 = HNDK_PREFIX + 41;
+    public static final String ROW42 = HNDK_PREFIX + 42;
+    public static final String ROW43 = HNDK_PREFIX + 43;
+    public static final String ROW44 = HNDK_PREFIX + 44;
+    public static final String ROW45 = HNDK_PREFIX + 45;
+    public static final String ROW46 = HNDK_PREFIX + 46;
+    public static final String ROW47 = HNDK_PREFIX + 47;
+    public static final String ROW48 = HNDK_PREFIX + 48;
+    public static final String ROW49 = HNDK_PREFIX + 49;
+    public static final String ROW50 = HNDK_PREFIX + 50;
+    public static final String ROW51 = HNDK_PREFIX + 51;
+    public static final String ROW52 = HNDK_PREFIX + 52;
+    public static final String ROW53 = HNDK_PREFIX + 53;
+    public static final String ROW54 = HNDK_PREFIX + 54;
+    public static final String ROW55 = HNDK_PREFIX + 55;
+    public static final String ROW56 = HNDK_PREFIX + 56;
+    public static final String ROW57 = HNDK_PREFIX + 57;
+    public static final String ROW58 = HNDK_PREFIX + 58;
+    public static final String ROW59 = HNDK_PREFIX + 59;
+    public static final String ROW60 = HNDK_PREFIX + 60;
+    public static final String ROW61 = HNDK_PREFIX + 61;
+    public static final String ROW62 = HNDK_PREFIX + 62;
+    public static final String ROW63 = HNDK_PREFIX + 63;
+
+
+    public static final String hnkd_khfq="hnkd_khfq";
+    public static final String hnkd_mz="mz";
+    public static final String hnkd_khlx1="hnkd_khlx1";
+    public static final String hnkd_khlx2="hnkd_khlx2";
+    public static final String hnkd_xz="hnkd_xz";
+    public static final String hnkd_ywzn="ywbz";
+    public static final String hnkd_jkzk="hnkd_jkzk";
+    public static final String hnkd_hyzk="hnkd_hyzk";
+    public static final String hnkd_ldnl="hnkd_ldnl";
+    public static final String hnkd_jznx="jznx";
+    public static final String hnkd_jzzk="hnkd_jzzk";
+    public static final String hnkd_zgxl="hnkd_zgxl";
+    public static final String hnkd_sfhz="sfbz";
+    public static final String hnkd_sffsdx="sfbz";
+    public static final String hnkd_xdrzw="hnkd_xdrzw";
+    public static final String hnkd_hy="app_hylb";
+    public static final String hnkd_jyqK="sfbz";
+    public static final String hnkd_scxu="scxu";
+    public static final String hnkd_hkyy="hnkd_hkyy";
+    public static final String hnkd_zy="hnkd_zy";
+    public static final String hnkd_zc="hnkd_zc";
+    public static final String hnkd_cynx="hnkd_cynx";
+    public static final String hnkd_pjbz="hnkd_pjbz";
+    public static final String hnkd_xhbz="sfbz";
+    public static final String hnkd_xydj="app_xydj";
+    public static final String hnkd_jyzk="hnkd_jyzk";
+    public static final String hnkd_dwxz="hnkd_dwxz";
+    public static final String hnkd_zgxw="hnkd_zgxw";
+    public static final String hnkdmz_mz="hnkdmz_mz";
+}

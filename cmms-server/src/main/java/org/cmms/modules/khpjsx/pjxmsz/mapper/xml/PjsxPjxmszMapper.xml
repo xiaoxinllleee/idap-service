@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khpjsx.pjxmsz.mapper.PjsxPjxmszMapper">
+
+    <select id="queryxmbh" parameterType="java.util.Map" resultType="org.cmms.modules.khpjsx.pjxmsz.entity.PjsxPjxmsz">
+        select * from PJSX_PJXMSZ
+        where   qydm = #{qydm}
+        and   xmbh = #{xmbh}
+    </select>
+
+</mapper>

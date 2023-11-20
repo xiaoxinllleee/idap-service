@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grkhpjsx.mapper.EcifPersonMapper">
+    <select id="getByCustId" resultType="org.cmms.modules.xdgl.grkhpjsx.entity.EcifPerson">
+        select * from ECIF_PERSON where CUST_ID =#{custId} and data_flag ='0'
+    </select>
+    <select id="getByZjhm" resultType="org.cmms.modules.xdgl.grkhpjsx.entity.EcifPerson">
+        select * from ECIF_PERSON where  CUST_ID in
+        (select cust_id from ECIF_CUSTOMER where ident_no =#{zjhm} and data_flag ='0') and data_flag ='0'
+    </select>
+</mapper>

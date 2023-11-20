@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.qhywjd.qhckqk.mapper.TjfxQhckqkMapper">
+    <select id="initData" statementType="CALLABLE">
+        {call PKG_TJFX.P_TJFX_QHCKQK(#{sjrq},#{yggh})}
+    </select>
+
+    <select id="getMaxDate" resultType="java.util.Date">
+        select max(sjrq) from TJFX_QHCKQK
+    </select>
+
+    <select id="getHjDate" resultType="org.cmms.modules.tjfx.qhywjd.qhckqk.entity.TjfxQhckqk">
+        select sum(nvl(dqckze,0)) dqckze,
+               sum(nvl(sydckze,0)) sydckze,
+               sum(nvl(bsyjzj,0)) bsyjzj,
+               sum(nvl(ncckze,0)) ncckze,
+               sum(nvl(bncjzj,0)) bncjzj,
+               sum(nvl(rp,0)) rp,
+               sum(nvl(ycrp,0)) ycrp,
+               sum(nvl(jycrpzj,0)) jycrpzj,
+               sum(nvl(ncrp,0)) ncrp,
+               sum(nvl(jncrpzj,0)) jncrpzj
+        from TJFX_QHCKQK
+        where 1=1
+        <if test="sjrq !=null and sjrq !=''">
+            and sjrq=to_date(#{sjrq},'yyyymmdd')
+        </if>
+        <if test="sszh != null and sszh != ''">
+            and sszh=#{sszh}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.pad.pyxx.mapper.PyyxxMapper">
+
+    <select id="getByPyls" resultType="string">
+        select distinct wgbh from CAMS_PLPY_YSXX where pyls=#{pyls}
+    </select>
+
+    <update id="updateSxxx">
+        update khgl_nhhzxxgl set sxdx=null,sxdxzjh=null where id=#{id}
+    </update>
+
+    <select id="getbldkInfo" parameterType="java.lang.String" resultType="org.cmms.modules.pad.nhxxgl.entity.KhglYwhywwlxxPad">
+        select *
+        from KHXXGL_YWHYWWLXX
+        where zjhm in (select zjhm from khxxgl_khxq_nh where hhbm=#{hhbm})
+        and (bldkye>0 or bwbldkye>0)
+    </select>
+</mapper>

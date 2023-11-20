@@ -1,0 +1,42 @@
+{
+  "success": true,
+  "code": 200,
+  "timestamp": 1534955098193,
+  "message": "获取村委/社区信息成功",
+  "result": {
+    "pageSize": 10,
+    "pageNo": 0,
+    "totalCount": 25,
+    "totalPage": 3,
+    "list": [
+      {
+        "key": 1,
+        "id": 1,
+        "ssxz": "龙泉镇",
+        "dybh": "1010",
+        "dymc": "大坪村",
+        "cwsl": 127,
+        "zkhjl": "张三",
+        "zrwd": "营业部",
+        "zrbs": "财务部，保卫部",
+        "zrld": "李四四",
+        "fjsl": 2,
+        "bz": "的居安思危打的"
+      },
+      {
+        "key": 2,
+        "id": 2,
+        "ssxz": "十字乡",
+        "dybh": "2010",
+        "dymc": "大山仁",
+        "cwsl": 127,
+        "zkhjl": "李四",
+        "zrwd": "营业部",
+        "zrbs": "财务部，保卫部",
+        "zrld": "李四四",
+        "fjsl": 2,
+        "bz": "的居安思危打的"
+      }
+    ]
+  }
+}

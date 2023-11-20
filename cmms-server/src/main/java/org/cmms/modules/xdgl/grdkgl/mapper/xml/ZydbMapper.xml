@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.ZydbMapper">
+
+	<delete id="deleteByMainId" parameterType="java.lang.String">
+		DELETE
+		FROM  CAMS_ZCSX_ZYDB
+		WHERE
+			 zjhm = #{zjhm}
+	</delete>
+
+	<select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Zydb">
+		SELECT *
+		FROM  CAMS_ZCSX_ZYDB
+		WHERE
+			 zjhm = #{zjhm}
+	</select>
+
+	<!--根据"ID"获取担保方式:质押担保信息-->
+	<select id="queryPledgeGuaranteeInfoById" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Zydb">
+        SELECT ZYWLX,SYQR,YBDCRGX,PGZ,SYQMJ,JTWZ FROM CAMS_ZCSX_ZYDB
+         WHERE zjhm=(SELECT zjhm FROM CAMS_ZCSX_GRXDCJXX WHERE id = #{id})
+    </select>
+
+	<!--根据"ID"获取担保方式:质押担保信息-->
+	<select id="queryPledgeGuaranteeDataById" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Zydb">
+        SELECT ZYWLX,SYQR,YBDCRGX,PGZ,SYQMJ,JTWZ
+          FROM CAMS_ZCSX_ZYDB
+         WHERE zjhm=(SELECT zjhm FROM CAMS_ZCSX_GRXDCJXX_SPJL WHERE id=#{id})
+    </select>
+
+</mapper>

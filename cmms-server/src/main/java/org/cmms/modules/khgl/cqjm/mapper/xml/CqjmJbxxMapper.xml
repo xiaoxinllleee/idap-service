@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.cqjm.mapper.CqjmJbxxMapper">
+
+    <!--城区居民 基本信息删除-->
+    <delete id="deleteByIdAndDabhAndZjhm" parameterType="java.lang.String">
+        DELETE FROM KHGL_CQJMJBXX WHERE ID=#{id} AND DABH=#{dabh} AND ZJHM=#{zjhm}
+    </delete>
+
+    <delete id="deleteByZjhm" parameterType="java.lang.String">
+        DELETE FROM KHGL_CQJMJBXX WHERE ZJHM=#{zjhm}
+    </delete>
+
+</mapper>

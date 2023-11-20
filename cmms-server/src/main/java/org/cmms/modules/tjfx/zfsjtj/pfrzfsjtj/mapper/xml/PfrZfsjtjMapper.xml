@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.zfsjtj.pfrzfsjtj.mapper.PfrZfsjtjMapper">
+
+    <select id="getPfrZfMxNhPage" resultType="org.cmms.modules.tjfx.zfsjtj.pfrzfsjtj.entity.PfrZfMxVo">
+        select to_char(n1.hfrq,'YYYY-MM-DD') as hfrq,
+               to_char(n1.lrsj,'hh24:mi') as hfsj,
+               n1.khmc as khmc,
+               '1' as khlx,
+               n1.yggh as zfr,
+               n1.zzbz as zfzh,
+               n1.yxdy as sswg,
+               n1.khsszh as khsszh
+        from (
+            select t1.zhpfr,t1.hfrq,t1.lrsj,t1.khmc,t1.zzbz,t1.khsszh,t1.yxdy,t1.yggh
+            from (
+                select n1.*,n2.hhbm from (
+                    select hfrq,khmc,zjhm,yggh,zzbz,yxdy,khsszh,lrsj,zhpfr,row_number() over(partition by hfrq,yggh,zjhm order by lrsj desc) pk
+                    from yxgl_khhfxxb
+                ) n1,khxxgl_khxq_nh n2
+                where n1.pk=1 and n2.zjhm=n1.zjhm
+            ) t1,tjfx_zfsjmx_nh t2
+            where t1.hhbm=t2.hhbm
+            and t1.zhpfr is not null
+            and t1.hfrq=t2.tjrq
+            and t1.yggh=t2.yggh
+            <choose>
+                <when test="lx.trim()=='1'.toString()">
+                    and t2.sfyxzf='1' and t2.tjrq=to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='2'.toString()">
+                    and t2.sfyxzf='1' and t2.tjrq &gt;= to_date(#{weekFristDay},'YYYYMMDD')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='3'.toString()">
+                    and t2.sfyxzf='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'MM')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='4'.toString()">
+                    and t2.sfyxzf='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'Q')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='5'.toString()">
+                    and t2.sfyxzf='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'YYYY') and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='6'.toString()">
+                    and t2.sfyxzf='1' and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='7'.toString()">
+                    and t2.sfyxtj='1' and t2.tjrq=to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='8'.toString()">
+                    and t2.sfyxtj='1' and t2.tjrq &gt;= to_date(#{weekFristDay},'YYYYMMDD')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='9'.toString()">
+                    and t2.sfyxtj='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'MM')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='10'.toString()">
+                    and t2.sfyxtj='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'Q')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <when test="lx.trim()=='11'.toString()">
+                    and t2.sfyxtj='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'YYYY') and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </when>
+                <otherwise>
+                    and t2.sfyxtj='1' and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+                </otherwise>
+            </choose>
+        ) n1,(
+            select
+            zzbz,gwbz,yggh,row_number() over(partition by yggh order by rgrq desc) pk
+            from hr_bas_staff_post
+            where rgrq &lt;= to_date(#{tjrq},'YYYYMMDD') and (lgrq is null or lgrq &gt;= to_date(#{tjrq},'YYYYMMDD')) and rglx !='4'
+        ) n2,hr_bas_staff n3
+        where n1.zhpfr=n3.ygxm and n2.yggh=n3.yggh and n2.pk=1
+        <if test=" gwbz != null and gwbz !=''">
+            and n2.gwbz=#{gwbz}
+        </if>
+        <if test=" yggh != null and yggh !=''">
+            and n2.yggh=#{yggh}
+        </if>
+    </select>
+
+    <select id="getPfrZfMxShPage" resultType="org.cmms.modules.tjfx.zfsjtj.pfrzfsjtj.entity.PfrZfMxVo">
+        select to_char(n1.hfrq,'YYYY-MM-DD') as hfrq,
+        to_char(n1.lrsj,'hh24:mi') as hfsj,
+        n1.khmc as khmc,
+        '1' as khlx,
+        n1.yggh as zfr,
+        n1.zzbz as zfzh,
+        n1.yxdy as sswg,
+        n1.sszh as khsszh
+        from (
+        select t1.zhpfr,t1.hfrq,t1.lrsj,t1.khmc,t1.zzbz,t1.sszh,t1.yxdy,t1.yggh
+        from (
+            select n1.*,n2.sszh from (
+                select shid,hfrq,khmc,zjhm,yggh,zzbz,yxdy,lrsj,zhpfr,row_number() over(partition by hfrq,yggh,zjhm order by lrsj desc) pk
+                from yxgl_shhfxxb
+            ) n1,khxxgl_khxq_sh n2
+            where n1.pk=1 and n2.id=n1.shid
+        ) t1,tjfx_zfsjmx_sh t2
+        where t1.shid=t2.shid
+        and t1.hfrq=t2.tjrq
+        and t1.yggh=t2.yggh
+        and t1.zhpfr is not null
+        <choose>
+            <when test="lx.trim()=='1'.toString()">
+                and t2.sfyxzf='1' and t2.tjrq=to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='2'.toString()">
+                and t2.sfyxzf='1' and t2.tjrq &gt;= to_date(#{weekFristDay},'YYYYMMDD')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='3'.toString()">
+                and t2.sfyxzf='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'MM')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='4'.toString()">
+                and t2.sfyxzf='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'Q')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='5'.toString()">
+                and t2.sfyxzf='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'YYYY') and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='6'.toString()">
+                and t2.sfyxzf='1' and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='7'.toString()">
+                and t2.sfyxtj='1' and t2.tjrq=to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='8'.toString()">
+                and t2.sfyxtj='1' and t2.tjrq &gt;= to_date(#{weekFristDay},'YYYYMMDD')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='9'.toString()">
+                and t2.sfyxtj='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'MM')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='10'.toString()">
+                and t2.sfyxtj='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'Q')  and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <when test="lx.trim()=='11'.toString()">
+                and t2.sfyxtj='1' and t2.tjrq &gt;= trunc(to_date(#{tjrq},'YYYYMMDD'),'YYYY') and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </when>
+            <otherwise>
+                and t2.sfyxtj='1' and t2.tjrq &lt;= to_date(#{tjrq},'YYYYMMDD')
+            </otherwise>
+        </choose>
+        ) n1,(
+        select
+        zzbz,gwbz,yggh,row_number() over(partition by yggh order by rgrq desc) pk
+        from hr_bas_staff_post
+        where rgrq &lt;= to_date(#{tjrq},'YYYYMMDD') and (lgrq is null or lgrq &gt;= to_date(#{tjrq},'YYYYMMDD')) and rglx !='4'
+        ) n2,hr_bas_staff n3
+        where n1.zhpfr=n3.ygxm and n2.yggh=n3.yggh and n2.pk=1
+        <if test=" gwbz != null and gwbz !=''">
+            and n2.gwbz=#{gwbz}
+        </if>
+        <if test=" yggh != null and yggh !=''">
+            and n2.yggh=#{yggh}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,60 @@
+{
+  "status": 200,
+  "success": true,
+  "message": "",
+  "result": {
+    "records":[
+      {
+        "tjrq": 20190813,
+        "jgmc": "江西分理支行",
+        "ygxm": "富士山",
+        "khmc": "王二",
+        "zjhm": 43012313123,
+        "lxfs": 187213,
+        "dz": "湖南省岳麓区麓谷大道",
+        "syye": 123,
+        "syyrp": 213,
+        "synrp": 123,
+        "byye": 213,
+        "byyrp": 213,
+        "bynrp": 213,
+        "rpzjbl": 3213,
+        "zjbs": 321
+      },
+      {
+        "tjrq": 20190813,
+        "jgmc": "河东支行",
+        "ygxm": "董静",
+        "khmc": "王二",
+        "zjhm": 43012313123,
+        "lxfs": 187213,
+        "dz": "湖南省望城区雷锋大道",
+        "syye": 123,
+        "syyrp": 213,
+        "synrp": 123,
+        "byye": 213,
+        "byyrp": 213,
+        "bynrp": 213,
+        "rpzjbl": 3213,
+        "zjbs": 321
+      },
+      {
+        "tjrq": 20190813,
+        "jgmc": "桂阳支行",
+        "ygxm": "富士山",
+        "khmc": "王二",
+        "zjhm": 43012313123,
+        "lxfs": 187213,
+        "dz": "湖南省岳麓区麓谷大道",
+        "syye": 123,
+        "syyrp": 213,
+        "synrp": 123,
+        "byye": 213,
+        "byyrp": 213,
+        "bynrp": 213,
+        "rpzjbl": 3213,
+        "zjbs": 321
+      }
+    ]
+  }
+}

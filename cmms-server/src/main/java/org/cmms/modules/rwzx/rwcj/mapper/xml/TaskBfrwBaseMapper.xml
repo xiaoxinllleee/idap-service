@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.rwzx.rwcj.mapper.TaskBfrwBaseMapper">
+
+    <select id="selectCountByYxid" resultType="integer">
+        select count(*) from TASK_BFRW_BASE where yxid =#{yxid} and status =#{status}
+    </select>
+
+    <select id="getPageWdrw" resultType="org.cmms.modules.rwzx.rwcj.entity.WdrwVO">
+        select t2.title,t1.*,ceil( t2.end_time - sysdate) syts from ( select yxid,count(1) rwzs, sum(decode(status,1,1,0)) yzf,sum(decode(status,2,1,0)) wzf from TASK_BFRW_BASE t where wgbh in (
+            select menu_id from YXDYGL_PQQXGL where khjl = #{yggh}
+        ) group by yxid) t1 left join TASK_CREATE t2
+                                      on t1.yxid = t2.id
+    </select>
+
+    <select id="getPageRwtj" resultType="org.cmms.modules.rwzx.rwcj.entity.WdrwVO">
+        select t2.yxid,t.title,end_time, ceil( end_time - sysdate ) syts, t.marketing_type as yxlx ,t2.yzf,t2.wzf,t2.rwzs, round (t2.yzf/t2.rwzs*100,2) as bfb  from TASK_CREATE t left join
+                                                                                                                                                (
+                                                                                                                                                    select yxid,sum(wc)yzf,sum(wwc)wzf,sum(rs)rwzs from (
+                                                                                                                                                                                                            select yxid,case when status = '1' then sum(1) else 0 end wc
+                                                                                                                                                                                                                 ,case when status = '2' then sum(1) else 0 end wwc,count(1) rs from (select * from   TASK_BFRW_BASE where 1 =1
+        <if test="wgbh != null and wgbh != ''">
+            and wgbh in (select wgbh from yxdygl_main start with wgbh=#{wgbh} connect by prior wgbh=parent_id)
+        </if>
+        <if test="wgbh == null or wgbh ==''">
+            and wgbh in (select menu_id from yxdygl_pqqxgl where khjl =#{yggh} )
+        </if>
+        ) group by yxid,status)group by yxid
+                                                                                                                                                ) t2 on t.id = t2.yxid </select>
+
+    <select id="getZpfxVOList" resultType="org.cmms.modules.rwzx.rwcj.entity.ZfpxVO">
+        select t3.*,t4.org_code sszh, round((t3.cg+t3.sb)/t3.rs*100,2)zfl , round(t3.cg/t3.rs*100,2)cgl from (
+                                                                                                                 select khjl,sum(cg)cg,sum(sb)sb,sum(wzf)wzf,count(1)rs  from (
+                                                                                                                                                                                  select t.yxid,decode(t.status,1,1,0) cg,decode(t.status,2,1,0) sb,decode(t.status,null,1,0)wzf, t2.khjl from TASK_BFRW_BASE t left join YXDYGL_PQQXGL t2
+                                                                                                                                                                                                                                                                                                                          on t.wgbh = t2.menu_id where t2.sfzkhjl ='1' and t2.khjl is not null
+                                                                                                                     <if test="yxid != null and yxid != ''">
+                                                                                                                         and t.yxid = #{yxid}
+                                                                                                                     </if>
+                                                                                                                     ) group by khjl )t3
+                                                                                                                 left join (select work_no,max(org_code) org_code from sys_user group by work_no) t4
+                                                                                                                           on t3.khjl = t4.work_no order by rs desc
+    </select>
+
+    <select id="dkYYMM" resultType="integer">
+        select ceil( nvl(sum(loan_bal),0)/10000/10000) from ${yyMM}
+
+    </select>
+
+    <select id="dkYYMM2" resultType="decimal">
+        select ceil( nvl(sum( t2.loan_bal)/10000,0))  from  (select zjhm from  KHXXGL_KHXQ_NH
+                                                       where 1 =1
+                                                         <if test="wgbh != null and wgbh != ''">
+                                                             and wgbh in (select wgbh from yxdygl_main start with wgbh=#{wgbh} connect by prior wgbh=parent_id)
+                                                         </if>
+                                                         <if test="wgbh == null or wgbh ==''">
+                                                             and wgbh in (select menu_id from yxdygl_pqqxgl where khjl =#{yggh} )
+                                                         </if>
+            )t1
+
+left join  ${yymm} t2
+        on t1.zjhm = t2.ident_no
+    </select>
+
+    <select id="ckYYMMType" resultType="integer">
+        select ceil( nvl(sum(curr_bal),0)/10000/10000) from ${yymm} where  acct_desc =#{type}
+    </select>
+
+    <select id="ckYYMM" resultType="integer">
+        select ceil( nvl(sum(curr_bal),0)/10000/10000) from ${yyMM}
+    </select>
+
+    <select id="ckYYMM2" resultType="decimal">
+        select ceil( nvl(sum( t2.curr_bal)/10000,0))  from  (select zjhm from  KHXXGL_KHXQ_NH
+        where 1 =1
+        <if test="wgbh != null and wgbh != ''">
+            and wgbh in (select wgbh from yxdygl_main start with wgbh=#{wgbh} connect by prior wgbh=parent_id)
+        </if>
+        <if test="wgbh == null or wgbh ==''">
+            and wgbh in (select menu_id from yxdygl_pqqxgl where khjl =#{yggh} )
+        </if>
+        )t1
+
+        left join  ${yymm} t2
+        on t1.zjhm = t2.ident_no
+    </select>
+
+
+    <select id="dqckdqs" resultType="int">
+        select count(1) from cbs_invm_base t where curr_bal > 0 and acct_desc = 'T' and int_to_dt is not null  and int_to_dt != '99999999'
+        and length(int_to_dt)=8
+        and int_to_dt >= to_char(sysdate,'yyyymmdd')
+        and to_date(int_to_dt, 'yyyymmdd')  &lt;= (trunc(sysdate, 'DD') + 30)
+    </select>
+
+    <select id="dqdkrs" resultType="int">
+        select count(1) from cbs_borm_base where remaining_days &lt;= 31 and remaining_days > 0
+    </select>
+
+    <select id="getCkdq" resultType="org.cmms.modules.dklldj.lldjgl.glzhgl.entity.CbsInvmBase">
+        select * from cbs_invm_base t where curr_bal > 0 and acct_desc = 'T' and int_to_dt is not null  and int_to_dt != '99999999'
+        and length(int_to_dt)=8
+        and int_to_dt >= to_char(sysdate,'yyyymmdd')
+        and to_date(int_to_dt, 'yyyymmdd')  &lt;= (trunc(sysdate, 'DD') + 30)
+    </select>
+    <select id="getDkdq" resultType="org.cmms.modules.khgl.dkkh.entity.CbsBormBase">
+        select * from cbs_borm_base where remaining_days &lt;= 31 and remaining_days > 0
+    </select>
+
+    <select id="ckZhhj" resultType="decimal">
+        select nvl(sum(t2.curr_bal),0) from task_bfrw_base t
+        left join cbs_invm_base t2
+        on t.zjhm = t2.ident_no
+        where t2.curr_bal > 0  and t2.int_frm_dt is not null  and t2.int_frm_dt != '99999999'
+        and length(t2.int_frm_dt)=8
+        and to_date(t2.int_frm_dt, 'yyyymmdd')  >= (trunc(sysdate, 'DD') - 30)
+        and t2.int_frm_dt &lt;= to_char(sysdate,'yyyymmdd') and t2.ident_no is not null
+        and t.status ='1'
+    </select>
+
+    <select id="dkZhhj" resultType="decimal">
+        select nvl(sum(t2.applic_amount),0) from task_bfrw_base t
+        left join cbs_borm_base t2
+        on t.zjhm = t2.ident_no
+        where t2.applic_amount > 0  and t2.qx_date is not null  and t2.qx_date != '99999999'
+        and length(t2.qx_date)=8
+        and to_date(t2.qx_date, 'yyyymmdd')  >= (trunc(sysdate, 'DD') - 30)
+        and t2.qx_date &lt;= to_char(sysdate,'yyyymmdd') and t2.ident_no is not null
+        and t.status ='1'
+    </select>
+
+
+    <select id="getCKZHList" resultType="org.cmms.modules.dklldj.lldjgl.glzhgl.entity.CbsInvmBase">
+        select t2.* from task_bfrw_base t
+                                                left join cbs_invm_base t2
+                                                          on t.zjhm = t2.ident_no
+        where t2.curr_bal > 0  and t2.int_frm_dt is not null  and t2.int_frm_dt != '99999999'
+        and length(t2.int_frm_dt)=8
+        and to_date(t2.int_frm_dt, 'yyyymmdd')  >= (trunc(sysdate, 'DD') - 30)
+        and t2.int_frm_dt &lt;= to_char(sysdate,'yyyymmdd') and t2.ident_no is not null
+        and t.status ='1'
+    </select>
+
+    <select id="getDKZHList" resultType="org.cmms.modules.khgl.dkkh.entity.CbsBormBase">
+        select t2.* from task_bfrw_base t
+        left join cbs_borm_base t2
+        on t.zjhm = t2.ident_no
+        where t2.applic_amount > 0  and t2.qx_date is not null  and t2.qx_date != '99999999'
+        and length(t2.qx_date)=8
+        and to_date(t2.qx_date, 'yyyymmdd')  >= (trunc(sysdate, 'DD') - 30)
+        and t2.qx_date &lt;= to_char(sysdate,'yyyymmdd') and t2.ident_no is not null
+        and t.status ='1'
+    </select>
+
+    <select id="getWdrwSearchResultVOList" resultType="org.cmms.modules.rwzx.rwcj.entity.WdrwSearchResultVO">
+        select t.id, t.yxid,t.status,t2.khmc,t2.zjhm,t2.xtpdjg,t2.sszh,t2.yhzgx,t2.sjhm,t2.hjdz from  TASK_BFRW_BASE t
+                                                                                                    left join  KHXXGL_KHXQ_NH t2
+                                                                                                               on t.zjhm = t2.zjhm
+        where 1=1
+        <if test="dao.wgbh != null and dao.wgbh != ''">
+            and t2.wgbh in (select wgbh from yxdygl_main start with wgbh=#{dao.wgbh} connect by prior wgbh=parent_id)
+        </if>
+        <if test="dao.wgbh == null or dao.wgbh ==''">
+            and t2.wgbh in (select menu_id from yxdygl_pqqxgl where khjl =#{dao.yggh} )
+        </if>
+        <if test="dao.sszh != null and dao.sszh != ''">
+            and t2.sszh = #{dao.sszh}
+        </if>
+
+        <if test="dao.type != null and dao.type != '' and dao.type =='1'.toString()">
+            and t.zffs = '1'
+        </if>
+        <if test="dao.type != null and dao.type != '' and dao.type =='2'.toString() ">
+            and t.zffs = '2'
+        </if>
+        <if test="dao.type != null and dao.type != '' and dao.type =='3'.toString()">
+            and t.status in ('1','2')
+        </if>
+        <if test="dao.type != null and dao.type != '' and dao.type =='0'.toString() ">
+            and t.status ='3'
+        </if>
+        <if test="dao.yxid != null and dao.yxid != ''  ">
+            and t.yxid = #{dao.yxid}
+        </if>
+
+        <if test="dao.zjhm != null and dao.zjhm != ''">
+            and (t2.zjhm like CONCAT(CONCAT('%',#{dao.zjhm}), '%'))
+        </if>
+        <if test="dao.khmc != null and dao.khmc != ''">
+            and (t2.khmc like CONCAT(CONCAT('%',#{dao.khmc}), '%'))
+        </if>
+
+        <if test="dao.searchText != null and dao.searchText != ''">
+            and (   (t2.zjhm like CONCAT(CONCAT('%',#{dao.searchText}), '%')) or  (t2.khmc like CONCAT(CONCAT('%',#{dao.searchText}), '%') ) )
+        </if>
+
+    </select>
+</mapper>

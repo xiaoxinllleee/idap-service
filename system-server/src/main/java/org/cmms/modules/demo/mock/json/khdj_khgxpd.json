@@ -1,0 +1,36 @@
+{
+  "status": 200,
+  "success": true,
+  "message": "",
+  "result": {
+    "records":[
+      {
+        "khmc": "希拉斯",
+        "khlx": "测试",
+        "zjhm": 43012312313213,
+        "ssyxdy": "北京分理处",
+        "pddj": "良好",
+        "snpddj": "一般",
+        "pdnf ": "2019"
+      },
+      {
+        "khmc": "科斯拉",
+        "khlx": "测试",
+        "zjhm": 43012312313213,
+        "ssyxdy": "浏阳分理处",
+        "pddj": "良好",
+        "snpddj": "一般",
+        "pdnf ": "Wed Sep 11 00:00:00 CST 2019"
+      },
+      {
+        "khmc": "王尔",
+        "khlx": "测试",
+        "zjhm": 43012312313213,
+        "ssyxdy": "长沙分理处",
+        "pddj": "良好",
+        "snpddj": "一般",
+        "pdnf ": "2019"
+      }
+    ]
+  }
+}

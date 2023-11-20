@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.hr.zzgl.zzgwgl.mapper.HrBasOrganPostMapper">
+
+    <select id="existenceByGwbz" resultType="java.lang.String">
+        select zzbz from Hr_bas_organ_post  where gwbz=#{gwbz}
+    </select>
+
+    <select id="ifExistByGwbzAndZzbz" resultType="integer">
+        select count(1) from Hr_bas_organ_post where gwbz=#{gwbz} and zzbz =${zzbz}
+    </select>
+</mapper>

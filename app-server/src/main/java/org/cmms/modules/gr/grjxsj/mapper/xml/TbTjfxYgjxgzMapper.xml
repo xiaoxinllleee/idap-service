@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.gr.grjxsj.mapper.TbTjfxYgjxgzMapper">
+
+    <!--通过工资月份查询员工基本工资详情信息-->
+    <select id="getInfoByGzyf"  resultType="org.cmms.modules.gr.grjxsj.entity.ErpWageYgjbgzglYx">
+        select * from erp_wage_ygjbgzgl_yx where gzyf = #{gzyf} and yggh= #{yggh}
+    </select>
+
+    <select id="getErpWageYgjxInfoByGzrqAndYggh" resultType="org.cmms.modules.gr.grjxsj.entity.ErpWageYgjx">
+        select * from erp_wage_ygjx where GZRQ=#{gzrq} and yggh=#{yggh}
+    </select>
+
+    <select id="getYgjxPie" resultType="org.cmms.modules.gr.grjxsj.entity.TbTjfxYgzblbgz">
+        select tb.*,lb.zblbmc from tb_tjfx_ygzblbgz tb left join erp_bas_zblb lb on tb.zblb = lb.zblb
+        where tb.yggh=#{yggh} and tb.tjrq=#{tjrq}
+    </select>
+
+    <select id="getGrzdjxsj" resultType="org.cmms.modules.gr.grjxsj.entity.TbTjfxYgzblbgz">
+        select * from tb_tjfx_ygzblbgz where yggh=#{yggh} and zblb=#{zblb} and tjrq=#{tjrq}
+    </select>
+
+    <select id="getJxMx" resultType="org.cmms.modules.gr.grjxsj.entity.ZbmxDto">
+     select T1.zbid,t1.zzbz,t1.zbdj,t1.zbjg,t1.zbgz,t2.zbmc AS zbmc from erp_wage_ygjx_mx t1 left join erp_bas_zbk t2 on t1.zbid=t2.zbid
+      where t1.yggh=#{yggh} and t1.zblb=#{zblb}
+    </select>
+    <select id="getWQDateZb" resultType="org.cmms.modules.gr.grjxsj.entity.TbTjfxYgzblbgz">
+    select t.* from tb_tjfx_ygzbgz t join (SELECT zbid,yggh ,max(tjrq) as tjrq FROM tb_tjfx_ygzbgz
+    where yggh = #{yggh} and zbid = #{zbid}
+    GROUP BY to_char(tjrq,'yyyy-MM-dd'),zbid,yggh ) j on t.yggh = j.yggh and t.zbid = j.zbid and t.tjrq = j.tjrq
+    order by t.tjrq desc
+    </select>
+<select id="getWQDateJx" resultType="org.cmms.modules.gr.grjxsj.entity.TbTjfxYgzblbgz">
+         select t.* from tb_tjfx_ygzblbgz t join (SELECT zblb,yggh ,max(tjrq) as tjrq FROM tb_tjfx_ygzblbgz
+		 where yggh = #{yggh} and zblb = #{zblb}
+		 GROUP BY to_char(tjrq, 'yyyy-MM-dd'),zblb,yggh ) j on t.yggh = j.yggh and t.zblb = j.zblb and t.tjrq = j.tjrq
+		  order by t.tjrq desc
+</select>
+    <select id="getWqJxInfo" resultType="org.cmms.modules.gr.grjxsj.entity.TbTjfxYgjxgz">
+            SELECT a.* FROM tb_tjfx_ygjxgz a join (
+     SELECT zzbz,gwbz,yggh ,max(tjrq) as tjrq FROM tb_tjfx_ygjxgz
+     where yggh = #{yggh}
+     GROUP BY to_char(tjrq, 'yyyy-MM-dd'),zzbz,gwbz,yggh )
+     b on a.tjrq = b.tjrq and a.zzbz=b.zzbz and a.yggh = b.yggh and a.gwbz = b.gwbz
+     order by a.tjrq desc
+    </select>
+
+    <select id="getJXByDateYggh" resultType="org.cmms.modules.gr.grjxsj.entity.TbTjfxYgjxgz">
+        select * from tb_tjfx_ygjxgz  where tjrq=#{tjrq} and yggh=#{yggh}
+    </select>
+
+</mapper>

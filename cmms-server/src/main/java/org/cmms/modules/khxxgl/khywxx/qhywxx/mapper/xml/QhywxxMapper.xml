@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khywxx.qhywxx.mapper.QhywxxMapper">
+
+    <select id="getYwsjBySjrq" resultType="org.cmms.modules.khxxgl.khywxx.qhywxx.entity.Qhywxx">
+        select t1.* from khxxgl_ywhywwlxx_day t1 left join (
+        select zjhm from khxxgl_khxq_nh where wgbh in (
+        select wgbh from yxdygl_main start with wgbh=#{wgbh} connect by prior wgbh=parent_id
+        )
+        )t2
+        on t1.zjhm=t2.zjhm where sjrq = to_date(#{rq},'yyyymmdd') and t2.zjhm is not null
+        <if test="type == 1 ">
+            <if test="qydm != null and qydm != '095'">
+                and t1.sfktdkyw = '1'
+            </if>
+            <if test="qydm != null and qydm == '095'">
+                and ((t1.sfktdkyw = '1' and nvl(t1.dkye,0)>0) or nvl(t1.bwbldkye,0)>0)
+            </if>
+        </if>
+        <if test="type == 2">
+            and t1.bldkye is not null
+            <if test="jqlx != null and jqlx == 1">
+                and t1.bldkye = 0
+            </if>
+            <if test="(jqlx != null and jqlx == 2) or (qydm !=null and qydm == '095')">
+                and t1.bldkye > 0
+            </if>
+        </if>
+        <if test="type == 3">
+            and t1.bwbldkye is not null
+        </if>
+        <if test="type == 4">
+            and t1.sfktckyw = '1'
+            <if test="qydm !=null and qydm == '095'">
+                and nvl(t1.ckye,0)>0
+            </if>
+        </if>
+    </select>
+
+    <select id="getListYwsjBySjrq" resultType="org.cmms.modules.khxxgl.khywxx.qhywxx.entity.Qhywxx">
+        select t1.* from khxxgl_ywhywwlxx_day t1 left join (
+        select zjhm from khxxgl_khxq_nh where wgbh in (
+        select wgbh from yxdygl_main start with wgbh=#{wgbh} connect by prior wgbh=parent_id
+        ))t2
+        on t1.zjhm=t2.zjhm where sjrq = to_date(#{rq},'yyyymmdd') and t2.zjhm is not null
+        <if test="type == 1 ">
+            and t1.sfktdkyw = '1'
+        </if>
+        <if test="type == 2">
+            and t1.bldkye is not null
+            <if test="jqlx != null and jqlx == 1">
+                and t1.bldkye = 0
+            </if>
+            <if test="jqlx != null and jqlx == 2">
+                and t1.bldkye > 0
+            </if>
+        </if>
+        <if test="type == 3">
+            and t1.bwbldkye is not null
+        </if>
+        <if test="type == 4">
+            and t1.sfktckyw = '1'
+        </if>
+    </select>
+
+    <select id="getListWktYwsjBySjrq" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+        select t1.khmc,t1.zjhm,t2.xb, t2.nl, t2.sjhm,t2.hjdz from khxxgl_ywhywwlxx_day t1 left join (
+        select zjhm,xb,nl,sjhm,hjdz from khxxgl_khxq_nh where wgbh in (
+        select wgbh from yxdygl_main start with wgbh=#{wgbh} connect by prior wgbh=parent_id
+        ))t2
+        on t1.zjhm=t2.zjhm where sjrq = to_date(#{rq},'yyyymmdd') and t2.zjhm is not null
+        <if test="type == 1 ">
+            and t1.sfktdkyw != '1'
+        </if>
+        <if test="type == 2">
+            and t1.bldkye is null
+        </if>
+        <if test="type == 3">
+            and t1.bwbldkye is null
+        </if>
+        <if test="type == 4">
+            and t1.sfktckyw != '1'
+        </if>
+    </select>
+
+    <select id="getSbkWktListByWgbh" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+        select * from khxxgl_khxq_nh t1
+        where t1.wgbh in (
+          select wgbh from yxdygl_main start with wgbh=#{wgbh} connect by prior wgbh=parent_id
+        )
+        and (t1.sfktsbk is null or t1.sfktsbk!='1')
+        and not exists(select 1 from khxxgl_wbsjgl_zksj t2 where t1.zjhm=t2.zjhm)
+    </select>
+</mapper>

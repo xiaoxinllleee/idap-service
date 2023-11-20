@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.automission.execlog.mapper.BigdataAutoexecLogMapper">
+
+    <select id="getAssessParamValue" parameterType="java.lang.String" resultType="java.lang.String">
+        select pvalue from erp_bas_assess_param where pid = #{paramcode}
+    </select>
+
+    <select id="conversionConfigInfo" parameterType="java.util.Date" resultType="java.lang.String">
+        select count(1) from erp_bas_ywzsxx_m where tjyf = #{beginOfMonth}
+    </select>
+
+    <select id="getSystemConfigParamValue" parameterType="java.lang.String" resultType="java.lang.String">
+        select cfgvalue from sys_bas_cfg where cfgcode = #{cfgcode}
+    </select>
+
+    <select id="getSystemConfigParamValueNumber" parameterType="java.lang.String" resultType="java.lang.String">
+        select cfgvaluenumber from sys_bas_cfg where cfgcode = #{cfgcode}
+    </select>
+
+    <!--计算贷款日平限额-->
+    <select id="getDailyLoanLimit" parameterType="java.lang.String" resultType="java.lang.String">
+        select csz from grade_custstar_cssz where csbm = #{csbm}
+    </select>
+
+    <select id="querySubjectNo" parameterType="java.lang.String" resultType="java.lang.String">
+        select ',' || cfgvalue || ',' from sys_bas_cfg where cfgcode = #{cfgcode}
+    </select>
+
+    <select id="getOneErpBasWyxcssz" parameterType="java.lang.String" resultType="org.cmms.modules.automission.execlog.vo.ErpBasWyxcsszVO">
+        select * from erp_bas_wyxcssz where qybz = #{qybz}
+    </select>
+
+    <select id="getMaxId" resultType="java.lang.String">
+      select nvl(max(glid),0) + 1 from ckjkpt_ckzhglxx
+    </select>
+
+    <select id="judgeExtract" resultType="java.lang.Integer">
+        select pvalue from erp_bas_assess_param where pid = 'P90027'
+    </select>
+
+</mapper>

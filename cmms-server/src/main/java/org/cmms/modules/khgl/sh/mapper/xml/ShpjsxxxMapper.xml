@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.sh.mapper.ShpjsxxxMapper">
+
+    <!-- 查询资产信息 -->
+    <select id="queryZcxx" resultType="java.util.HashMap">
+         select nvl(Dcjz, 0) + nvl(Jtgjjz, 0) + nvl(Ckjz, 0) + nvl(Yjdzjz, 0) +
+         nvl(Gqjz, 0) + nvl(Qtzcjz, 0) + nvl(Nzsrjz, 0) zcqk,
+         nvl(Bxtjksl, 0) + nvl(Thjksl, 0) + nvl(Xyksl, 0) + nvl(Qtfzsl, 0) +
+         nvl(Jtnkzsl, 0) fzqk
+        from CAMS_ZCSX_SHPJSXXX
+       where shid = #{shid}
+    </select>
+
+</mapper>

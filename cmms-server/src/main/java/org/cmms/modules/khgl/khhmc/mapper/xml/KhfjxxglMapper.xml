@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.khhmc.mapper.KhfjxxglMapper">
+    <update id="updateKhhmc" >
+    update Khgl_Khhmcxx t1
+       set (t1.sfxdry, t1.sfpkh,t1.sfdb,t1.sfgzry,t1.sfffjz,t1.hbjl) =
+       (select t2.sfxdry,t2.sfpkh,t2.sfdb,t2.sfgzry,t2.sfffjz,t2.hbjl
+          from KHGL_KHHMCXX_FJXX t2
+    where t1.zjhm = t2.zjhm)
+    where exists(select 1 from KHGL_KHHMCXX_FJXX t3 where t1.zjhm=t3.zjhm)
+    </update>
+    <update id="updateywwl" >
+    update KHXXGL_YWHYWWLXX t1
+       set (t1.SFKTXYK, t1.SFKTFMK,t1.SFKTSMF,t1.SFKTPOS,t1.SFKTJHZF,t1.SFBLEZF,t1.SFBLEJF,t1.SFBLZNZD,t1.SFBLLCYW,t1.SFBLDLBX,t1.SFGZGZH) =
+       (select t2.SFKTXYK,t2.SFKTFMK,t2.SFKTSMF,t2.SFKTPOS,t2.SFKTJHZF,t2.SFBLEZF,t2.SFBLEJF,t2.SFBLZNZD,t2.SFBLLCYW,t2.SFBLDLBX,t2.SFGZGZH
+          from KHGL_KHHMCXX_FJXX t2
+    where t1.zjhm = t2.zjhm)
+    where exists(select 1 from KHGL_KHHMCXX_FJXX t3 where t1.zjhm=t3.zjhm)
+    </update>
+    <update id="updateHzxx">
+        update Khgl_nhhzxxgl t1
+          set (t1.sfpkh,t1.sfdbh)=
+          (select t2.sfpkh,t2.sfdb from KHGL_KHHMCXX_FJXX t2 where t1.hzzjhm=t2.zjhm)
+        where exists (select 1 from KHGL_KHHMCXX_FJXX t3 where t1.hzzjhm=t3.zjhm)
+    </update>
+
+    <select id="getByWgbh" resultType="org.cmms.modules.khgl.khhmc.entity.Khfjxxgl">
+        select t1.* from KHGL_KHHMCXX_FJXX t1 left join (
+            select zjhm from  khxxgl_khxq_nh where wgbh =#{wgbh}
+            ) t2
+on t1.zjhm = t2.zjhm where t2.zjhm is not null
+         <if test="type == 10">
+             and sfss = '1'
+         </if>
+        <if test="type == 11">
+            and sfdy =  '1'
+        </if>
+        <if test="type == 12">
+            and sfgzry =  '1'
+        </if>
+        <if test="type == 13">
+            and sftgjs =  '1'
+        </if>
+<!--        <if test="type == 14">-->
+<!--            and sfpkh =  '1'-->
+<!--        </if>-->
+        <if test="type == 15">
+            and sfdb =  '1'
+        </if>
+        <if test="type == 16">
+            and sfzdjb =  '1'
+        </if>
+        <if test="type == 17">
+            and sfzpry =  '1'
+        </if>
+        <if test="type == 18">
+            and sfffjz =  '1'
+        </if>
+        <if test="type == 19">
+            and sfxdry =  '1'
+        </if>
+        <if test="type == 20">
+            and sffx =  '1'
+        </if>
+        <if test="type == 21">
+            and sfsa =  '1'
+        </if>
+    </select>
+
+    <select id="getFjxxByWgbh" resultType="org.cmms.modules.khgl.khhmc.entity.KhfjxxglExp">
+        select t3.*,t4.wgmc from (
+                                     select t2.wgbh,t1.zjhm,t1.khmc,decode(t1.sfss,1,'是','2','否','否')sfss,
+                                            decode(t1.sfdy,1,'是','2','否','否')sfdy,
+                                            decode(t1.sfgzry,1,'是','2','否','否')sfgzry,
+                                            decode(t1.sftgjs,1,'是','2','否','否')sftgjs,
+                                            decode(t1.sfdb,1,'是','2','否','否')sfdb,
+                                            decode(t1.sfpkh,1,'是','2','否','否')sfpkh,
+                                            decode(t1.sfzdjb,1,'是','2','否','否')sfzdjb,
+                                            decode(t1.sfzpry,1,'是','2','否','否')sfzpry,
+                                            decode(t1.sfffjz,1,'是','2','否','否')sfffjz,
+                                            decode(t1.sfxdry,1,'是','2','否','否')sfxdry,
+                                            decode(t1.sffx,1,'是','2','否','否')sffx from KHGL_KHHMCXX_FJXX t1 left join khxxgl_khxq_nh t2 on t1.zjhm = t2.zjhm where t2.zjhm is not null
+                                    <if test="wgbh != null and wgbh !=''">
+                                     and    t2.wgbh = #{wgbh}
+                                    </if>
+        <if test="wgbh == null or wgbh ==''">
+            and    t2.wgbh in (select menu_id from YXDYGL_PQQXGL where khjl = #{yggh})
+        </if>
+            )t3
+                                     left join yxdygl_main t4 on t3.wgbh = t4.wgbh
+    </select>
+</mapper>

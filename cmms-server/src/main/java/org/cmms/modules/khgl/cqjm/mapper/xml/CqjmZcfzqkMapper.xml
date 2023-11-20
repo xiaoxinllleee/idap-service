@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.cqjm.mapper.CqjmZcfzqkMapper">
+
+    <select id="selectByZjhm" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.cqjm.entity.CqjmZcfzqk">
+        SELECT * FROM CAMS_ZCSX_NHPJSXXX WHERE ZJHM=#{zjhm}
+    </select>
+
+    <delete id="deleteZcfzqkByZjhm" parameterType="java.lang.String">
+        DELETE FROM CAMS_ZCSX_NHPJSXXX WHERE ZJHM=#{zjhm}
+    </delete>
+
+</mapper>

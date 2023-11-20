@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.birthdayreminder.mapper.srtxmyBirthdayCustomerMapper">
+
+
+
+
+    <select id="selectUserIdByUserName"  resultType="string" parameterType="string">
+         select id from sys_user where username=#{userName}
+    </select>
+
+    <select id="selectRoleId" resultType="java.lang.String" parameterType="string">
+         select role_id from sys_user_role where user_id=#{userId}
+    </select>
+    <select id="selectRoleCode"  resultType="string" parameterType="java.util.List">
+        select role_code from sys_role where id in
+        <foreach item="item" index="index" collection="roleId" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectCreditDepartCode"  resultType="string" parameterType="string">
+      select org_code from sys_user  where username=#{userName}
+    </select>
+
+
+
+
+</mapper>

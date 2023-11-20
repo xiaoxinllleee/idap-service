@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: dev
+swagger:
+  production: true
+  basic:
+    enable: true
+    username: jeecg
+    password: jeecg1314
+db:
+ datasource: eweb

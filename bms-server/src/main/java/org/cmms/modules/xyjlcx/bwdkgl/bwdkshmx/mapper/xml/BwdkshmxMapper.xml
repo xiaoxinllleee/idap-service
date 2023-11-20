@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xyjlcx.bwdkgl.bwdkshmx.mapper.BwdkshmxMapper">
+    <select id="pBwdkshmx" parameterType="java.lang.String" statementType="CALLABLE">
+       {call PKG_CREDIT.P_BWDKSHMX(#{rzsjB},#{rzsjE})}
+    </select>
+
+    <select id="queryBwdkshmxOracle" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.bwdkgl.bwdkshmx.entity.Bwdkshmx">
+        select * from credit_bwdkshmx
+         where rzwd in (select ywjgdm from hr_bas_organization start with ywjgdm = #{rzwd} connect by prior zzbz = sjzzbz)
+           and shrq >= to_date(#{shrq},'yyyyMMdd')
+    </select>
+    <select id="queryBwdkshmxImpala" parameterType="java.lang.String" resultType="org.cmms.modules.xyjlcx.bwdkgl.bwdkshmx.entity.Bwdkshmx">
+        select t1.*
+          from credit_bwdkshmx t1,
+               (select ywjgdm from ods.hr_bas_organization
+                         where zzbz = (select zzbz from ods.hr_bas_organization where ywjgdm = #{rzwd})
+                         order by sjzzbz
+                         union all
+                        select ywjgdm from ods.hr_bas_organization
+                         where sjzzbz = (select zzbz from ods.hr_bas_organization where ywjgdm = #{rzwd})
+                         order by sjzzbz) t2
+         where t1.shrq >= cast(#{shrq} as Date format 'yyyyMMdd')
+           and t1.rzwd = t2.ywjgdm
+    </select>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.pad.nhczfp.mapper.NhczfpMapper">
+    <select id="getYwcbkbpyList" resultType="org.cmms.modules.pad.nhczfp.entity.NhczfpVo">
+        select n1.ssyxdy, count(n1.hhbm) bmdhs, sum(nvl2(n2.hhbm, 1, 0)) bmdypyhs
+        from (select t1.ssyxdy, t1.hhbm
+              from khgl_nhhzxxgl t1, khxxgl_ywhywwlxx_h t2
+              where t1.hhbm = t2.hhbm
+                and t2.sfsx in (1, 2)
+                and sfbysx = 2
+                and t1.ssyxdy in (select wgbh
+                                  from yxdygl_main
+                                  where  parent_id = #{wgbh})) n1
+                 left join (select hhbm
+                            from cams_zcsx_nhbkbpy
+                            where pylc like '1%'
+                              and qydm in (select wgbh
+                                           from yxdygl_main
+                                           where  parent_id = #{wgbh})
+                            group by hhbm
+        ) n2
+                           on n1.hhbm = n2.hhbm
+        group by n1.ssyxdy
+    </select>
+</mapper>

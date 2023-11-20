@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.sjbl.farwsz.mapper.ErpAssessTasksetMapper">
+
+    <select id="tasksetJg" resultType="org.cmms.modules.khlc.zbljgl.entity.ErpBasSjxArea">
+        select t.* from erp_bas_sjx_area t where zblx =1  and sfqy='1' and zbid=#{zbid}
+    </select>
+    <select id="tasksetGw" resultType="org.cmms.modules.khlc.zbljgl.entity.ErpBasSjxArea">
+        select t.* from erp_bas_sjx_area t where zblx =3  and sfqy='1' and zbid=#{zbid}
+    </select>
+</mapper>

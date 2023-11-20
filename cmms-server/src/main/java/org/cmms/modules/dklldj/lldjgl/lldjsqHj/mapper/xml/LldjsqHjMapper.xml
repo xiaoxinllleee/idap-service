@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dklldj.lldjgl.lldjsqHj.mapper.LldjsqHjMapper">
+
+    <select id="querySnzxll" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        SELECT nvl(int_rate,0) AS snzxll FROM ${tablename} WHERE ident_no=#{zjhm}
+    </select>
+
+    <select id="queryCkrpyeSumGR" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select nvl(sum(rpye_y_b),0) / 10000 as ckrpye
+          from ${tablename}
+         where ident_no = #{zjhm}
+            or ident_no in (select glrzjhm from RATE_KHGLRXXB where zjhm = #{zjhm} group by glrzjhm)
+    </select>
+
+    <select id="queryCkrpyeSumQY" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select nvl(sum(rpye_y_b),0) / 10000 as ckrpye from ${tablename} where ident_no = #{zjhm}
+    </select>
+
+</mapper>

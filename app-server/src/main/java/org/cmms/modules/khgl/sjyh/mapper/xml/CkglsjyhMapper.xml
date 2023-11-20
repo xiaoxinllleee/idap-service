@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.sjyh.mapper.CkglsjyhMapper">
+    <select id="getList" resultType="org.cmms.modules.khgl.sjyh.entity.KhzlbVo" >
+        select * from(select h.*,rownum as r
+        from(select t.busi_phone,t.email_addr,t.surname,t.custr_nbr,t2.card_nbr,t3.day_opened,t3.cutoff_day,t3.cred_limit,t3.card_fees
+        from CCD_CUSTR t
+        left join CCD_CARD t2
+        on t2.custr_nbr=t.custr_nbr
+        left join CCD_ACCT t3q
+        on t3.card_nbr = t2.card_nbr
+        <where> <if test="ssmc !=null and ssmc !=''">
+            and instr(t.surname,#{ssmc}) > 0
+        </if>
+        </where>
+        <choose>
+            <when test="jx == 1">order by t3.cutoff_day</when>
+            <when test="jx == 2">order by t3.card_fees</when>
+            <when test="jx == 3">order by t3.cred_limit</when>
+            <otherwise>order by t3.cutoff_day</otherwise>
+        </choose>
+        <choose>
+            <when test="px == 1">asc</when>
+            <when test="px == 2">desc</when>
+        </choose>
+        )h)
+        where r between #{start} and #{end}
+    </select>
+
+    <select id="getPageList" resultType="org.cmms.modules.khgl.sjyh.entity.KhzlbVo" >
+        select  t1.custr_nbr,t2.card_nbr,t1.mo_phone,t1.email_addr,t1.surname,t2.issue_day,t1.cred_limit,t1.xtitle
+        from ccd_custr t1
+            left join
+            ( select  card_nbr,custr_nbr ,max(issue_day) issue_day from  ccd_card  group by card_nbr,custr_nbr ) t2
+                on t1.custr_nbr = t2.custr_nbr <if test="ssmc !=null and ssmc !=''">
+        where instr(t.surname,#{ssmc}) > 0
+    </if> order by t1.cred_limit
+            <if test="px == 2"> desc</if>
+    </select>
+</mapper>

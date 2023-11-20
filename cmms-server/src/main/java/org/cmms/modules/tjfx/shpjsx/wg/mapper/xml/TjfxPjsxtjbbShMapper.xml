@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.shpjsx.wg.mapper.TjfxPjsxtjbbShMapper">
+    <select id="initData" statementType="CALLABLE">
+        {call PKG_KHXXGL.P_PJSXTJBB_SH(#{sjrq},#{yggh})}
+    </select>
+
+    <select id="queryPageListMx" resultType="org.cmms.modules.tjfx.shpjsx.wg.entity.ShPjsxMxVo">
+        select n2.sszh sszh,
+               n1.wgbh ssyxdy,
+               n2.shmc shmc,
+               nvl(n2.xtcssxed,0) xtcsed,
+               n2.khjlpddj khjlpddj,
+               nvl(n2.khjlsxed,0) khjlsxed,
+               n2.lrr lrr,
+               n3.ygxm lrrxm,
+               n2.lrsj lrsj
+        from (select wgmc, wgbh
+              from yxdygl_main
+              where wgxz='6'
+        )n1
+        left join (
+          select t2.sszh,t2.wgbh,t2.shmc,t1.xtcssxed,t1.khjlsxed,t1.lrr,t1.lrsj,t1.khjlpddj
+          from cams_zcsx_shpjsxxx t1,khxxgl_khxq_sh t2
+          where t1.shid=t2.id and to_char(t1.lrsj,'yyyymmdd') &lt;=#{sjrq}
+          and nvl(t1.khjlsxed,0) &lt;=nvl(t1.xtcssxed,0)
+          <if test="type != null">
+            <if test="type == '1'.toString()">
+                and t1.khjlpddj is not null
+            </if>
+            <if test="type == '2'.toString()">
+                and nvl(t1.khjlsxed,0) &gt; 0
+            </if>
+          </if>
+        )n2
+        on n1.wgbh=n2.wgbh
+        left join hr_bas_staff n3 on n2.lrr=n3.yggh
+        where 1=1
+        <if test="wgbh !=null and wgbh != ''">
+            and n1.wgbh=#{wgbh}
+        </if>
+    </select>
+
+    <select id="queryListMx" resultType="org.cmms.modules.tjfx.shpjsx.wg.entity.ShPjsxMxVo">
+        select  n2.sszh sszh,
+                n1.wgbh ssyxdy,
+                n2.shmc shmc,
+                nvl(n2.xtcssxed,0) xtcsed,
+                n2.khjlpddj khjlpddj,
+                nvl(n2.khjlsxed,0) khjlsxed,
+                n2.lrr lrr,
+                n3.ygxm lrrxm,
+                n2.lrsj lrsj
+        from (select wgmc, wgbh
+        from yxdygl_main
+        where wgxz='6'
+        )n1
+        left join (
+            select t2.sszh,t2.wgbh,t2.shmc,t1.xtcssxed,t1.khjlsxed,t1.lrr,t1.lrsj,t1.khjlpddj
+            from cams_zcsx_shpjsxxx t1,khxxgl_khxq_sh t2
+            where t1.shid=t2.id and to_char(t1.lrsj,'yyyymmdd') &lt;=#{sjrq}
+            and nvl(t1.khjlsxed,0) &lt;=nvl(t1.xtcssxed,0)
+            <if test="type != null">
+                <if test="type == '1'.toString()">
+                    and t1.khjlpddj is not null
+                </if>
+                <if test="type == '2'.toString()">
+                    and nvl(t1.khjlsxed,0) &gt; 0
+                </if>
+            </if>
+        )n2
+        on n1.wgbh=n2.wgbh
+        left join hr_bas_staff n3 on n2.lrr=n3.yggh
+        where 1=1
+        <if test="wgbh !=null and wgbh != ''">
+            and n1.wgbh=#{wgbh}
+        </if>
+    </select>
+</mapper>

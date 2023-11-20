@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.yjgs.ckkhdfpxx.mapper.CkkhdfpxxMapper">
+    <update id="init" statementType="CALLABLE">
+        {call PKG_KHGXGL.p_ckkhghrl_init}
+    </update>
+
+    <select id="getListByIds" resultType="org.cmms.modules.yjgs.ckkhdfpxx.entity.Ckkhdfpxx">
+        select * from Khgxgl_Drlckkh
+        where id in
+        <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+            <if test="index % 999 == 998">) or id in (</if> #{item}
+        </foreach>
+    </select>
+
+    <delete id="deleteSptgsj" parameterType="java.lang.String">
+        delete from Khgxgl_Drlckkh t1
+        where exists (
+            select 1 from khgxgl_ckkhspxx t2
+            where t2.table_id=#{tableId} and t2.process_status='2'
+              and t1.jgdm=t2.jgdm and t1.khbh=t2.khbh
+        )
+    </delete>
+</mapper>

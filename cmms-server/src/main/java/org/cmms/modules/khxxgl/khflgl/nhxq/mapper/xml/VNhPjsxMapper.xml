@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.nhxq.mapper.VNhPjsxMapper">
+
+    <update id="updatePjsx">
+        update CAMS_ZCSX_GRPJSXXX set zzpddj =#{dao.zzpddj}
+        ,zzsxed=#{dao.zzsxed},update_time = sysdate,status = 1
+        <if test="dao.wgbh != null and dao.wgbh != ''">
+            ,qydm = #{dao.wgbh}
+        </if>
+        <if test="dao.khmc != null and dao.khmc != ''">
+            ,khmc = #{dao.khmc}
+        </if>
+        <if test="dao.cpzl != null and dao.cpzl != ''">
+            ,cpzl = #{dao.cpzl}
+        </if>
+        <if test="dao.zjhm2 != null and dao.zjhm2 != ''">
+            ,zjhm = #{dao.zjhm2}
+        </if>
+        where zjhm =#{dao.zjhm}
+    </update>
+
+    <update id="updateCpzlll">
+        merge into CAMS_ZCSX_GRPJSXXX t1 using (
+            select * from sys_dict_item where dict_id in (
+                select id from sys_dict where dict_code = 'ly_xend_cpzlll'
+                )
+            )t2 on (t1.cpzl = t2.item_value and t1.cpzl is not null)
+        when matched then update set t1.cpzlll = t2.item_text
+    </update>
+
+    <update id="updateNh">
+        update KHXXGL_KHXQ_NH set khmc =#{dao.khmc},update_time = sysdate
+        <if test="dao.wgbh != null and dao.wgbh != ''">
+            ,wgbh = #{dao.wgbh}
+        </if>
+        <if test="dao.sszh != null and dao.sszh != ''">
+            ,sszh = #{dao.sszh}
+        </if>
+        <if test="dao.sskhjl != null and dao.sskhjl != ''">
+            ,sskhjl = #{dao.sskhjl}
+        </if>
+        <if test="dao.zjhm2 != null and dao.zjhm2 != ''">
+            ,zjhm = #{dao.zjhm2}
+        </if>
+        <if test="dao.yhzgx != null and dao.yhzgx != ''">
+            ,yhzgx = #{dao.yhzgx}
+        </if>
+        <if test="dao.sjhm != null and dao.sjhm != ''">
+            ,sjhm = #{dao.sjhm}
+        </if>
+        where zjhm =#{dao.zjhm}
+    </update>
+
+    <select id="getWorkNoByRole" resultType="string">
+        select tellid from sys_bas_user where userid in ( select user_id from sys_user_role where  role_id in (select id from sys_role where role_name =#{role})
+        ) and rownum = 1 and jgdm=#{sszh}
+    </select>
+</mapper>

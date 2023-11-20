@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ckjkpt.khgl.ygglckkhmx.mapper.CkjkptKhfxYgglkhckqsfxMapper">
+    <select id="queryjsryeqs"  resultType="org.cmms.modules.ckjkpt.khgl.ygglckkhmx.entity.CkjkptKhfxYgglkhckqsfx">
+        select *from (select * from CKJKPT_KHFZ_YGGLKHCKQSFX where  zzbz = #{zzbz}   and  gwbz= #{gwbz} and yggh= #{yggh}  and zjhm = #{zjhm}   order by tjyf desc  ) where rownum&lt;=10
+    </select>
+
+    <select id="queryjsryeqsDsj"  resultType="org.cmms.modules.ckjkpt.khgl.ygglckkhmx.entity.CkjkptKhfxYgglkhckqsfx">
+        select * from CKJKPT_KHFZ_YGGLKHCKQSFX where  zzbz = #{zzbz}   and  gwbz= #{gwbz} and yggh= #{yggh}  and zjhm = #{zjhm}   order by tjyf desc limit 10
+    </select>
+
+    <select id="queryjsryeqsByOracle"  resultType="org.cmms.modules.ckjkpt.khgl.ygglckkhmx.entity.CkjkptKhfxYgglkhckqsfx">
+        select *from (select * from CKJKPT_KHFZ_YGGLKHCKQSFX where  zzbz = #{zzbz}   and  gwbz= #{gwbz} and yggh= #{yggh}  and zjhm = #{zjhm}   order by tjyf desc  ) where rownum&lt;=10
+    </select>
+</mapper>

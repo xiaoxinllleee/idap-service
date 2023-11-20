@@ -1,0 +1,20 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"areaname": "营业部",
+		"zkhs": "4,482",
+		"qzkhs": "387",
+		"hxkhs": "185",
+		"ckhs": "3,782",
+		"dkhs": "1,298",
+		"ckje": "1,283万元",
+		"ckrp": "1,032万元",
+		"dkye": "872万元",
+		"byzfcs": "398",
+		"ljzfcs": "1,052",
+		"zzbz": "2",
+		"dybh": "10001"
+	}
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dkjkpt.dkjkptfxtsh.mapper.DkjkptFxtshMapper">
+    <select id="init" statementType="CALLABLE">
+        {call PKG_DKJKPT.P_DKJKPT_FXTSH(#{tjyf})}
+    </select>
+
+    <select id="dedk" parameterType="String"  resultType="org.cmms.modules.dkjkpt.dkjkptfxtsh.entity.DedkmxVo">
+        select
+          t.cust_name khmc,t.acct_no dkzh,t.applic_amount dkje,t.loan_bal dkye,
+          to_date(t.qx_date,'yyyymmdd') jkrq,to_date(t.end_date,'yyyymmdd') dqrq,
+          t.five_class_type dkxt,t.vouch_type dbfs,t.cust_cn,t2.zkhjl
+        from ${table} t
+        left join rep_tzgl_xt_dkqmx t2 on t.acct_no=t2.dkzh and t2.sjrq=to_date(#{tjyf}, 'yyyymmdd')
+        where t.subj_no like '13%' and t.br_no=#{jgdm}
+          and t.end_date >0 and t.end_date>=#{tjyf} and t.applic_amount >1000000 and t.loan_bal>0
+          and to_date(t.end_date,'yyyymmdd')&lt;= last_day(add_months(to_date(#{tjyf}, 'yyyymmdd'),1))
+    </select>
+    <select id="yqdk" parameterType="String"  resultType="org.cmms.modules.dkjkpt.dkjkptfxtsh.entity.YqdkmxVo">
+        select t.cust_name as khmc,t.loan_bal as dkye,to_date(t.end_date,'yyyymmdd')dqrq,t.br_no as jgdm,t2.zkhjl from  ${table} t
+        left join rep_tzgl_xt_dkqmx t2 on t.acct_no=t2.dkzh and t2.sjrq=to_date(#{tjyf}, 'yyyymmdd')
+        where t.subj_no like '13%' and t.end_date >0 and t.end_date>=#{tjyf} and t.loan_bal >0
+        and to_date(t.end_date,'yyyymmdd')&lt;= last_day(to_date(#{tjyf}, 'yyyymmdd'))
+        and t.br_no =#{jgdm}
+    </select>
+
+
+</mapper>

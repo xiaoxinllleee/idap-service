@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xddagl.gwgl.sfwgl.mapper.SfwglMapper">
+
+    <select id="getQuery" resultType="org.cmms.modules.xddagl.gwgl.sfwgl.entity.Sfwgl">
+        SELECT * FROM Xddagl_sfwgl WHERE 1=1
+            and PKG_IMP_TOOL.fn_split_str_db(swdw,',',#{zzbz})=1
+         <if test=" sfwgl.bt!=null and sfwgl.bt !='' ">
+            and bt=#{sfwgl.bt}
+         </if>
+        <if test=" sfwgl.fwbh!=null and sfwgl.fwbh !='' ">
+            and fwbh=#{sfwgl.fwbh}
+        </if>
+        <if test=" sfwgl.cwdw!=null and sfwgl.cwdw !='' ">
+            and bt=#{sfwgl.bt}
+        </if>
+        <if test=" sfwgl.fzr!=null and sfwgl.fzr !='' ">
+            and fzr=#{sfwgl.fzr}
+        </if>
+        <if test=" sfwgl.qfrq!=null and sfwgl.qfrq !='' ">
+            and qfrq=#{sfwgl.qfrq}
+        </if>
+    </select>
+</mapper>

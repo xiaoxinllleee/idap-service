@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.yydj.sjyh.mapper.YydjsjyhMapper">
+
+   <!-- <select id="getList" resultType="org.cmms.modules.ywgl.yydj.sjyh.entity.YyjlVO">
+        select t1.* from (
+        select t.*, rownum r from (
+        select '对公开户' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_ckkhyxdjb union
+        select 'ETC' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_etcyxdjb union
+        select '信用卡' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_xykdjb union
+        select '贷款业务' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_dkkhyxdjb union
+        select '手机银行' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_sjyhyxdjb  order by lrsj desc)t <where>
+        <if test="sbzt != 4">
+            and sbzt = #{sbzt}
+        </if>
+        </where>
+        )t1 where r between #{start} and #{end}
+    </select>-->
+
+    <select id="getList" resultType="org.cmms.modules.ywgl.yydj.sjyh.entity.YyjlVO">
+        select t.*  from (
+        select '存款开户' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_ckkhyxdjb where yggh=#{yggh} union
+        select 'ETC' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_etcyxdjb where yggh=#{yggh} union
+        select '信用卡' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_xykdjb where yggh=#{yggh} union
+        select '贷款业务' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_dkkhyxdjb where yggh=#{yggh} union
+        select '手机银行' flmc,yybh,khmc,sbzt,yyrq,lrsj,bz from Khgxgl_sjyhyxdjb where yggh=#{yggh} order by lrsj desc)t <where>
+        <if test="sbzt != 4">
+            and sbzt = #{sbzt}
+        </if>
+    </where>
+    </select>
+
+</mapper>

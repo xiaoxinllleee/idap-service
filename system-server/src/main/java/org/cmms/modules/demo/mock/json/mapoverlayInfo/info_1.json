@@ -1,0 +1,20 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"areaname": "濂溪南街",
+		"zkhs": "5,925",
+		"qzkhs": "285",
+		"hxkhs": "295",
+		"ckhs": "4,829",
+		"dkhs": "1,832",
+		"ckje": "2,862万元",
+		"ckrp": "2,729万元",
+		"dkye": "1,295万元",
+		"byzfcs": "128",
+		"ljzfcs": "872",
+		"zzbz": "2",
+		"dybh": "10002"
+	}
+}

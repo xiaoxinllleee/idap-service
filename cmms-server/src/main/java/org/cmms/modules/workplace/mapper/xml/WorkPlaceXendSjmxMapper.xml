@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.workplace.mapper.WorkPlaceXendSjmxMapper">
+
+    <!--工作台块状区域数据-->
+        <!--客户经理-->
+            <!--采集客户数-->
+            <select id="getXendCjkhsForKhjl" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM V_KHGL_GRKHGL WHERE KHJL=#{yggh}
+            </select>
+            <!--授信客户数-->
+            <select id="getXendSxkhsForKhjl" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM WORKPLACE_XENDSJMX_LY WHERE KHJL=#{yggh}
+            </select>
+            <!--用信客户数-->
+            <select id="getXendYxkhsForKhjl" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM (SELECT T1.IDENT_NO FROM CBS_BORM_BASE T1 LEFT JOIN WORKPLACE_XENDSJMX_LY T2 ON T1.IDENT_NO=T2.ZJHM WHERE T2.KHJL=#{yggh} GROUP BY T1.IDENT_NO)
+            </select>
+            <!--未授信客户数-->
+            <select id="getXendWsxKhsForKhjl" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM V_KHGL_GRKHGL T WHERE T.KHJL=#{yggh} AND T.ZJHM NOT IN (SELECT ZJHM FROM V_KHGL_GRKHPJSX GROUP BY ZJHM)
+            </select>
+            <!--授信金额-->
+            <select id="getXendSxjeForKhjl" parameterType="java.lang.String" resultType="java.lang.Double">
+                SELECT NVL(SUM(T.SXJE),0) FROM WORKPLACE_XENDSJMX_LY T WHERE T.KHJL=#{yggh}
+            </select>
+            <!--用信金额-->
+            <select id="getXendYxjeForKhjl" parameterType="java.lang.String" resultType="java.lang.Double">
+                SELECT NVL(SUM(T.YXJE),0) FROM WORKPLACE_XENDSJMX_LY T WHERE T.KHJL=#{yggh}
+            </select>
+        <!--支行行长-->
+            <!--采集客户数-->
+            <select id="getXendCjkhsForZhhz" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM V_KHGL_GRKHGL WHERE SSZH=#{zzbz}
+            </select>
+            <!--授信客户数-->
+            <select id="getXendSxkhsForZhhz" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM WORKPLACE_XENDSJMX_LY WHERE SSZH=#{zzbz}
+            </select>
+            <!--用信客户数-->
+            <select id="getXendYxkhsForZhhz" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM (SELECT T1.IDENT_NO FROM CBS_BORM_BASE T1 LEFT JOIN WORKPLACE_XENDSJMX_LY T2 ON T1.IDENT_NO=T2.ZJHM WHERE T2.SSZH=#{zzbz} GROUP BY T1.IDENT_NO)
+            </select>
+            <!--未授信客户数-->
+            <select id="getXendWsxKhsForZhhz" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM V_KHGL_GRKHGL T WHERE T.SSZH=#{zzbz} AND T.ZJHM NOT IN (SELECT ZJHM FROM V_KHGL_GRKHPJSX GROUP BY ZJHM)
+            </select>
+            <!--授信金额-->
+            <select id="getXendSxjeForZhhz" parameterType="java.lang.String" resultType="java.lang.Double">
+                SELECT NVL(SUM(T.SXJE),0) FROM WORKPLACE_XENDSJMX_LY T WHERE T.SSZH=#{zzbz}
+            </select>
+            <!--用信金额-->
+            <select id="getXendYxjeForZhhz" parameterType="java.lang.String" resultType="java.lang.Double">
+                SELECT NVL(SUM(T.YXJE),0) FROM WORKPLACE_XENDSJMX_LY T WHERE T.SSZH=#{zzbz}
+            </select>
+
+    <!--小额农贷客户等级工作台饼状图数据-->
+        <!--客户经理-->
+        <select id="queryXendKhPddjForKhjl" parameterType="java.lang.String" resultType="java.util.HashMap">
+            SELECT SXDJ,DJRS FROM WORKPLACE_SJMXHZ_KHJL WHERE KHJL=#{yggh} AND DKFL='A' ORDER BY SXDJ
+        </select>
+        <!--支行行长-->
+        <select id="queryXendKhPddjForZhhz" parameterType="java.lang.String" resultType="java.util.HashMap">
+            SELECT SXDJ,DJRS FROM WORKPLACE_SJMXHZ_ZHHZ WHERE SSZH=#{zzbz} AND DKFL='A' ORDER BY SXDJ
+        </select>
+
+
+        <!-- 工作台定时任务设置 -->
+        <select id="WorkPlaceAutoMission" statementType="CALLABLE">
+            {CALL PKG_WORKPLACE_SJMX.WORKPLACE_SJMX_TJ()}
+        </select>
+        <!-- 工作台定时任务设置 -->
+
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.nhxq.mapper.NhxqHmdMapper">
+
+    <update id="init" statementType="CALLABLE">
+        {call pkg_khxxgl.P_NHXXXX}
+    </update>
+
+    <select id="getHByZjhm" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.NhxqHmd">
+        select * from KHXXGL_KHXQ_NH_HMD  where hhbm in (select hhbm from KHXXGL_KHXQ_NH where zjhm =#{zjhm}) and zjhm != #{zjhm}
+    </select>
+
+    <select id="getByHnkd" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.NhxqHmd">
+
+        select * from KHXXGL_KHXQ_NH_HMD where zjhm in (
+        select zjhm from KHXXGL_HNKD where 1 = 1
+        <if test="khxxglHnkd.khlx != null and khxxglHnkd.khlx != ''">
+            and khlx = #{khxxglHnkd.khlx}
+        </if>
+        <if test="khxxglHnkd.khmc != null and khxxglHnkd.khmc != ''">
+            and khmc = #{khxxglHnkd.khmc}
+        </if>
+        <if test="khxxglHnkd.zjhm != null and khxxglHnkd.zjhm != ''">
+            and zjhm = #{khxxglHnkd.zjhm}
+        </if>
+        <if test="khxxglHnkd.sfycdg != null and khxxglHnkd.sfycdg != ''">
+            and sfycdg = #{khxxglHnkd.sfycdg}
+        </if>
+        <if test="khxxglHnkd.wgbh != null and khxxglHnkd.wgbh != ''">
+            and wgbh in (select wgbh from yxdygl_main start with wgbh= #{khxxglHnkd.wgbh} connect by prior wgbh=parent_id)
+        </if>
+        <if test="khxxglHnkd.wgbh == null or khxxglHnkd.wgbh == ''">
+            and wgbh in (select menu_id from YXDYGL_PQQXGL where khjl =#{workNo})
+        </if>)
+    </select>
+</mapper>

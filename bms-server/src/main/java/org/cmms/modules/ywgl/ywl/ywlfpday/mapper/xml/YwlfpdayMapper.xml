@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.ywl.ywlfpday.mapper.YwlfpdayMapper">
+    <update id="updateStatus">
+        update ERP_ASSESS_YWLMX_JGDFP set fpzt ='0' where fpid=#{fpid}
+    </update>
+
+    <update id="updateYwlfpStatus">
+        update ERP_ASSESS_YWLMX_JGDFP set fpzt ='1',fpsj = sysdate, fpczy = #{fpczy}
+        where 1=1
+        <if test="type !=null and type != '' and type=='1'.toString()">
+            and fpid=#{fpid}
+        </if>
+        <if test="type !=null and type != '' and type=='2'.toString()">
+            and tjrq &gt;= trunc(to_date(#{fprq},'yyyymmdd'),'MM')
+            and tjrq &lt;= last_day(to_date(#{fprq},'yyyymmdd'))
+            and fpid in ( select distinct fpid
+                          from ERP_ASSESS_YWLMX_JGFPMX
+                          where tjrq &gt;= trunc(to_date(#{fprq},'yyyymmdd'),'MM')
+                          and tjrq &lt;= last_day(to_date(#{fprq},'yyyymmdd'))
+                        )
+        </if>
+        <if test="type !=null and type != '' and type=='3'.toString()">
+            and zzbz=#{zzbz}
+            and tjrq &gt;= trunc(to_date(#{fprq},'yyyymmdd'),'MM')
+            and tjrq &lt;= last_day(to_date(#{fprq},'yyyymmdd'))
+        </if>
+    </update>
+
+    <select id="getFpxxByMonth" resultType="org.cmms.modules.ywgl.ywl.ywlfpday.entity.Ywlfpday">
+        select zzbz,
+               min(to_date(#{tjrq},'yyyymmdd')) tjrq,
+               sum(nvl(atmywbs,0)) atmywbs,
+               sum(nvl(atmxjll,0)) atmxjll,
+               sum(nvl(qtywbs,0)) qtywbs,
+               sum(nvl(qtxjll,0)) qtxjll
+        from ERP_ASSESS_YWLMX_JGDFP
+        where zzbz=#{zzbz}
+        and tjrq &gt;= trunc(to_date(#{tjrq},'yyyymmdd'),'MM')
+        and tjrq &lt;= last_day(to_date(#{tjrq},'yyyymmdd'))
+        group by zzbz
+    </select>
+</mapper>

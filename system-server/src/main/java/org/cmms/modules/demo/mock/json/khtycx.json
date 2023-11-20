@@ -1,0 +1,37 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"records":[
+			{
+				"id ": 1,
+				"sszh": "营业部",
+				"ssyxdy": "财务部",
+				"qybh": "1",
+				"dabh": "1",
+				"qymc": "特别行动组",
+				"zjhm": "123",
+				"lxfs": "长沙",
+				"dz": "行业分类",
+				"jyxm": "1",
+				"jynx": "3",
+				"zgrs": "50",
+				"qygm": "金融业务情况",
+				"hyfl": "1",
+				"khzycd": "重要",
+				"ywhywwlqk": "与我行业务往来情况",
+				"qzyw": "金融业务情况",
+				"gskhjl": "1",
+				"gjrxx": "重要",
+				"csxx": "重要",
+				"jyqk": "经营情况",
+				"zcfzqk": "资产负债情况",
+				"jrywqk": "1",
+				"yxqk": "重要",
+				"fjxx": "附件信息"
+
+			}
+		]
+	}
+}

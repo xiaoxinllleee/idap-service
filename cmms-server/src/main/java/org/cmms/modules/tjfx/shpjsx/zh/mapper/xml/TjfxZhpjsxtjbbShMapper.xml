@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.shpjsx.zh.mapper.TjfxZhpjsxtjbbShMapper">
+    <select id="queryPageListMx" resultType="org.cmms.modules.tjfx.shpjsx.zh.entity.ShZhPjsxMxVo">
+        select n2.sszh sszh,
+        n2.wgbh ssyxdy,
+        n2.shmc shmc,
+        nvl(n2.xtcssxed,0) xtcsed,
+        n2.khjlpddj khjlpddj,
+        nvl(n2.khjlsxed,0) khjlsxed,
+        n2.lrr lrr,
+        n3.ygxm lrrxm,
+        n2.lrsj lrsj
+        from (
+            select
+            zzbz,ywjgdm
+            from hr_bas_organization
+            where zzlb in ('4','5')
+        )n1
+        left join (
+        select t2.sszh,t2.wgbh,t2.shmc,t1.xtcssxed,t1.khjlsxed,t1.lrr,t1.lrsj,t1.khjlpddj
+        from cams_zcsx_shpjsxxx t1,khxxgl_khxq_sh t2
+        where t1.shid=t2.id and to_char(t1.lrsj,'yyyymmdd') &lt;=#{sjrq}
+        and nvl(t1.khjlsxed,0) &lt;=nvl(t1.xtcssxed,0)
+        <if test="type != null">
+            <if test="type == '1'.toString()">
+                and t1.khjlpddj is not null
+            </if>
+            <if test="type == '2'.toString()">
+                and nvl(t1.khjlsxed,0) &gt; 0
+            </if>
+        </if>
+        )n2
+        on n1.zzbz=n2.sszh
+        left join hr_bas_staff n3 on n2.lrr=n3.yggh
+        where 1=1
+        <if test="sszh !=null and sszh != ''">
+            and n2.sszh=#{sszh}
+        </if>
+    </select>
+
+    <select id="queryListMx" resultType="org.cmms.modules.tjfx.shpjsx.zh.entity.ShZhPjsxMxVo">
+        select n2.sszh sszh,
+        n2.wgbh ssyxdy,
+        n2.shmc shmc,
+        nvl(n2.xtcssxed,0) xtcsed,
+        n2.khjlpddj khjlpddj,
+        nvl(n2.khjlsxed,0) khjlsxed,
+        n2.lrr lrr,
+        n3.ygxm lrrxm,
+        n2.lrsj lrsj
+        from (
+        select
+        zzbz,ywjgdm
+        from hr_bas_organization
+        where zzlb in ('4','5')
+        )n1
+        left join (
+        select t2.sszh,t2.wgbh,t2.shmc,t1.xtcssxed,t1.khjlsxed,t1.lrr,t1.lrsj,t1.khjlpddj
+        from cams_zcsx_shpjsxxx t1,khxxgl_khxq_sh t2
+        where t1.shid=t2.id and to_char(t1.lrsj,'yyyymmdd') &lt;=#{sjrq}
+        and nvl(t1.khjlsxed,0) &lt;=nvl(t1.xtcssxed,0)
+        <if test="type != null">
+            <if test="type == '1'.toString()">
+                and t1.khjlpddj is not null
+            </if>
+            <if test="type == '2'.toString()">
+                and nvl(t1.khjlsxed,0) &gt; 0
+            </if>
+        </if>
+        )n2
+        on n1.zzbz=n2.sszh
+        left join hr_bas_staff n3 on n2.lrr=n3.yggh
+        where 1=1
+        <if test="sszh !=null and sszh != ''">
+            and n2.sszh=#{sszh}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.jgywsj.dktjsj.mapper.DktjsjMapper">
+    <select id="getLatestTjrq" resultType="java.util.Date">
+        select tjrq from (
+          select tjrq from tb_tjfx_dktjsj where zzbz= #{zzbz} group by tjrq order by tjrq desc
+        ) where rownum &lt;= 5
+    </select>
+
+    <select id="queryDkxxByTjrqAndZzbz" resultType="org.cmms.modules.jgywsj.dktjsj.entity.Dktjsj">
+        select
+          tjrq,zzbz,dkye,bldkye as bnbl
+        from tb_tjfx_dktjsj where tjrq = to_date(#{tjrq},'yyyy-MM-dd') and zzbz = #{zzbz}
+    </select>
+</mapper>

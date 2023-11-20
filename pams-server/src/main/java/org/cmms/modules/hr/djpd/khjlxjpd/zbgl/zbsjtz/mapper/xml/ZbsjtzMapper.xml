@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.hr.djpd.khjlxjpd.zbgl.zbsjtz.mapper.ZbsjtzMapper">
+
+    <select id="getListClaim" resultType="org.cmms.modules.hr.djpd.khjlxjpd.jcsjgl.khjljcsjsz.entity.Khjljcsjsz" parameterType="java.lang.String">
+        select t.* from Grade_cust_starstaff t
+        where 1=1
+        <if test="pdzq != null and pdzq !=''">
+               and t.pdzq = #{pdzq}
+        </if>
+        <if test="pdrq != null and pdrq!=''">
+            and  t.pdrq = to_date(#{pdrq},'yyyy-mm-dd')
+        </if>
+        <if test="zzbz != null and zzbz!=''">
+            and  t.zzbz = #{zzbz}
+        </if>
+        <if test="yggh != null and yggh!=''">
+            and  t.yggh = #{yggh}
+        </if>
+        <if test="khjlbz != null and khjlbz!=''">
+            and  t.khjlbz = #{khjlbz}
+        </if>
+        <if test="ygxm != null and ygxm!=''">
+            and  t.ygxm = #{ygxm}
+        </if>
+    </select>
+
+    <select id="getListZbid" resultType="org.cmms.modules.hr.djpd.khjlxjpd.csgl.pdsjxgl.entity.Pdsjxgl" parameterType="java.lang.String">
+        select t.* from Grade_sjx t
+        where 1=1
+        <if test="sjxid != null and sjxid !=''">
+            and t.sjxid = #{sjxid}
+        </if>
+        <if test="sjxmc != null and sjxmc!=''">
+            and  t.sjxmc = #{sjxmc}
+        </if>
+        <if test="sjxwd != null and sjxwd!=''">
+            and  t.sjxwd = #{sjxwd}
+        </if>
+    </select>
+
+</mapper>

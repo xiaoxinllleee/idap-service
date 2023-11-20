@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dklldj.lldjgl.lldjsqNy.mapper.LldjsqNyMapper">
+
+<!--    <select id="queryColumnValue" parameterType="java.lang.String" resultType="java.math.BigDecimal">-->
+<!--        select nvl(#{columnname},0) from #{tablename} where ident_no=#{zjhm}-->
+<!--    </select>-->
+
+    <select id="querySnzxll" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select nvl(avg(int_rate),0) from ${tablename} where ident_no=#{zjhm}
+    </select>
+
+    <select id="querySndkrp" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select nvl(SUM(rpye_y)/10000,0) from ${tablename} where ident_no=#{zjhm}
+    </select>
+
+    <select id="queryCkrpyeSumGR" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select nvl(sum(rpye_y_b),0) / 10000 as ckrpye
+          from #{tablename}
+         where ident_no = #{zjhm}
+            or ident_no in (select glrzjhm from RATE_KHGLRXXB where zjhm = #{zjhm} group by glrzjhm)
+    </select>
+
+    <select id="queryCkrpyeSumQY" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select nvl(sum(rpye_y_b),0) / 10000 as ckrpye from ${tablename} where ident_no = #{zjhm}
+    </select>
+
+    <select id="ExtractionGlzhxx" parameterType="java.lang.String" statementType="CALLABLE">
+        {CALL PKG_LLDJ.P_KHZHXX_TJ(#{zjhm})}
+    </select>
+
+    <select id="ExtractionKhzbsj" parameterType="java.lang.String" statementType="CALLABLE">
+        {CALL PKG_LLDJ.P_KHZBSJ_TQ(#{djnf},#{zjhm})}
+    </select>
+
+    <select id="ExtractionJynrp" parameterType="java.lang.String" statementType="CALLABLE">
+        {CALL PKG_LLDJ.P_ZHJYNRP_TJ(#{djnf},#{zjhm})}
+    </select>
+
+    <select id="QueryKhZhCkrp" parameterType="java.lang.String" resultType="org.cmms.modules.dklldj.lldjgl.entity.RateZhckrp">
+        select * from rate_lldj_zhckrp where tjlx=#{tjlx} and tjyf=to_date(#{djnf},'yyyyMMdd') and zjhm=#{zjhm}
+    </select>
+
+    <select id="QueryKhZbsjmx" parameterType="java.lang.String" resultType="org.cmms.modules.dklldj.lldjgl.entity.RateKhzbsjmx">
+        select * from rate_lldj_khzbsjmx where djnf=to_date(#{djnf},'yyyyMMdd') and zjhm=#{zjhm} and rownum = 1
+    </select>
+
+</mapper>

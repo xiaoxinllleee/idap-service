@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ywgl.ckyw.ckclgl.mapper.CkclglMapper">
+    <select id="pCkclgl" statementType="CALLABLE">
+        {call PKG_YWGL_CKYW.P_CKCLGL_INIT(#{clnf})}
+    </select>
+
+    <!--<select id="getListClaim" parameterType="java.lang.String" resultType="org.cmms.modules.ywgl.ckyw.ckclgl.vo.HrBasStaffPostVO">
+        select t.*,t2.ywjgdm from HR_BAS_STAFF_POST@eweb t,HR_BAS_ORGANIZATION@eweb t2
+        where t.zzbz=t2.zzbz
+        <if test="ywjgdm != null and ywjgdm !=''">
+            and t2.ywjgdm = #{ywjgdm}
+        </if>
+        <if test="rglx != null and rglx!=''">
+            and  t.rglx = #{rglx}
+        </if>
+        <if test="gwbz != null and gwbz!=''">
+            and  t.gwbz = #{gwbz}
+        </if>
+        <if test="khjlbz != null and khjlbz!=''">
+            and  t.khjlbz = #{khjlbz}
+        </if>
+    </select>-->
+</mapper>

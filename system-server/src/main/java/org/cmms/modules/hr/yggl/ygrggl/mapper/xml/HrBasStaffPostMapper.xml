@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.hr.yggl.ygrggl.mapper.HrBasStaffPostMapper">
+
+    <select id="ifExistByYgghAndRgrqAndLgrq" parameterType="org.cmms.modules.hr.yggl.ygrggl.entity.HrBasStaffPost" resultType="integer">
+        <!--使用时要注意离岗日期为空时，要设置一个默认的最大值 -->
+        select count(1) from HR_BAS_STAFF_POST where rglx=1
+        <!-- 编辑时，不判断当前记录 -->
+        <if test="dao.id != null">
+            and id != #{dao.id}
+        </if>
+        <if test="dao.yggh != null">
+            and yggh = #{dao.yggh}
+        </if>
+        <if test="dao.lgrq != null">
+            and rgrq &lt;= #{dao.lgrq}
+        </if>
+
+        and (
+        <if test="dao.rgrq != null">
+             lgrq &gt;= #{dao.rgrq} or
+        </if>
+
+             lgrq is null
+        )
+    </select>
+
+    <select id="getId" resultType="long">
+        select ID_SEQUENCE.nextval from dual
+    </select>
+
+    <select id="getByNowDate" resultType="org.cmms.modules.hr.yggl.ygrggl.entity.HrBasStaffPost">
+        select *  from hr_bas_staff_post
+        where rgrq &lt;=  sysdate
+          and (lgrq is null or lgrq &gt;= trunc(sysdate, 'MM')) and yggh=#{yggh}
+    </select>
+
+
+    <select id="getZhzgry" resultType="org.cmms.modules.hr.yggl.ygrggl.entity.HrBasStaffPostZhzgry">
+
+        select  t1.id, t1.zzbz, t1.gwbz, t1.yggh, t1.rglx,  t1.rgrq,  t1.lgrq, t1.khjlbz,
+        t1.gyh,   t1.bz, t1.scsj,  t1.sfcykh,  t1.sfltx, t2.yglx
+        from (select zzbz, yggh,  gwbz,  rglx, rgrq,
+        lgrq,  khjlbz, gyh,  bz, scsj, id, sfcykh, sfltx
+        from (select zzbz,yggh,gwbz, rglx, rgrq, lgrq, khjlbz, gyh, bz, scsj, id, sfcykh, sfltx,
+        row_number() over(partition by zzbz, yggh order by rgrq desc) pk
+        from Hr_bas_staff_post
+        where rglx != 4
+        and rgrq &lt;= last_day(to_date(#{fpyf}, 'yyyyMMdd'))
+        and (lgrq is null or lgrq  &gt;= trunc(to_date(#{fpyf}, 'yyyyMMdd'),'MM'))
+        and zzbz in (select zzbz  from Hr_bas_organization  where zzbz =#{zzbz} or sjzzbz =#{zzbz})
+        and yggh in  (select yggh from Hr_bas_staff where yglx in (1, 2, 5)))
+        where pk = 1
+        order by zzbz, gwbz, yggh asc) t1
+        left join Hr_bas_staff t2
+        on t1.yggh = t2.yggh
+
+    </select>
+
+    <select id="getStaffPostInfoBySprq" parameterType="java.lang.String" resultType="org.cmms.modules.hr.yggl.ygrggl.entity.HrBasStaffPost">
+        select * from HR_BAS_STAFF_POST
+        where yggh=#{yggh}
+        and rgrq &lt;= to_date(#{sprq},'yyyyMMdd')
+        and (lgrq is null or lgrq  &gt;= to_date(#{sprq},'yyyyMMdd') )
+    </select>
+</mapper>

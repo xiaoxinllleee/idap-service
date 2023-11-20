@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.report.zbgl.zbsjx.mapper.ZbsjxglMapper">
+    <select id="getListByQydm" parameterType="java.lang.String" resultType="org.cmms.modules.report.zbgl.zbsjx.entity.Zbsjxgl">
+   select ID,Zbid,ZBMC,ZBWD,ZBLX,JSSQL,SJLY,ZXSX,ZXPC,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME,SFQY from (
+    SELECT ID,Zbid,ZBMC,ZBWD,ZBLX,JSSQL,SJLY,ZXSX,ZXPC,CREATE_BY,CREATE_TIME,UPDATE_BY,UPDATE_TIME,SFQY
+        FROM (select T1.ID,
+                     T1.Zbid,
+                     T1.ZBMC,
+                     T1.ZBWD,
+                     T1.ZBLX,
+                     NVL(T2.JSSQL, T1.JSSQL) JSSQL,
+                     T1.SJLY,
+                     NVL(T2.ZXSX, T1.ZXSX) ZXSX,
+                     NVL(T2.ZXPC, T1.ZXPC) ZXPC,
+                     T1.CREATE_BY,
+                     T1.CREATE_TIME,
+                     T1.UPDATE_BY,
+                     T1.UPDATE_TIME,
+                     NVL(T2.SFQY, T1.SFQY) SFQY,
+                     NVL(T2.GLBM, T1.SFQY) GLBM
+              from REP_INDEX_SJX t1
+             left join (select * from REP_INDEX_SJX_AREA where qydm = #{qydm}) t2
+             on t1.zbid = t2.zbid
+             and t1.zbwd = t2.zbwd
+             and t1.zblx = t2.zblx
+             where t1.ZBLX=#{zblx}
+               and t1.ZBWD=#{zbwd}
+            <if test=' zbid != null and zbid != "" '>
+                AND t1.zbid = #{zbid}
+            </if>
+            )
+        WHERE SFQY = 1 order by ZXPC,ZXSX ASC) where JSSQL is not null
+    </select>
+</mapper>

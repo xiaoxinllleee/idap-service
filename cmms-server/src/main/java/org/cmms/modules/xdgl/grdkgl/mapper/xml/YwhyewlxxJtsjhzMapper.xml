@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.YwhyewlxxJtsjhzMapper">
+
+    <!--根据"HHBM"获取与我行业务往来信息"家庭数据汇总"-->
+    <select id="GetYwhywwlxxJtsjhzByHhbm" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.YwhyewlxxJtsjhz">
+        SELECT * FROM KHGL_YWHYWWLXX_JTSLHZ WHERE hhbm=#{hhbm}
+    </select>
+
+    <!--贷款审批：根据"HHBM"查询客户家庭成员与我行业务往来数据-->
+    <select id="queryJtcyYwhywwlDataByHhbm" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.nh.entity.Ywhywwlxx">
+        SELECT * FROM KHXXGL_YWHYWWLXX WHERE hhbm = #{hhbm} ORDER BY SJRQ DESC
+    </select>
+
+</mapper>

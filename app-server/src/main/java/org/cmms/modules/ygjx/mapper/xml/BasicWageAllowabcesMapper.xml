@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ygjx.mapper.BasicWageAllowabcesMapper">
+    <select id="getByYggh" resultType="org.cmms.modules.ygjx.entity.GzMxVO">
+        select sum(a)gwgz,sum(b)ldjs,sum(c)jbt,sum(d)qt,sum(e)dkdj from (
+                                                                            select sum(total_wage) a,0 b,0 c,0 d,0 e from BASIC_WAGE_ISSUANCE t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') union
+                                                                            select 0,sum(total_wage),0,0,0 from BASIC_WAGE_LABORCOMPETITION t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') union
+                                                                            select 0,0,sum(total_wage),0,0 from BASIC_WAGE_OTHERS t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') union
+                                                                            select 0,0,0,sum(total_wage),0 from BASIC_WAGE_ALLOWABCES t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') union
+                                                                            select 0,0,0,0,sum(total_wage) from BASIC_WAGE_WITHHOLDING t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') )
+    </select>
+
+    <select id="getJbgz" resultType="decimal">
+        select sum(gwgz+ldjs+jbt+qt+dkdj) from (
+        select sum(a)gwgz,sum(b)ldjs,sum(c)jbt,sum(d)qt,sum(e)dkdj from (
+                                                                            select sum(total_wage) a,0 b,0 c,0 d,0 e from BASIC_WAGE_ISSUANCE t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') union
+                                                                            select 0,sum(total_wage),0,0,0 from BASIC_WAGE_LABORCOMPETITION t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') union
+                                                                            select 0,0,sum(total_wage),0,0 from BASIC_WAGE_OTHERS t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') union
+                                                                            select 0,0,0,sum(total_wage),0 from BASIC_WAGE_ALLOWABCES t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') union
+                                                                            select 0,0,0,0,sum(total_wage) from BASIC_WAGE_WITHHOLDING t where yggh=#{yggh} and tjyf=to_date(#{date},'yyyymmdd') ))
+
+    </select>
+</mapper>

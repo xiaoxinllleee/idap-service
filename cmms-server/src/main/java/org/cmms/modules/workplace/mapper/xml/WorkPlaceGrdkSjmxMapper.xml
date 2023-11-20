@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.workplace.mapper.WorkPlaceGrdkSjmxMapper">
+
+    <!--工作台块状区域数据-->
+        <!--客户经理-->
+            <!--采集客户数-->
+            <select id="getGrdkCjkhsForKhjl" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM V_KHGL_GRXD WHERE SSKHJL=#{yggh}
+            </select>
+            <!--授信客户数-->
+            <select id="getGrdkSxkhsForKhjl" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM WORKPLACE_GRDKSJMX_LY WHERE KHJL=#{yggh}
+            </select>
+            <!--用信客户数-->
+            <select id="getGrdkYxkhsForKhjl" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM (SELECT T1.IDENT_NO FROM CBS_BORM_BASE T1 LEFT JOIN WORKPLACE_GRDKSJMX_LY T2 ON T1.IDENT_NO=T2.ZJHM WHERE T2.KHJL=#{yggh} GROUP BY T1.IDENT_NO)
+            </select>
+            <!--未授信客户数-->
+            <select id="getGrdkWsxkhsForKhjl" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM V_KHGL_GRXD T WHERE T.SSKHJL=#{yggh} AND T.ZJHM NOT IN (SELECT ZJHM FROM V_KHGL_GRXD_SPLC GROUP BY ZJHM)
+            </select>
+            <!--授信金额-->
+            <select id="getGrdkSxjeForKhjl" parameterType="java.lang.String" resultType="java.lang.Double">
+                SELECT NVL(SUM(T.SXJE),0) FROM WORKPLACE_GRDKSJMX_LY T WHERE T.KHJL=#{yggh}
+            </select>
+            <!--用信金额-->
+            <select id="getGrdkYxjeForKhjl" parameterType="java.lang.String" resultType="java.lang.Double">
+                SELECT NVL(SUM(T.YXJE),0) FROM WORKPLACE_GRDKSJMX_LY T WHERE T.KHJL=#{yggh}
+            </select>
+        <!--支行行长-->
+            <!--采集客户数-->
+            <select id="getGrdkCjkhsForZhhz" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM V_KHGL_GRXD WHERE SSZH=#{zzbz}
+            </select>
+            <!--授信客户数-->
+            <select id="getGrdkSxkhsForZhhz" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM WORKPLACE_GRDKSJMX_LY WHERE SSZH=#{zzbz}
+            </select>
+            <!--用信客户数-->
+            <select id="getGrdkYxkhsForZhhz" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM (SELECT T1.IDENT_NO FROM CBS_BORM_BASE T1 LEFT JOIN WORKPLACE_GRDKSJMX_LY T2 ON T1.IDENT_NO=T2.ZJHM WHERE T2.SSZH=#{zzbz} GROUP BY T1.IDENT_NO)
+            </select>
+            <!--未授信客户数-->
+            <select id="getGrdkWsxkhsForZhhz" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT NVL(COUNT(1),0) FROM V_KHGL_GRXD T WHERE T.SSZH=#{zzbz} AND T.ZJHM NOT IN (SELECT ZJHM FROM V_KHGL_GRXD_SPLC GROUP BY ZJHM)
+            </select>
+            <!--授信金额-->
+            <select id="getGrdkSxjeForZhhz" parameterType="java.lang.String" resultType="java.lang.Double">
+                SELECT NVL(SUM(T.SXJE),0) FROM WORKPLACE_GRDKSJMX_LY T WHERE T.SSZH=#{zzbz}
+            </select>
+            <!--用信金额-->
+            <select id="getGrdkYxjeForZhhz" parameterType="java.lang.String" resultType="java.lang.Double">
+                SELECT NVL(SUM(T.YXJE),0) FROM WORKPLACE_GRDKSJMX_LY T WHERE T.SSZH=#{zzbz}
+            </select>
+
+    <!--个人贷款客户等级工作台饼状图数据-->
+        <!--客户经理-->
+        <select id="queryGrdkKhPddjForKhjl" parameterType="java.lang.String" resultType="java.util.HashMap">
+            SELECT SXDJ,DJRS FROM WORKPLACE_SJMXHZ_KHJL WHERE KHJL=#{yggh} AND DKFL='B' ORDER BY SXDJ
+        </select>
+        <!--支行行长-->
+        <select id="queryGrdkKhPddjForZhhz" parameterType="java.lang.String" resultType="java.util.HashMap">
+            SELECT SXDJ,DJRS FROM WORKPLACE_SJMXHZ_ZHHZ WHERE SSZH=#{zzbz} AND DKFL='B' ORDER BY SXDJ
+        </select>
+
+</mapper>

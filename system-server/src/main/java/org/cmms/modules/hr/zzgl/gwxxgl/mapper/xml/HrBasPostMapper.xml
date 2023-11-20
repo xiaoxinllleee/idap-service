@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.hr.zzgl.gwxxgl.mapper.HrBasPostMapper">
+
+    <select id="queryByGwbz" resultType="java.lang.String">
+        select gwmc from Hr_bas_post  where gwbz=#{gwbz}
+    </select>
+
+
+    <select id="getListClaim" resultType="org.cmms.modules.hr.zzgl.gwxxgl.entity.HrBasStaffPostVo" parameterType="java.lang.String">
+        select t.*,t2.ywjgdm from HR_BAS_STAFF_POST t,HR_BAS_ORGANIZATION t2
+        where t.zzbz=t2.zzbz
+        <if test="ywjgdm != null and ywjgdm !=''">
+            and  t2.ywjgdm = #{ywjgdm}
+        </if>
+        <if test="rglx != null and rglx!=''">
+            and  t.rglx = #{rglx}
+        </if>
+        <if test="gwbz != null and gwbz!=''">
+            and  t.gwbz = #{gwbz}
+        </if>
+        <if test="khjlbz != null and khjlbz!=''">
+            and  t.khjlbz = #{khjlbz}
+        </if>
+        <if test="yggh != null and yggh!=''">
+            and  t.yggh = #{yggh}
+        </if>
+    </select>
+
+    <select id="getYggwxx" resultType="org.cmms.modules.hr.zzgl.gwxxgl.entity.HrBasStaffPostVo" parameterType="java.lang.String">
+        select t.*,t2.ywjgdm from HR_BAS_STAFF_POST t,HR_BAS_ORGANIZATION t2
+        where t.zzbz = t2.zzbz
+        <if test="gyh != null and gyh != ''">
+            and t.gyh = #{gyh}
+        </if>
+        <if test="khjlbz != null and khjlbz != ''">
+            and t.khjlbz = #{khjlbz}
+        </if>
+        <if test="yggh != null and yggh != ''">
+            and t.yggh = #{yggh}
+        </if>
+    </select>
+
+
+
+
+    <select id="getListFindBack" resultType="org.cmms.modules.hr.zzgl.gwxxgl.entity.HrBasStaffPostVo" parameterType="java.lang.String">
+        select t.*,t2.ywjgdm from HR_BAS_STAFF_POST t,HR_BAS_ORGANIZATION t2
+        where t.zzbz=t2.zzbz and t2.ywjgdm=#{jgdm}
+    </select>
+
+
+    <select id="ygghInfo" resultType="org.cmms.modules.hr.zzgl.gwxxgl.entity.HrBasOranizationVo" parameterType="java.lang.String">
+        select * from V_HR_BAS_ORGANIZATION where 1=1
+        <if test="zzbz != null and zzbz!=''">
+            and zzbz = #{zzbz}
+        </if>
+        <if test="ywjgdm != null and ywjgdm!=''">
+            and  ywjgdm = #{ywjgdm}
+        </if>
+    </select>
+
+    <select id="getYggw" resultType="org.cmms.modules.hr.zzgl.gwxxgl.entity.HrBasStaffPostVo" parameterType="java.lang.String">
+        select * from hr_bas_staff_post t where yggh =#{yggh}
+                                                        and rgrq &lt;= to_date(#{tjrq},'yyyymmdd')
+                                                        and (lgrq is null or lgrq >= to_date(#{tjrq},'yyyymmdd')) and rownum =1
+    </select>
+</mapper>

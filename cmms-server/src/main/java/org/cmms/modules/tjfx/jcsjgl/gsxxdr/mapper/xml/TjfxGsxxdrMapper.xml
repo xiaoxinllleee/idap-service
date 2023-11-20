@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.jcsjgl.gsxxdr.mapper.TjfxGsxxdrMapper">
+    <delete id="delete2">
+        delete from tjfx_gsxxdr where
+        <if test="sszh!=null and sszh!=''">
+            sszh = #{sszh}
+        </if>
+        <if test="zjhm!=null and zjhm!=''">
+            and zjhm = #{zjhm}
+        </if>
+        <if test="gsrq!=null and gsrq!=''">
+            and gsrq = to_date(#{gsrq},'yyyy/MM/dd')
+        </if>
+    </delete>
+
+   <!-- <select id="queryByMsg" resultType="org.cmms.modules.tjfx.jcsjgl.gsxxdr.entity.TjfxGsxxdr">
+        select * from tjfx_gsxxdr where
+        <if test="sszh!=null and sszh!=''">
+            sszh = #{sszh}
+        </if>
+        <if test="zjhm!=null and zjhm!=''">
+            and zjhm = #{zjhm}
+        </if>
+        <if test="gsrq!=null and gsrq!=''">
+            and gsrq = to_date(#{gsrq},'yyyy/MM/dd')
+        </if>
+    </select>-->
+
+    <select id="queryByMsg" resultType="org.cmms.modules.tjfx.jcsjgl.gsxxdr.entity.TjfxGsxxdr">
+        select * from tjfx_gsxxdr where
+            sszh = #{sszh}
+            and zjhm = #{zjhm}
+            and gsrq = #{gsrq}
+    </select>
+
+    <select id="querygscs" resultType="Long" >
+        select count(*)gscs from tjfx_gsxxdr  where sszh = #{sszh} and zjhm = #{zjhm}
+    </select>
+
+
+
+</mapper>

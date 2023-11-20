@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xyjlcx.xybg.xybgcx.mapper.CreditReportNoMapper">
+
+    <select id="getSerialNumByAreaCodeAndCurrentDate" parameterType="java.lang.String" resultType="java.lang.String">
+        select max(xh) from credit_bgbh where jgdm = #{areaCode} and cxrq = to_date(#{today}, 'YYYYMMDD')
+    </select>
+
+    <select id="getXhByQydmAndDate" parameterType="java.lang.String" resultType="java.lang.String">
+        select max(xh) from credit_bgbh where jgdm = #{qydm} and cxrq = to_date(#{today})
+    </select>
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.grcdksjmx.mapper.KhglGrcdsjmxMapper">
+
+    <select id="init" parameterType="java.util.Map" statementType="CALLABLE">
+        { CALL PKG_KHYWXX.P_KHYWXX_GRSJMX
+            (#{tjyf, mode=IN, jdbcType=VARCHAR})
+        }
+    </select>
+
+    <select id="getgrjynck"  resultType="java.util.HashMap">
+       SELECT TO_CHAR(TJYF,'YYYY-MM') as type, ckye as 存款余额,ckrpye as 存款月日平,cknrpye as 存款年日平, dkye as 贷款余额,dkyrp as 贷款月日平,dknrp as 贷款年日平 FROM KHGL_GRCDSJMX WHERE TJYF &gt; add_months(sysdate,-12) and ROWNUM &lt;=12  and zjhm=#{zjhm} order by tjyf asc
+    </select>
+
+    <select id="getCsz" parameterType="java.lang.String" resultType="java.lang.String">
+        select csz from tjfx_cssz where csbm=#{csbm}
+    </select>
+</mapper>

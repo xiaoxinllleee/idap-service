@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.pad.nhxxgl.mapper.KhxxglGrsxlxmxNhMapper">
+    <insert id="syncYesNHGrsxlxmx">
+        insert into KHXXGL_GRSXLXMX_NH_SYNC_YES
+        select zjhm from KHXXGL_GRSXLXMX_NH where zjhm not in (select zjhm from KHXXGL_GRSXLXMX_NH_SYNC_YES)
+    </insert>
+
+    <delete id="delNhgrsxlxmxByHhbm" parameterType="java.lang.String">
+        delete from KHXXGL_GRSXLXMX_NH where hhbm=#{hhbm}
+    </delete>
+
+    <delete id="delNhgrsxlxmx">
+        delete from idap.KHXXGL_GRSXLXMX_NH where 1=1
+    </delete>
+</mapper>

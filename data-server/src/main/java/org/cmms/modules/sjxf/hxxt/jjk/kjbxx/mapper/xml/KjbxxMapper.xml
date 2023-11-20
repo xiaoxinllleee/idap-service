@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.sjxf.hxxt.jjk.kjbxx.mapper.KjbxxMapper">
+
+    <!--获取`被调查人`&`被调查关联人`便民卡信息-->
+    <select id="getBmkxxHive" parameterType="java.lang.String" resultType="org.cmms.modules.sjxf.hxxt.jjk.kjbxx.entity.Kjbxx">
+        select * from cbsc_card
+         where product in (8, 9, 10)
+           and no in (
+                 select t1.no
+                   from cbsc_card t1,
+                        cbsc_link t2,
+                        cbs_invm_base t3
+                  where t1.no = t2.card
+                    and t2.account = t3.sub_acct_no
+                    and t3.ident_no = #{zjhm})
+    </select>
+
+</mapper>

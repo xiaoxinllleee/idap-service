@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.nhxq.mapper.PjsxZhsjMapper">
+    <update id="gxsj" statementType="CALLABLE">
+        {call PKG_HNKD.P_ZHSJ_TQ}
+    </update>
+
+    <update id="gxsjByZzbh" statementType="CALLABLE">
+        {call PKG_HNKD.P_HNKD_TQ_ZHSJ(#{zzbz})}
+    </update>
+</mapper>

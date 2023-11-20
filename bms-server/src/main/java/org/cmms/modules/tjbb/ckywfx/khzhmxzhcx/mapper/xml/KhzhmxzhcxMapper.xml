@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjbb.ckywfx.khzhmxzhcx.mapper.KhzhmxzhcxMapper">
+    <select id="getAccNoByMastAcctAndSubAcctNo" parameterType="java.lang.String" resultType="java.lang.String">
+		select acc_no from ods_020.cbs_invm_base where mast_acct = #{paramOne} and substr(sub_acct_no, 14, 4) = #{paramTwo}
+	</select>
+</mapper>

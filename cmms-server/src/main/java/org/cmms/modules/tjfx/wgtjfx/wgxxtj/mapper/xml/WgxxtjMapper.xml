@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.wgtjfx.wgxxtj.mapper.WgxxtjMapper">
+    <select id="getWgxxByWgbh" resultType="org.cmms.modules.tjfx.wgtjfx.wgxxtj.entity.Wgxxtj">
+        select * from khxxgl_tjfx_wgxxtj
+        where wgbh=#{wgbh}
+          and tjrq=(select max(tjrq) from khxxgl_tjfx_wgxxtj where wgbh=#{wgbh})
+    </select>
+
+    <select id="getWgxxByWgbhTy" resultType="org.cmms.modules.tjfx.wgtjfx.wgxxtj.entity.Wgxxtj">
+        select tjrq,
+               sum(nvl(zhs,0)) zhs,
+               sum(nvl(zrs,0)) zrs,
+               sum(nvl(dyrs,0)) dyrs,
+               sum(nvl(gzryrs,0)) gzryrs,
+               sum(nvl(tgjsrs,0)) tgjsrs,
+               sum(nvl(wbsbk,0)) wbsbk,
+               sum(nvl(tpjch,0)) tpjch,
+               sum(nvl(wbdbh,0)) wbdbh,
+               sum(nvl(zdjbrs,0)) zdjbrs,
+               sum(nvl(zpry,0)) zpry,
+               sum(nvl(ffjzrs,0)) ffjzrs,
+               sum(nvl(xdry,0)) xdry,
+               sum(nvl(fxry,0)) fxry,
+               sum(nvl(ssrs,0)) ssrs
+        from khxxgl_tjfx_wgxxtj
+        where wgbh in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+        and tjrq=(
+            select max(tjrq) from khxxgl_tjfx_wgxxtj where wgbh in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+            )
+        group by tjrq
+    </select>
+
+    <select id="getSarsByWgbh" resultType="org.cmms.modules.tjfx.wgtjfx.wgxxtj.entity.WgxxtjVo">
+      select t1.wgbh, t2.zjhm,t2.khmc
+          from (select n1.*, SYS_CONNECT_BY_PATH(n1.wgmc, '-') wgmc_show
+                  from yxdygl_main n1
+                 start with n1.wgbh in
+                <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                    #{wgbh}
+                </foreach>
+                connect by prior n1.id = n1.parent_id) t1
+         inner join (select n1.zjhm,n1.khmc,n2.wgbh
+                       from khgl_khhmcxx_fjxx n1
+                       left join khxxgl_khxq_nh n2
+                         on n1.zjhm = n2.zjhm
+                      where n1.sfsa = '1') t2
+            on t1.wgbh = t2.wgbh
+        group by t1.wgbh, t2.zjhm,t2.khmc
+    </select>
+
+    <select id="jbxxCs" resultType="org.cmms.modules.tjfx.wgtjfx.wgxxtj.entity.WgxxtjVo">
+        select t.wgbh ,t2.khmc,t2.zjhm from khxxgl_khxq_nh t
+        left join khgl_khhmcxx_fjxx t2
+        on t.zjhm=t2.zjhm
+        and t.wgbh in (
+        select wgbh from yxdygl_main start with wgbh in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+        connect by prior wgbh=parent_id
+        )
+        <where>
+            <if test=" cs == 1">
+                or t2.sfdy= '1'
+            </if>
+            <if test="cs == 2">
+                or t2.sfgzry= '1'
+            </if>
+            <if test="cs == 3">
+                or t2.sftgjs = '1'
+            </if>
+            <if test="cs == 6 ">
+                or t2.sfdb= '1'
+            </if>
+            <if test="cs == 7 ">
+                or t2.sfzdjb = '1'
+            </if>
+            <if test="cs == 8 ">
+                or t2.sfzpry = '1'
+            </if>
+            <if test="cs == 9  ">
+                or t2.sfffjz = '1'
+            </if>
+            <if test="cs == 10  ">
+                or t2.sfxdry = '1'
+            </if>
+            <if test="cs == 11  ">
+                or t2.sffx = '1'
+            </if>
+            <if test="cs == 12  ">
+                or t2.sfss = '1'
+            </if>
+        </where>
+        group by t.wgbh ,t2.khmc,t2.zjhm
+    </select>
+
+
+
+
+    <select id="wbsbk" resultType="org.cmms.modules.tjfx.wgtjfx.wgxxtj.entity.WgxxtjVo">
+        select t.wgbh,t.zjhm,t2.khmc,nvl(t2.yhmc,0)yhmc ,nvl(t2.yhkh,0) yhkh,nvl(t2.kzt,0)kzt,nvl(t2.ybykjl,0)
+        ybykjl,nvl(t2.ysfxk,0)ysfxk,nvl(t2.lxdh,0)lxdh ,nvl(t2.lxdz,0)lxdz ,nvl(t2.dw,0)dw,nvl(t2.wdmc,0) wdmc
+        from khxxgl_khxq_nh t, khxxgl_wbsjgl_zksj t2
+        <where>
+            t.zjhm=t2.zjhm
+            and t.wgbh  in (
+            select wgbh from yxdygl_main start with wgbh in
+            <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                #{wgbh}
+            </foreach>
+            connect by prior wgbh=parent_id
+            )
+        </where>
+    </select>
+
+    <select id="tpjjch" resultType="org.cmms.modules.tjfx.wgtjfx.wgxxtj.entity.WgxxtjVo">
+        select t.wgbh,t.zjhm ,t2.khmc, nvl(t2.jkzk,0)jkzk ,nvl(t2.ldjn,0)ldjn,nvl(t2.zpyy,0) zpyy,nvl(t2.lxdh,0) lxdh,
+        nvl(t2.hlx,0)hlx ,nvl(t2.yfpzpflx,0)yfpzpflx,nvl(t2.fxsfxc,0)fxsfxc
+        from khxxgl_khxq_nh t ,khxxgl_wbsjgl_tpjchmd t2
+        <where>
+            t.zjhm=t2.zjhm
+            and t.wgbh in (
+            select wgbh from yxdygl_main start with wgbh in
+            <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                #{wgbh}
+            </foreach>
+            connect by prior wgbh=parent_id
+            )
+        </where>
+    </select>
+
+    <select id="getPyxxPh" resultType="org.cmms.modules.tjfx.wgtjfx.wgxxtj.entity.ZfcjxxVo">
+        select a.cjxm as cjxm,
+               a.xmlx as xmlx,
+               a.item_text as itemtext,
+               case when a.xmlx='3' then b.yfwrs else a.khs end AS khs,
+               b.zkhs as zkhs
+        from (
+             select cjxm,xmlx,item_text,khs,pk from (
+                select '主要行业分类' cjxm, '1' xmlx, t3.item_text, count(ZJHM) khs,
+                        rank() over(partition by t3.dict_id order by count(t.zjhm) desc)pk
+                from (select zjhm,min(nvl(hyfl,50)) as hyfl from cams_zcsx_nhbkbpy
+                      where qydm in (select t1.wgbh from yxdygl_main t1 where wgxz='3'  start with t1.id in
+                      <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                        #{wgbh}
+                      </foreach>
+                      connect by prior t1.id = t1.parent_id)
+                      <if test="sxtlx==2">
+                         and pylc like '%3%'
+                      </if>
+                      group by zjhm
+                    ) t
+                left join sys_dict_item t3 on t.hyfl=t3.item_value
+                where t3.dict_id='1613352888631660545' and t3.item_value !='15'
+                group by t3.dict_id,t3.item_text
+            ) where pk &lt;= 5
+            union all
+            select  '主要就业地点' as cjxm,'2' xmlx,t3.item_text,count(ZJHM) khs,1 as pk
+            from (select zjhm,min(nvl(jydd,50)) as jydd from cams_zcsx_nhbkbpy
+                 where qydm in (select t1.wgbh from yxdygl_main t1 where wgxz='3'  start with t1.id in
+                <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                    #{wgbh}
+                </foreach>
+                 connect by prior t1.id = t1.parent_id)
+                <if test="sxtlx==2">
+                    and pylc like '%3%'
+                </if>
+                 group by zjhm
+                ) t
+            left join sys_dict_item t3 on  t.jydd=t3.item_value
+            where t3.dict_id='1613354114567999489' and t3.item_value !='7'
+            group by t3.dict_id,t3.item_text
+            union all
+            select '城区买房' as cjxm,'3' as xmlx,null as itemtext,0 as khs,1 as pk from dual
+            union all
+            select cjxm,xmlx,item_text,khs,pk from (
+            select '就业分类' cjxm, '4' xmlx, t3.item_text, count(ZJHM) khs,
+            rank() over(partition by t3.dict_id order by count(t.zjhm) desc)pk
+            from (select zjhm,min(nvl(jyfl,50)) as jyfl from cams_zcsx_nhbkbpy
+            where qydm in (select t1.wgbh from yxdygl_main t1 where wgxz='3'  start with t1.id in
+            <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                #{wgbh}
+            </foreach>
+            connect by prior t1.id = t1.parent_id)
+            <if test="sxtlx==2">
+                and pylc like '%3%'
+            </if>
+            group by zjhm
+            ) t
+            left join sys_dict_item t3 on t.jyfl=t3.item_value
+            where t3.dict_id='1613352096138891266' and t3.item_value !='15'
+            group by t3.dict_id,t3.item_text
+            ) where pk &lt;= 5
+        )a,
+        (
+            select count(zjhm) as zkhs,sum(case when cqywfc='1' then 1 else 0 end) yfwrs from(
+            select zjhm,min(nvl(cqywfc,3)) as cqywfc from cams_zcsx_nhbkbpy
+            where QYDM in (select t1.wgbh from yxdygl_main t1 where wgxz='3'  start with t1.id in
+                            <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                                #{wgbh}
+                            </foreach>
+                            connect by prior t1.id = t1.parent_id
+                          )
+            <if test="sxtlx==2">
+                and pylc like '%3%'
+            </if>
+            group by zjhm )
+        )b
+        order by a.xmlx,a.pk
+    </select>
+</mapper>

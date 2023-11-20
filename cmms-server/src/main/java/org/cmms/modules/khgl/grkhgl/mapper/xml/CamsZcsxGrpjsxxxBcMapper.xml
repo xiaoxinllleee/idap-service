@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.grkhgl.mapper.CamsZcsxGrpjsxxxBcMapper">
+    <update id="updateAiResult">
+        update  CAMS_ZCSX_GRPJSXXX set xtpddf =#{xtpddf},xtpddj=#{xtpddj},xtsxed=#{xtpded},xtpdyy=#{xtpdyy} where zjhm =#{zjhm}
+    </update>
+</mapper>

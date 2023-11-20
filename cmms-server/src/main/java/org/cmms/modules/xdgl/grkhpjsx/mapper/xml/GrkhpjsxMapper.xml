@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grkhpjsx.mapper.GrkhpjsxMapper">
+
+
+    <!-- 通过字典code获取字典数据 -->
+    <select id="querySplcProcessId" parameterType="String"  resultType="String">
+          select id from  Act_Process where process_key=#{key} and latest= 1
+	</select>
+
+    <update id="updateGrpjsxxx">
+		update CAMS_ZCSX_GRPJSXXX set spid=#{spid}, zzpddj=#{zzpddj}, zzsxed=#{zzsxed},yj=#{yj}  where hhbm=#{hhbm}
+	</update>
+
+    <update id="updateGrpjsxed">
+		update CAMS_ZCSX_GRPJSXXX set  zzpddj=#{pddj},zzsxed=#{zzsxed},yj=#{yj} where hhbm=#{hhbm}
+	</update>
+
+    <update id="updateGrpjsxjled">
+		update CAMS_ZCSX_GRPJSXXX_SPJL set zzpddj=#{pddj}, zzsxed=#{zzsxed},yj=#{yj} where spid=#{spid}
+	</update>
+
+
+
+    <select id="getByListZjhm" parameterType="list" resultType="org.cmms.modules.xdgl.grkhpjsx.entity.Grkhpjsx">
+        select * from V_KHGL_GRKHPJSX where hhbm in
+        <foreach collection="zjhmList" item="zjhm" open="(" separator="," close=")">
+            #{zjhm}
+        </foreach>
+    </select>
+
+    <select id="jointbDebtor" parameterType="list" resultType="org.cmms.modules.xdgl.grkhpjsx.entity.Grkhpjsx">
+        select * from V_KHGL_GRKHPJSX where HHBM =#{hhbm} and (YHZGX='2' or YHZGX='3' or YHZGX='4')
+    </select>
+    <update id="updateGrpjsxxxByZjhm">
+        update CAMS_ZCSX_GRPJSXXX set spid=#{spid}, zzpddj=#{zzpddj}, zzsxed=#{zzsxed},yj=#{yj}  where zjhm=#{zjhm}
+    </update>
+    <update id="updateGrpjsxxxByZjhm2">
+        update CAMS_ZCSX_GRPJSXXX set  zzpddj=#{zzpddj}, zzsxed=#{zzsxed},status=#{status},update_time=sysdate
+                                  ,cpzl=#{cpzl},cpzlll=#{cpzlll} where zjhm=#{zjhm}
+    </update>
+
+    <update id="updateGrpjsxxxZjhmAndStatus">
+        update CAMS_ZCSX_GRPJSXXX set status=#{status},update_time=sysdate  where zjhm=#{zjhm}
+    </update>
+
+</mapper>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.ckkh.mapper.TbCkYgghcksjmxMapper">
+
+    <select id="getRankList" resultType="org.cmms.modules.khgl.ckkh.entity.CkkhRankVO">
+        select t1.*
+        from (select rownum r, t.*
+        from (select zjhm,
+        max(cust_name) khmc,
+        round(sum(nvl(qmye, 0)),0) qmye,
+        round(sum(nvl(qmye, 0) - nvl(clye, 0)) ,0) yejnc,
+        round(sum(nvl(nrp3, 0)) ,0)rj,
+        round(sum(nvl(nrp3, 0) - nvl(cl_nrp3, 0)),0) rjjnc
+        from TB_CK_YGGHCKSJMX
+        where yggh = #{yggh}
+        group by zjhm
+        order by rjjnc
+        <if test="pxType == 2 || pxType =='2'">
+            desc
+        </if>
+        ) t
+        where rownum &lt;= #{rownumEnd}) t1
+        where r > #{rownumStart}
+    </select>
+
+    <select id="getByYggh" resultType="org.cmms.modules.khgl.ckkh.entity.CkkhjbVO">
+        select sum(qmghs)qmghs,sum(qmye)qmckye,sum(qmrj)qmckrj,sum(hqrj)hqckrj,sum(dqrj)dqckrj from  (
+                                                                                                 select count(distinct zjhm) qmghs,
+                                                                                                        sum(qmye) qmye,
+                                                                                                        sum(nrp3) qmrj,
+                                                                                                        case
+                                                                                                            when acct_desc = 'S' then
+                                                                                                                sum(nrp3)
+                                                                                                            else
+                                                                                                                sum(0)
+                                                                                                            end hqrj,
+                                                                                                        case
+                                                                                                            when acct_desc = 'T' then
+                                                                                                                sum(qmye)
+                                                                                                            else
+                                                                                                                sum(0)
+                                                                                                            end dqrj
+                                                                                                 from TB_CK_YGGHCKSJMX t
+                                                                                                 where yggh = #{yggh} group by acct_desc )
+    </select>
+    <select id="getByZjhm" resultType="org.cmms.modules.khgl.ckkh.entity.CkkhGyVO">
+        select sum(qmye)qmye,sum(qmrj)qmrj,sum(hqye)hqye,sum(dqye)dqye,sum(hqrj)hqrj,sum(dqrj)dqrj from  ( select  sum(qmye) qmye,
+                                                                                                                       sum(nrp3) qmrj,
+                                                                                                                       case
+                                                                                                                           when acct_desc = 'S' then
+                                                                                                                               sum(qmye)
+                                                                                                                           else
+                                                                                                                               sum(0)
+                                                                                                                           end hqye,
+                                                                                                                       case
+                                                                                                                           when acct_desc = 'T' then
+                                                                                                                               sum(qmye)
+                                                                                                                           else
+                                                                                                                               sum(0)
+                                                                                                                           end dqye,
+                                                                                                                       case
+                                                                                                                           when acct_desc = 'S' then
+                                                                                                                               sum(nrp3)
+                                                                                                                           else
+                                                                                                                               sum(0)
+                                                                                                                           end hqrj,
+                                                                                                                       case
+                                                                                                                           when acct_desc = 'T' then
+                                                                                                                               sum(nrp3)
+                                                                                                                           else
+                                                                                                                               sum(0)
+                                                                                                                           end dqrj
+                                                                                                               from TB_CK_YGGHCKSJMX t
+                                                                                                               where zjhm = #{zjhm} group by acct_desc )
+    </select>
+
+    <select id="getZjhms" resultType="string">
+        select t1.zjhm from ( select rownum r,t.* from (select distinct zjhm from TB_CK_YGGHCKSJMX where yggh = #{yggh}
+        <if test="grp != null and grp != ''">
+             and acct_grp = #{grp}
+        </if>
+        <if test="custName != null and custName != ''">
+            and instr(cust_name,#{custName}) > 0
+        </if>
+        order by zjhm desc) t where rownum &lt;=#{rownumEnd})t1 where r> #{rownumStart}
+    </select>
+    <select id="getGhzs" resultType="int">
+        select  count(distinct zjhm) from TB_CK_YGGHCKSJMX  where yggh = #{yggh}
+    </select>
+
+    <select id="getGhzsByGrp" resultType="int">
+        select  count(distinct zjhm) from TB_CK_YGGHCKSJMX  where yggh = #{yggh}
+        <if test="grp != null and grp != ''">
+            and acct_grp = #{grp}
+        </if>
+        <if test="custName != null and custName != ''">
+            and instr(cust_name,#{custName}) > 0
+        </if>
+    </select>
+
+    <select id="minEndDate" resultType="org.cmms.modules.khgl.ckkh.entity.TbCkYgghcksjmx">
+        select  min(END_DATE)END_DATE,max(cust_name)cust_name,max(jgdm)jgdm from TB_CK_YGGHCKSJMX where zjhm= #{zjhm}
+    </select>
+
+    <select id="getAcctGrpByZjhm" resultType="string">
+    select  distinct acct_grp from TB_CK_YGGHCKSJMX  where yggh = #{yggh} and zjhm =#{zjhm}
+    </select>
+
+    <select id="getJsr" resultType="org.cmms.modules.khgl.ckkh.entity.TbCkYgghcksjmxVo">
+        select t1.*,t1.qmye-nvl(t2.zr,0)jsr from (
+        select sum(qmye) qmye ,max(yggh) ghr ,max(cust_name)cust_name,max(jgdm)jgdm,zjhm from ${qmTable} where jgdm=#{ghr} group by zjhm) t1
+        left join (
+        select sum(qmye) zr,zjhm from ${zrTable} where jgdm=#{ghr} group by zjhm) t2
+        on t1.zjhm= t2.zjhm
+        <where>
+         t1.qmye-nvl(t2.zr,0) &lt;0
+        <if test="qmyeS != null and qmyeS !=''">
+            and abs(t1.qmye-nvl(t2.zr,0)) &gt;= #{qmyeS}
+        </if>
+        <if test="qmyeE != null and qmyeE !=''">
+            and abs(t1.qmye-nvl(t2.zr,0)) &lt;=#{qmyeE}
+        </if>
+        </where>
+    </select>
+
+<select id="getJyc" resultType="org.cmms.modules.khgl.ckkh.entity.TbCkYgghcksjmxVo">
+    select t1.*,t1.qmye-t1.jyc jyc from (
+    select sum(qmye)qmye,sum(nvl(syye,0)) jyc,max(yggh) ghr, max(cust_name)cust_name,max(jgdm)jgdm,zjhm from ${qmTable} where jgdm=#{ghr} group by zjhm)t1
+    <where> qmye-jyc &lt; 0
+    <if test="qmyeS != null and qmyeS !=''">
+        and  abs(qmye-jyc) &gt;=#{qmyeS}
+    </if>
+    <if test="qmyeE != null and qmyeE !=''">
+        and abs(qmye-jyc) &lt;=#{qmyeE}
+    </if>
+    </where>
+</select>
+
+<select id="getJjc" resultType="org.cmms.modules.khgl.ckkh.entity.TbCkYgghcksjmxVo">
+    select t1.*,t1.qmye-nvl(t2.jjc,0)jjc from (
+    select sum(qmye) qmye,max(cust_name)cust_name,max(yggh) ghr,max(jgdm)jgdm,zjhm from ${qmTable} where jgdm=#{ghr} group by zjhm) t1
+    left join (
+    select sum(qmye) jjc,zjhm from ${jcTable} where jgdm=#{ghr} group by zjhm) t2
+    on t1.zjhm= t2.zjhm <where> t1.qmye-nvl(t2.jjc,0) &lt;0
+    <if test="qmyeS != null and qmyeS !=''">
+        and abs(t1.qmye-nvl(t2.jjc,0)) &gt;=#{qmyeS}
+    </if>
+    <if test="qmyeE != null and qmyeE !=''">
+   and abs(t1.qmye-nvl(t2.jjc,0)) &lt;=#{qmyeE}
+    </if>
+</where>
+</select>
+
+    <select id="getJnc" resultType="org.cmms.modules.khgl.ckkh.entity.TbCkYgghcksjmxVo">
+        select t1.*,t1.qmye-t1.nc jnc  from (
+        select sum(qmye)qmye,sum(nvl(clye,0)) nc,max(yggh) ghr, max(cust_name)cust_name,max(jgdm)jgdm,zjhm from ${qmTable} where jgdm=#{ghr} group by zjhm) t1
+        <where> qmye-nc &lt; 0
+            <if test="qmyeS != null and qmyeS !=''">
+            and abs(qmye-nc) &gt;= #{qmyeS}
+            </if>
+            <if test="qmyeE != null and qmyeE !=''">
+            and abs(qmye-nc) &lt;= #{qmyeE}
+            </if>
+        </where>
+    </select>
+
+    <select id="getCkCpxx" resultType="string">
+        select listagg(cpxx,',') within group (order by cpxx) from (
+            select case when acct_desc = 'S' then '个人活期' else '个人定期' end cpxx from  TB_CK_YGGHCKSJMX t where zjhm=#{zjhm})
+    </select>
+
+    <select id="getCkRank" resultType="org.cmms.modules.khgl.ckkh.entity.QhckphVO">
+        select yggh, round(qmye/10000)qmye,round(yejnc/10000)yejnc,round(yejyc/10000)yejyc,round(nrp3/10000)nrp3,round(rjjnc/10000)rjjnc from (
+        select * from (
+        select yggh,sum(qmye) qmye,sum(qmye - clye)yejnc,sum(qmye - nvl(syye,0))yejyc,sum(nrp3)nrp3,sum(nrp3 -cl_nrp3 ) rjjnc from TB_CK_YGGHCKSJMX group by yggh
+        )order by qmye) where rownum &lt;= 20
+    </select>
+
+    <select id="getClckkh" resultType="org.cmms.modules.khgl.ckkh.entity.CkkhCardVO">
+        select max(jgdm),
+               max(khbh),
+               sum(ckye)ckye,
+               max(khmc)khmc,
+               zjhm,
+               listagg(decode(zhlx,
+                              'dshqfhb',
+                              '对私活期',
+                              'dghqfzb',
+                              '对公活期',
+                              'dqfhb',
+                              '定期',
+                              'ybt',
+                              '一本通',
+                              '活期'),
+                       ',') within group(order by zjhm) clcp
+        from (select max(jgdm)jgdm,
+            max(khbh)khbh,max(khmc)khmc,
+            zjhm,
+            zhlx,
+            sum(ckye)ckye from khgxgl_ckzhghxx t where tzr =#{tzr}
+            <if test="custName != null and custName != ''">
+               and  khmc like '%${custName}%'
+            </if>
+            <if test="grp == 'C'">
+                and zhlx ='dghqfzb'
+            </if>
+            <if test="grp =='P'">
+                and zhlx != 'dghqfzb'
+            </if>
+            group by zjhm,zhlx)
+        group by zjhm
+    </select>
+</mapper>

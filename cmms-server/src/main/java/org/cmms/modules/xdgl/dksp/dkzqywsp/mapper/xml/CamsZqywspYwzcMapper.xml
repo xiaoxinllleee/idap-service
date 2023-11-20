@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.dksp.dkzqywsp.mapper.CamsZqywspYwzcMapper">
+    <select id="getDkxx" resultType="org.cmms.modules.xdgl.dksp.dkzqywsp.vo.DkxxVo">
+        select  t1.CUST_NAME khmc,
+                t1.IDENT_NO zjhm,
+                t1.ACCT_NO dkzh,
+                t1.BUSINESS_PHASE dkzl,
+                t1.BUSINESS_NO yhtbh,
+                to_date(t1.QX_DATE,'yyyymmdd') ydkrq,
+                t1.APPLIC_AMOUNT ydkje,
+                to_date(t1.END_DATE,'yyyymmdd') ydqrq
+        from cbs_borm_base t1
+        where 1=1
+        <if test="khmc != null and khmc != '' ">
+            and t1.CUST_NAME=#{khmc}
+        </if>
+        <if test="dkzh != null and dkzh != '' ">
+            and t1.ACCT_NO=#{dkzh}
+        </if>
+        <if test="zjhm != null and zjhm != ''">
+            and t1.IDENT_NO=#{zjhm}
+        </if>
+    </select>
+</mapper>

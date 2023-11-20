@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dkjkpt.tjcx.sgqfgtj.zhbnbldkjgqkb1.mapper.ZhBnbldkJgqkb1Mapper">
+
+    <select id="extract" parameterType="java.lang.String" statementType="CALLABLE">
+        {call PKG_TJFX.P_zhbnbldkjgqkb(#{tjyf})}
+    </select>
+
+</mapper>

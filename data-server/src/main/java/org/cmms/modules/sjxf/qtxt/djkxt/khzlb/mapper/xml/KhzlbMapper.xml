@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.sjxf.qtxt.djkxt.khzlb.mapper.KhzlbMapper">
+
+        <!--choose 为 switch，when 为 case，otherwise 则为 default-->
+  <!--  <select id="getList" resultType="org.cmms.modules.khgl.sjyh.entity.KhzlbVo" >
+        select * from(select h.*,rownum as r
+        from(select t.busi_phone,t.email_addr,t.surname,t.custr_nbr,t2.card_nbr,t3.day_opened,t3.cutoff_day,t3.cred_limit,t3.card_fees
+        from CCD_CUSTR t
+        left join CCD_CARD t2
+        on t2.custr_nbr=t.custr_nbr
+        left join CCD_ACCT t3
+        on t3.card_nbr = t2.card_nbr
+        <where> <if test="ssmc !=null and ssmc !=''">
+           and instr(t.surname,#{ssmc}) > 0
+             </if>
+        </where>
+        <choose>
+            <when test="jx == 1">order by t3.cutoff_day</when>
+            <when test="jx == 2">order by t3.card_fees</when>
+            <when test="jx == 3">order by t3.cred_limit</when>
+            <otherwise>order by t3.cutoff_day</otherwise>
+        </choose>
+      <choose>
+          <when test="px == 1">asc</when>
+          <when test="px == 2">desc</when>
+      </choose>
+          )h)
+        where r between #{start} and #{end}
+    </select>-->
+
+
+    <select id="getXykListByKhmc" resultType="org.cmms.modules.sjxf.qtxt.djkxt.khzlb.entity.Khzlb">
+        select t1.* from (select * from Ccd_custr where jgdm=#{jgdm}
+                                                         and instr(khmc,#{khmc}) > 0
+                         )t1 left join (select distinct khbh from KHGXGL_XYKKHGHLSB where jgdm=#{jgdm} )t2
+                                       on t1.khbh = t2.khbh and t2.khbh is null
+                             left join (select distinct khbh  from APP_RL where jgdm=#{jgdm} and type ='3')t3
+                                       on t1.khbh = t3.khbh and t3.khbh is null
+    </select>
+</mapper>

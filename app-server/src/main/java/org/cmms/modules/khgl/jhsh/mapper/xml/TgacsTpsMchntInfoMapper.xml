@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.jhsh.mapper.TgacsTpsMchntInfoMapper">
+
+    <select id="getxj" resultType="org.cmms.modules.khgl.jhsh.entity.TgacsTpsMchntInfo">
+        select t.*
+        from TGACS_TPS_MCHNT_INFO t
+        left join (select mchnt_id from APP_JHSH_XJJL  where xjsj >= to_date(#{ks}, 'yyyymmdd') and xjsj &lt;= to_date(#{js}, 'yyyymmdd'))t2
+        on t.mchnt_id = t2.mchnt_id
+        where t2.mchnt_id is null
+    </select>
+</mapper>

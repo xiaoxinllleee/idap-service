@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dklldj.lldjgl.lldjjs.mapper.RateZxlldjxxMapper">
+
+    <!--<select id="queryZxlldjxxOracle" resultType="org.cmms.modules.dklldj.lldjgl.lldjjs.entity.RateZxlldjxx">
+        select * from rate_zxlldjb where djnf=#{djnf} and zjhm=#{zjhm} and spzt=1 and rownum=1
+    </select>
+    <select id="queryZxlldjxxHive" resultType="org.cmms.modules.dklldj.lldjgl.lldjjs.entity.RateZxlldjxx">
+        select * from rate_zxlldjb where djnf=#{djnf} and zjhm=#{zjhm} and spzt=1 limit 1
+    </select>-->
+
+    <!--<update id="updateSpztOracle">
+        update rate_zxlldjb set spzt =#{param2}
+        <if test="param3 != null and param3 != ''">
+            ,note =#{param3}
+        </if>
+        where djid =#{param1}
+    </update>
+    <update id="updateSpztHive">
+        update rate_zxlldjb set spzt =#{param2}
+        <if test="param3 != null and param3 != ''">
+            ,note =#{param3}
+        </if>
+        where djid =#{param1}
+    </update>-->
+
+    <!--<select id="queryALprJJdbpOracle" parameterType="java.lang.String" resultType="java.lang.String">
+        select dyjdbp from rate_fdcsdzb where djdf=#{djdf} and dkqx=#{dkqx} and dksxje_begin <![CDATA[ < ]]> #{cdck} and dksxje_end <![CDATA[ >= ]]> #{cdck}
+    </select>
+    <select id="queryALprJJdbpHive" parameterType="java.lang.String" resultType="java.lang.String">
+        select dyjdbp from rate_fdcsdzb where djdf=#{djdf} and dkqx=#{dkqx} and dksxje_begin <![CDATA[ < ]]> #{cdck} and dksxje_end <![CDATA[ >= ]]> #{cdck} limit 1
+    </select>-->
+
+    <select id="getMaxDjidHive" resultType="java.lang.String">
+        select nvl(max(djid),1000)+1 from rate_zxlldjb
+    </select>
+
+</mapper>

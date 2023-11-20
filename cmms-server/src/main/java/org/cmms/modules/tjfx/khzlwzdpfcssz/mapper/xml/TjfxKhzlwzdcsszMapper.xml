@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.khzlwzdpfcssz.mapper.TjfxKhzlwzdcsszMapper">
+
+    <select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.nh.entity.NhPjsxxx">
+        SELECT *
+        FROM  TJFX_KHZLWZDCSSZ
+        WHERE
+        csbm = #{csbm}
+    </select>
+
+
+    <select id="selectTable" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT COMMENTS,COLUMN_NAME
+        FROM  all_col_comments
+        WHERE
+        Table_Name  = #{tablename}
+    </select>
+
+
+</mapper>

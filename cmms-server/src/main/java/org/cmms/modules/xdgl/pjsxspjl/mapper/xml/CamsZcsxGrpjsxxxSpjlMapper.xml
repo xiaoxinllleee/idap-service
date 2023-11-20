@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.pjsxspjl.mapper.CamsZcsxGrpjsxxxSpjlMapper">
+
+    <select id="getListByZjhms" parameterType="list" resultType="org.cmms.modules.xdgl.grkhpjsx.entity.Vgrpjsxspjl">
+        select * from v_cams_zcsx_grpjsxxx_spjl where zjhm in
+        <foreach collection="Zjhms" item="zjhm" open="(" separator="," close=")">
+            #{zjhm}
+        </foreach>
+    </select>
+
+    <select id="getListBySpids" parameterType="list" resultType="org.cmms.modules.xdgl.grkhpjsx.entity.Vgrpjsxspjl">
+        select * from v_cams_zcsx_grpjsxxx_spjl where spid in
+        <foreach collection="Spids" item="spid" open="(" separator="," close=")">
+            #{spid}
+        </foreach>
+    </select>
+
+    <update id="updateFp">
+        update CAMS_ZCSX_GRPJSXXX_SPJL set zzsxed=#{je},zzpddj=#{dj}
+        <if test="name != null and name !=''">
+            ,khmc=#{name}
+        </if>
+        where zjhm=#{zjhm}
+    </update>
+
+    <select id="getByWgbh" resultType="org.cmms.modules.xdgl.pjsxspjl.entity.LyNewNsVO">
+        select t1.*,t2.zzsxed,t2.zzpddj,t3.curr_value curr,t3.credit_freeze_value freeze,round( t3.dkye/10000,6) dkye,round(t3.dkje/10000,6) dkje,
+               round(t3.bldkye/10000,6) bldkye,
+               round(t3.bwbldkye/10000,6) bwbldkye,t3.yqcs,round(t3.cknrpye/10000,6) cknrpye from (
+                                                                                                      select khmc,zjhm,yhzgx,lxfs from KHGL_KHHMCXX t where ssyxdy =#{wgbh} order by hhbm,yhzgx ) t1
+                                                                                                      left join Cams_Zcsx_Grpjsxxx_Spjl t2 on t1.zjhm = t2.zjhm
+                                                                                                      left join KHGL_YWHYWWLXX t3 on t1.zjhm = t3.zjhm
+    </select>
+
+    <select id="getBySszh" resultType="org.cmms.modules.xdgl.pjsxspjl.entity.LyNewNsVO">
+
+        select t1.*,t2.zzsxed,t2.zzpddj,t3.curr_value curr,t3.credit_freeze_value freeze,round( t3.dkye/10000,6) dkye,round(t3.dkje/10000,6) dkje,
+               round(t3.bldkye/10000,6) bldkye,
+               round(t3.bwbldkye/10000,6) bwbldkye,t3.yqcs,round(t3.cknrpye/10000,6) cknrpye,t1.sszh,t1.ssyxdy from (
+                                                                                                                        select sszh,ssyxdy,khmc,zjhm,yhzgx,lxfs from KHGL_KHHMCXX t where sszh in
+                   (select zzbz from hr_bas_organization t where zzbz=#{zzbz} or sjzzbz=#{zzbz}
+        )
+
+                                                                                                                        order by hhbm,yhzgx ) t1
+                                                                                                                        left join Cams_Zcsx_Grpjsxxx_Spjl t2 on t1.zjhm = t2.zjhm
+                                                                                                                        left join KHGL_YWHYWWLXX t3 on t1.zjhm = t3.zjhm
+    </select>
+</mapper>
+

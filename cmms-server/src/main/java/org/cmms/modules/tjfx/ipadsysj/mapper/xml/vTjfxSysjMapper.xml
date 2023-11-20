@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.ipadsysj.mapper.vTjfxSysjMapper">
+
+    <select id="querysysj"  resultType="java.util.HashMap">
+        select tjyf,sum(byzfhs) as byzfhs ,sum(ljzfhs) as ljzfhs,sum(byysxed) as byysxed ,sum(ljysxed) as ljysxed from v_tjfx_sysj
+        where tjyf = TRUNC(sysdate,'MM') group by tjyf
+    </select>
+
+    <select id="queryZhCjpm"  resultType="org.cmms.modules.tjfx.zfsjmx.khjlsjmx.entity.ZfsjmxKhjl">
+        select  zkhjl,yxzfhs,sjzfhs, rank() over (order by yxzfhs desc) zfpm from (
+          select  zkhjl,sum(yxzfhs) yxzfhs ,sum(sjzfhs)sjzfhs  from   TJFX_ZFSJMX_khjl
+            where tjyf= TRUNC(sysdate,'MM') and sszh = #{sszh} group by zkhjl
+        ) order by zfpm asc
+    </select>
+
+    <select id="queryQhCjpm"  resultType="org.cmms.modules.tjfx.zfsjmx.khjlsjmx.entity.ZfsjmxKhjl">
+        select  zkhjl,yxzfhs,sjzfhs, rank() over (order by yxzfhs desc) zfpm from (
+          select  zkhjl,sum(yxzfhs) yxzfhs ,sum(sjzfhs)sjzfhs  from   TJFX_ZFSJMX_khjl
+            where tjyf= TRUNC(sysdate,'MM') group by zkhjl
+        ) order by zfpm asc
+    </select>
+
+
+    <select id="queryQhzhCjpm"  resultType="org.cmms.modules.tjfx.ipadsysj.entity.SysjQhzhCjpm">
+    select yggh, yxzfhs, rank() over(order by yxzfhs desc) zfpm
+    from (select t1.zzbz,t1.yggh, nvl(t2.yxzfhs, 0) + nvl(t3.shyxzfhs, 0) yxzfhs
+    from (select zzbz, yggh,khjlbz
+    from (select zzbz, yggh,khjlbz, row_number() over(partition by yggh order by rgrq desc) pk
+    from HR_BAS_STAFF_POST
+    where rgrq &lt;=  sysdate
+    and (lgrq is null or lgrq >= sysdate)
+    )
+    where pk = 1
+    ) t1
+    left join (select zkhjl, sum(yxzfhs) yxzfhs
+    from TJFX_ZFSJMX_khjl
+    where tjyf = TRUNC(sysdate, 'MM')
+    group by zkhjl) t2
+    on t1.yggh = t2.zkhjl
+    left join (select khjl, sum(yxzfhs) shyxzfhs
+    from TJFX_SHZFSJMX_KHJL
+    where tjyf = TRUNC(sysdate, 'MM')
+    group by khjl) t3
+    on t1.yggh = t3.khjl
+    )
+    </select>
+
+
+
+    <select id="grbyzfhs"  resultType="long">
+          select  sum(yxzfhs) yxzfhs  from   TJFX_DYZFSJMX_KHJL where tjyf= TRUNC(sysdate,'MM') and zkhjl = #{khjl}
+    </select>
+    <select id="zhbyzfhs" resultType="long">
+          select  sum(yxzfhs) yxzfhs  from   TJFX_DYZFSJMX_ZH where tjyf= TRUNC(sysdate,'MM') and sszh = #{zzbz}
+    </select>
+    <select id="qhbyzfhs"  resultType="long">
+          select  sum(yxzfhs) yxzfhs  from   TJFX_DYZFSJMX_KHJL where tjyf= TRUNC(sysdate,'MM')
+    </select>
+
+    <select id="grljzfhs"  resultType="long">
+          select  sum(yxzfhs) yxzfhs  from   TJFX_ZFSJMX_khjl where tjyf= TRUNC(sysdate,'MM') and zkhjl = #{khjl}
+    </select>
+    <select id="zhljzfhs" resultType="long">
+          select  sum(yxzfhs) yxzfhs  from   TJFX_ZFSJMX_ZH where tjyf= TRUNC(sysdate,'MM') and sszh = #{zzbz}
+    </select>
+    <select id="qhljzfhs"  resultType="long">
+          select  sum(yxzfhs) yxzfhs  from   TJFX_ZFSJMX_QH  where tjyf= TRUNC(sysdate,'MM')
+    </select>
+
+    <select id="grdyysxed"  resultType="long">
+          select  sum(ysxed) ysxed from  TJFX_DYKHSXYXTJ_KHJL  where tjyf = TRUNC(sysdate,'MM')  and zkhjl = #{khjl}
+    </select>
+    <select id="zhdyysxed"  resultType="long">
+          select  sum(ysxed) ysxed from  TJFX_DYKHSXYXTJ_ZHMX  where tjyf = TRUNC(sysdate,'MM')  and sszh = #{zzbz}
+    </select>
+    <select id="qhdyysxed"  resultType="long">
+          select  sum(ysxed) ysxed from  TJFX_DYKHSXYXTJ_KHJL  where tjyf = TRUNC(sysdate,'MM')
+    </select>
+
+    <select id="grljysxed"  resultType="long">
+          select  sum(ysxed)ysxed from  TJFX_KHSXYXTJ_KHJL  where tjyf = TRUNC(sysdate,'MM')  and zkhjl = #{khjl}
+    </select>
+    <select id="zhljysxed"  resultType="long">
+          select  sum(ysxed) ysxed from  TJFX_KHSXYXTJ_ZHMX  where tjyf = TRUNC(sysdate,'MM')  and sszh = #{zzbz}
+    </select>
+    <select id="qhljysxed"  resultType="long">
+          select  sum(ysxed)ysxed from  TJFX_KHSXYXTJ_QH  where tjyf = TRUNC(sysdate,'MM')
+    </select>
+
+    <select id="shbyzfhs"  resultType="long">
+        select sum(sfyxzf) shyxzfhs from TJFX_SHZFSJMX where hfrq >= trunc(sysdate,'MM') and hfr = #{khjl}
+    </select>
+    <select id="shzhbyzfhs" resultType="long">
+        select sum(sfyxzf) shyxzfhs from TJFX_SHZFSJMX where hfrq >= trunc(sysdate, 'MM') and SSZH = #{zzbz}
+    </select>
+    <select id="shqhbyzfhs" resultType="long">
+        select sum(sfyxzf) shyxzfhs from TJFX_SHZFSJMX where hfrq >= trunc(sysdate, 'MM');
+    </select>
+
+    <select id="shljzfhs"  resultType="long">
+        select sum(yxzfhs) shyxzfhs from TJFX_SHZFSJMX_KHJL where tjyf = trunc(sysdate, 'MM') and khjl = #{khjl}
+    </select>
+    <select id="shzhljzfhs" resultType="long">
+        select sum(YXZFHS) shyxzfhs from TJFX_SHZFSJMX_ZH where tjyf = trunc(sysdate, 'MM') and sszh = #{zzbz}
+    </select>
+    <select id="shqhljzfhs" resultType="long">
+        select sum(YXZFHS) shyxzfhs from TJFX_SHZFSJMX_QH where tjyf = trunc(sysdate, 'MM')
+    </select>
+
+    <select id="shbyysxed"  resultType="long">
+        select sum(ysxed) shysxed from TJFX_SHSXYXTJ where pjrq >= trunc(sysdate, 'MM') and  khjl = #{khjl}
+    </select>
+    <select id="shzhbyysxed" resultType="long">
+        select sum(ysxed) shysxed from TJFX_SHSXYXTJ where pjrq >= trunc(sysdate, 'MM') and SSZH = #{zzbz}
+    </select>
+    <select id="shqhbyysxed" resultType="long">
+        select sum(ysxed) shysxed from TJFX_SHSXYXTJ where pjrq >= trunc(sysdate, 'MM')
+    </select>
+
+    <select id="shljysxed"  resultType="long">
+        select  sum(YSXED) shysxed from  TJFX_SHSXYXTJ_KHJL  where tjyf = TRUNC(sysdate,'MM') and zkhjl = #{khjl}
+    </select>
+    <select id="shzhljysxed" resultType="long">
+        select sum(ysxed) shysxed from TJFX_SHSXYXTJ_ZHMX where tjyf = TRUNC(sysdate,'MM') and SSZH = #{zzbz}
+    </select>
+    <select id="shqhljysxed" resultType="long">
+        select sum(ysxed) shysxed from TJFX_SHSXYXTJ_QH where tjyf = TRUNC(sysdate,'MM')
+    </select>
+
+    <select id="queryGyh"  resultType="java.lang.String">
+          select  tellid  from sys_bas_user where username = #{username}
+    </select>
+
+    <select id="queryZzxxByYggh" resultType="org.cmms.modules.system.entity.HrBasOrganization">
+        select t2.* from v_hr_bas_staff_post t1,hr_bas_organization t2
+        where t1.zzbz=t2.zzbz and t1.yggh=#{yggh}
+    </select>
+
+
+    <select id="initKhxx" parameterType="java.lang.String" statementType="CALLABLE">
+        {call PKG_KHXXGL.P_AUTO_DAY}
+    </select>
+    <select id="initKhywxx" parameterType="java.lang.String" statementType="CALLABLE">
+        {call PKG_KHYWXX.P_AUTO_DAY}
+    </select>
+    <select id="initShxx" parameterType="java.lang.String" statementType="CALLABLE">
+        {call PKG_SHXXGL.P_AUTO_DAY}
+    </select>
+    <select id="initShywxx" parameterType="java.lang.String" statementType="CALLABLE">
+        {call PKG_SHYWXX.P_AUTO_DAY}
+    </select>
+
+    <select id="getYxzfpm" parameterType="java.lang.String" resultType="org.cmms.modules.tjfx.ipadsysj.entity.SysjQhzhCjpm">
+      select zzbz,yggh,tjrq,yxzfhs,bmd_yxzfhs,sxwyx_yxzfhs,sxyyx_yxzfhs,clkh_yxzfhs,bysx_yxzfhs,zfpm from (
+        select zzbz,yggh,tjrq,yxzfhs,bmd_yxzfhs,sxwyx_yxzfhs,sxyyx_yxzfhs,sxwyx_yxzfhs+sxyyx_yxzfhs clkh_yxzfhs,bysx_yxzfhs,
+        rank() over(order by yxzfhs desc) zfpm
+        from (
+            select
+              t1.zzbz,t1.gwbz,t1.yggh,t2.tjrq,nvl(t2.yxzfhs,0) yxzfhs,nvl(t2.bmd_yxzfhs,0) bmd_yxzfhs,nvl(t2.sxwyx_yxzfhs,0) sxwyx_yxzfhs,
+              nvl(t2.sxyyx_yxzfhs,0) sxyyx_yxzfhs,nvl(t2.bysx_yxzfhs,0) bysx_yxzfhs
+            from (
+                select
+                  zzbz,gwbz,yggh,row_number() over(partition by yggh order by rgrq desc) pk
+                from hr_bas_staff_post
+                where rgrq &lt;= sysdate and (lgrq is null or lgrq>=sysdate)
+                and rglx!=4
+            ) t1
+            left join (
+                select * from (
+                    select
+                      tjrq,zzbz,gwbz,yggh,khlx,yxzfhs,bmd_yxzfhs,sxwyx_yxzfhs,sxyyx_yxzfhs,bysx_yxzfhs
+                    from tjfx_zfyxtj_khjl
+                    where tjwd=#{tjwd} and tjrq=(select max(tjrq) from tjfx_zfyxtj_khjl where tjwd=#{tjwd} and khlx=#{khlx}) and khlx=#{khlx}
+                )
+            ) t2
+            on t1.yggh=t2.yggh
+            where t1.pk = 1
+        ) where yxzfhs>0
+      ) order by zfpm asc,yggh asc
+    </select>
+
+    <select id="getYxzfpmByYggh" parameterType="java.lang.String" resultType="org.cmms.modules.tjfx.ipadsysj.entity.SysjQhzhCjpm">
+        select zzbz,yggh,tjrq,yxzfhs,bmd_yxzfhs,sxwyx_yxzfhs,sxyyx_yxzfhs,clkh_yxzfhs,bysx_yxzfhs,zfpm from (
+            select zzbz,yggh,tjrq,yxzfhs,bmd_yxzfhs,sxwyx_yxzfhs,sxyyx_yxzfhs,sxwyx_yxzfhs+sxyyx_yxzfhs clkh_yxzfhs,bysx_yxzfhs,
+                   rank() over(order by yxzfhs desc) zfpm
+            from (
+                     select
+                         t1.zzbz,t1.gwbz,t1.yggh,t2.tjrq,nvl(t2.yxzfhs,0) yxzfhs,nvl(t2.bmd_yxzfhs,0) bmd_yxzfhs,nvl(t2.sxwyx_yxzfhs,0) sxwyx_yxzfhs,
+                         nvl(t2.sxyyx_yxzfhs,0) sxyyx_yxzfhs,nvl(t2.bysx_yxzfhs,0) bysx_yxzfhs
+                     from (
+                              select
+                                  zzbz,gwbz,yggh,row_number() over(partition by yggh order by rgrq desc) pk
+                              from hr_bas_staff_post
+                              where rgrq &lt;= sysdate and (lgrq is null or lgrq>=sysdate)
+                                and rglx!=4
+                          ) t1
+                              left join (
+                         select * from (
+                                           select
+                                               tjrq,zzbz,gwbz,yggh,khlx,yxzfhs,bmd_yxzfhs,sxwyx_yxzfhs,sxyyx_yxzfhs,bysx_yxzfhs
+                                           from tjfx_zfyxtj_khjl
+                                           where tjwd=#{tjwd} and tjrq=(select max(tjrq) from tjfx_zfyxtj_khjl where tjwd=#{tjwd} and khlx=#{khlx}) and khlx=#{khlx}
+                                       )
+                     ) t2
+                                        on t1.yggh=t2.yggh
+                     where t1.pk = 1
+                 ) where yxzfhs>0
+        )  where  yggh =#{yggh} order by zfpm asc,yggh asc
+    </select>
+
+
+    <select id="getZhYxzfpm" parameterType="java.lang.String" resultType="org.cmms.modules.tjfx.ipadsysj.entity.Zhyxzfpm">
+        select t.* ,rank() over (partition by t.tjwd,t.tjrq order by zfzs desc) pm from (
+            select t1.tjwd,
+                   t1.tjrq,
+                   t1.zzbz,
+                   t1.yxzfhs as nhzfhs,
+                   nvl(t2.yxzfhs, 0) as shzfhs,
+                   t1.yxzfhs + nvl(t2.yxzfhs, 0) as zfzs
+            from (select * from tjfx_zfyxtj_zh where khlx = 1) t1
+                     left join (select * from tjfx_zfyxtj_zh where khlx = 2) t2
+                               on t1.tjwd = t2.tjwd
+                                   and t1.tjrq = t2.tjrq
+                                   and t1.zzbz = t2.zzbz
+            where (t1.yxzfhs > 0 or t2.yxzfhs > 0)
+            and t1.tjwd=#{tjwd}
+            and t1.tjrq=(select max(tjrq) from tjfx_zfyxtj_zh where tjwd=#{tjwd})
+
+        ) t
+    </select>
+
+
+    <select id="getYgYxzfsj" parameterType="java.lang.String" resultType="java.util.Map">
+      select
+          zzbz,gwbz,yggh,case when tjrq>=trunc(sysdate,'MM') then byyxzfs else 0 end byyxzfs,ljyxzfs
+      from (
+        select
+          tjrq,zzbz,gwbz,yggh,byyxzfs,ljyxzfs,row_number() over(partition by yggh order by tjrq desc) pk
+        from tjfx_zfsjtj_khjl where yggh=#{yggh} and khlx=#{khlx}
+      )
+      where pk=1
+    </select>
+
+</mapper>

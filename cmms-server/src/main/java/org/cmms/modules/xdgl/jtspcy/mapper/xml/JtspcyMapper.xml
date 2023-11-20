@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.jtspcy.mapper.JtspcyMapper">
+
+	<delete id="deleteJtspcy" parameterType="java.lang.String">
+		DELETE FROM CAMS_ZCSX_GRXDJTSPXZ WHERE id=#{id} and  zrrid=#{yggh}
+	</delete>
+
+	<update id="updatespjl">
+		update  CAMS_ZCSX_GRXDJTSPXZ set bjyj =#{jtspcy.bjyj},qtyj = #{jtspcy.qtyj},qmtp = #{jtspcy.qmtp},qmsj=sysdate where zrrid= #{jtspcy.zrrid} and id = #{jtspcy.id}
+	</update>
+
+
+	<!-- 查询用户的所属部门名称信息 -->
+	<update id="deleteSpcy" >
+		delete from CAMS_ZCSX_GRXDJTSPXZ where id=#{id}
+		<if test="zrrids != null and zrrids.size()>0">
+			and zrrid not in
+			<foreach collection="zrrids" index="index" item="zrrid" open="(" separator="," close=")">
+				#{zrrid}
+			</foreach>
+		</if>
+	</update>
+
+	<select id="queryById" resultType="org.cmms.modules.xdgl.jtspcy.entity.Jtspcy">
+		select * from CAMS_ZCSX_GRXDJTSPXZ where id = #{id} and zrrid = #{zrrid}
+	</select>
+</mapper>

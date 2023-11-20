@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.xdgtzytjbb.tjfxzhpjsxwcqkmxb.mapper.TjfxPjsxwcqkmxbMapper">
+
+    <select id="querysjzfhs"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.tjfxzhpjsxwcqkmxb.entity.TjfxPjsxwcqkmxb">
+        select * from TJFX_PJSXWCQKMXB where ksrq = #{ksrq}
+        and jsrq = #{jsrq}
+        and xzc = #{xzc}
+        and qfbs = #{qfbs}
+        and ${code} &gt; 0
+    </select>
+
+    <select id="querysjpjhs"  resultType="org.cmms.modules.tjfx.xdgtzytjbb.tjfxzhpjsxwcqkmxb.entity.TjfxPjsxwcqkmxb">
+        select * from TJFX_PJSXWCQKMXB where ksrq = #{ksrq}
+        and jsrq = #{jsrq}
+        and xzc = #{xzc}
+        and qfbs = #{qfbs}
+        and xtcspddj  is not NULL
+    </select>
+
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.VgrdkspjlMapper">
+
+    <select id="queryDksp" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Vgrdkspjl">
+        select * from V_CAMS_ZCSX_GRXDCJXX_SPJL where  status =2 and jtspzzzt = 2 and (sskhjl = #{userId} or id in (select id from CAMS_ZCSX_GRXDJTSPXZ where zrrid = #{userId}))
+    </select>
+
+    <select id="queryByZjhm" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Vgrdkspjl">
+        select * from V_CAMS_ZCSX_GRXDCJXX_SPJL where zjhm =#{zjhm} and khmc = #{khmc} and status =2 and jtspzzzt = 2 and (sskhjl = #{userId} or id in (select id from CAMS_ZCSX_GRXDJTSPXZ where zrrid = #{userId}))
+    </select>
+
+    <select id="selectByKhmc" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Vgrdkspjl">
+        select * from V_CAMS_ZCSX_GRXDCJXX_SPJL where khmc = #{khmc} and status =2 and jtspzzzt = 2 and (sskhjl = #{userId} or id in (select id from CAMS_ZCSX_GRXDJTSPXZ where zrrid = #{userId}))
+    </select>
+
+    <select id="selectByZjhm" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Vgrdkspjl">
+        select * from V_CAMS_ZCSX_GRXDCJXX_SPJL where zjhm =#{zjhm}  and status =2 and jtspzzzt = 2 and (sskhjl = #{userId} or id in (select id from CAMS_ZCSX_GRXDJTSPXZ where zrrid = #{userId}))
+    </select>
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.dkkh.mapper.TbDkYgghdksjmxMapper">
+
+    <select id="getZjhms" resultType="string">
+        select t1.zjhm from ( select rownum r,t.* from (select distinct zjhm from TB_DK_YGGHDKSJMX where yggh = #{yggh}
+        <if test="custType != null and custType != ''">
+            and cust_type = #{custType}
+        </if>
+        <if test="wjfl != null and wjfl != ''">
+            and five_class_type = #{custType}
+        </if>
+        order by zjhm desc) t where rownum &lt;=#{rownumEnd})t1 where r> #{rownumStart}
+    </select>
+    <select id="getZjhms2"  resultType="string">
+        select distinct zjhm from TB_DK_YGGHDKSJMX where yggh = #{yggh}
+        <if test="custType != null and custType != ''">
+            and cust_type = #{custType}
+        </if>
+        <if test="wjfl != null and wjfl != ''">
+            and five_class_type = #{wjfl}
+        </if>
+        <if test="zjhm != null and zjhm != ''">
+            and instr(cust_name,#{zjhm}) > 0
+        </if>
+    </select>
+    <select id="getCustTypeByZjhm" resultType="string">
+        select distinct cust_type from TB_DK_YGGHDKSJMX where yggh =#{yggh} and zjhm = #{zjhm}
+    </select>
+
+    <select id="dkxtjc" resultType="org.cmms.modules.khgl.dkkh.entity.DkxtjcVO">
+        select * from (select t4.*,
+               qmfl - clfl jnc,
+               qmfl - jcfl jjc,
+               qmfl - ycfl jyc,
+               qmfl - zrfl jzr
+        from (select t1.*, nvl(t2.zrfl, t1.qmfl) zrfl, nvl(t3.jcfl, t1.qmfl) jcfl
+              from (select dkzh,
+                           max(zjhm) zjhm,
+                           max(cust_name) khmc,
+                           sum(dkye) dkye,
+                           sum(dkje) dkje,
+                           max(five_class_type) qmfl,
+                           max(cl_five_class_type) clfl,
+                           max(yc_five_class_type) ycfl
+                    from ${qmTable} t
+                    where yggh = #{yggh}
+                    <if test="zjhm != null and zjhm !=''">
+                        and instr(cust_name,#{zjhm}) > 0
+                    </if>
+        <if test="custType != null and custType !=''">
+            and cust_type = #{custType}
+        </if>
+        group by dkzh) t1
+                       left join (select dkzh,
+                                         max(zjhm),
+                                         sum(dkye),
+                                         sum(dkje),
+                                         max(five_class_type) zrfl
+                                  from ${zrTable} t
+                                  where yggh = #{yggh}
+                                  group by dkzh) t2
+                                 on t1.dkzh = t2.dkzh
+                       left join (select dkzh,
+                                         max(zjhm),
+                                         sum(dkye),
+                                         sum(dkje),
+                                         max(five_class_type) jcfl
+                                  from ${jcTable} t
+                                  where yggh = #{yggh}
+                                  group by dkzh) t3
+                                 on t1.dkzh = t3.dkzh) t4 ) where 1 = 1
+        <if test="type != null and type !=''">
+            and ${type}
+        </if>
+    </select>
+
+    <select id="getHtlbsByZjhm" resultType="org.cmms.modules.khgl.dkkh.entity.HtlbVO">
+        select hth,hth hthjm,max(jgdm)jgdm,max(yggh)yggh,sum(dkye)dkye,sum(dkje)htje,max(ffrq)ffrq,max(dqrq)dqrq,max(five_class_type)wjfl from TB_DK_YGGHDKSJMX where zjhm= #{zjhm} group by hth
+    </select>
+</mapper>

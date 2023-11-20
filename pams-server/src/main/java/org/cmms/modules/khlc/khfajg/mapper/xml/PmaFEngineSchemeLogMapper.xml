@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khlc.khfajg.mapper.PmaFEngineSchemeLogMapper">
+
+    <select id="getBySchemeIdAndType" resultType="org.cmms.modules.khlc.khfajg.entity.FakhygInfo">
+        select t1.yggh,t1.gwbz,t1.zzbz,t3.ywjgdm from (select * from  HR_BAS_STAFF_POST where rgrq &lt;=  to_date(#{oneDate},'yyyymmdd')
+        and (lgrq is null or lgrq &gt;= to_date(#{oneDate},'yyyymmdd')  ) ) t1 left join
+                                                      (
+                                                          select post_id from PMA_A_SCHEME_POST_REL t where scheme_id= #{schemeId}
+                                                      ) t2
+                                                      on t1.gwbz=t2.post_id
+                                                                           left join
+                                                      hr_bas_organization t3
+                                                      on t1.zzbz=t3.zzbz
+        where t2.post_id is not null and yggh <if test="type == 1"> not </if> in (
+            select evl_obj_id from PMA_A_SCHEME_EVLOBJ_REL t where scheme_id =#{schemeId}
+        )and t3.ywjgdm is not null
+    </select>
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.jx.dqck.mapper.TbTjfxCkdqkhMapper">
+
+    <select id="getListByPage" resultType="org.cmms.modules.jx.dqck.entity.TbTjfxCkdqkhVO">
+        select tb.*,org.ZZJC as zzjc,org.ZZMC as ZZMC from tb_tjfx_ckdqkh tb left join hr_bas_organization org on tb.jgdm=org.YWJGDM
+        and tb.yggh =#{param2}
+        order by tb.dqrq
+    </select>
+</mapper>

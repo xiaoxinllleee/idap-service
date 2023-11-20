@@ -1,0 +1,18 @@
+{
+	"status": 200,
+	"success": true,
+	"message": "",
+	"result": {
+		"records":[
+			{
+				"id ": 1,
+				"sszh": "123",
+				"ssyxdy": "会员管理",
+				"ykhjl": "2",
+				"xkhjl": "1",
+				"xyxdy": "特别行动组",
+				"bgyy": "123"
+			}
+		]
+	}
+}

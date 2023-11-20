@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.system.mapper.ToolMapper">
+    <select id="getTableAll" resultType="org.cmms.modules.system.vo.TableComments" parameterType="java.lang.String">
+       select t1.column_name,t1.data_type,t1.data_length,t1.data_precision,t1.data_scale,t2.comments,t2.table_name
+       from user_tab_columns t1
+       left join user_col_comments t2
+       on t1.column_name=t2.column_name and t1.table_name=t2.table_name
+       where t1.table_name=#{tableName}
+       order by t1.column_id asc
+    </select>
+
+    <select id="getTableComments" resultType="java.lang.String" parameterType="java.lang.String">
+        select t1.comments from user_tab_comments t1 where table_name=#{tableName}
+    </select>
+
+    <select id="getResultDynamic" resultType="java.lang.Object">
+        SELECT ${result}
+        FROM  ${tableName}
+        WHERE 1=1
+        <foreach collection="list" item="item" index="index" >
+            and ${item}
+        </foreach>
+
+        <!--<foreach collection="condition.entrySet()" item="value"  index="key" >-->
+            <!--<foreach collection="value.entrySet()" item="innerValue"  index="innerKey" >-->
+                <!--and ${key} ${innerKey} #{innerValue}-->
+            <!--</foreach>-->
+        <!--</foreach>-->
+    </select>
+
+    <select id="getTableData" resultType="HashMap">
+        select * from ${tableName}
+        WHERE 1=1
+        <if test="condition!= null">
+            <foreach collection="condition.entrySet()" item="value"  index="key" >
+                and ${key} = #{value}
+            </foreach>
+        </if>
+        <if test="sort != null">
+            <foreach collection="sort.entrySet()" item="value" index="key" open="order by " separator="," close=" ">
+                ${key} ${value}
+            </foreach>
+        </if>
+    </select>
+</mapper>

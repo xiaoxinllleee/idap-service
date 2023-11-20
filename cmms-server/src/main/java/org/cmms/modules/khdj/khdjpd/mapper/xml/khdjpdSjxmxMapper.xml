@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khdj.khdjpd.mapper.khdjpdSjxmxMapper">
+
+    <!--查询数据项明细-->
+	<select id="viewDetail" resultType="org.cmms.modules.khdj.khdjpd.entity.khdjpdSjxmx">
+		SELECT t1.pdzq, t1.pdrq, t1.sjxid, t1.sjxmc, t1.sjxjg
+		  FROM TMP_KHDJ_DJPDZBSJMX_C t1
+		 WHERE t1.pdzq = #{pdzq} AND t1.pdrq = #{pdrq} AND t1.zjhm = #{zjhm} ORDER BY t1.zxsx
+	</select>
+</mapper>

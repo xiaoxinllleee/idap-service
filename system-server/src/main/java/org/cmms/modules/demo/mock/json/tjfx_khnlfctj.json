@@ -1,0 +1,23 @@
+{
+  "status": 200,
+  "success": true,
+  "message": "",
+  "result": {
+    "records":[
+      {
+        "zhmc": "钓鱼岛银行",
+        "yxdy": "东城营销中心",
+        "khjl": "徐长卿",
+        "nld": "18岁以下",
+        "khrs": 13
+      },
+      {
+        "zhmc": "北京银行",
+        "yxdy": "北城营销中心",
+        "khjl": "王二",
+        "nld": "18-24",
+        "khrs": 28
+      }
+    ]
+  }
+}

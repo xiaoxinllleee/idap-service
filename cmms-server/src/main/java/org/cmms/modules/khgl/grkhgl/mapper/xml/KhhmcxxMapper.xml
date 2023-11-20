@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.grkhgl.mapper.KhhmcxxMapper">
+
+    <select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.grkhgl.entity.Khhmcxx">
+			select * from khgl_khhmcxx where upper(zjhm) = upper(#{zjhm})
+	</select>
+
+	<delete id="deleteByMainId" parameterType="java.lang.String">
+		DELETE
+		FROM  khgl_khhmcxx
+		WHERE
+			 zjhm = #{zjhm}
+	</delete>
+
+	<select id="selectByhhbm" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.grkhgl.entity.Khhmcxx">
+			select * from khgl_khhmcxx where  hhbm= #{hhbm} and zjhm != #{zjhm}
+	</select>
+
+	<select id="selectByhhbmId" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.grkhgl.entity.Khhmcxx">
+			select * from khgl_khhmcxx where  hhbm= #{hhbm} and id != #{id}
+	</select>
+
+	<select id="jointbDebtor" resultType="org.cmms.modules.khgl.grkhgl.entity.Khhmcxx">
+		 select * from khgl_khhmcxx where HHBM =#{hhbm} and (YHZGX='2' or YHZGX='3' or YHZGX='4')
+	</select>
+
+	<select id="getListByListHhbm" resultType="org.cmms.modules.khgl.grkhgl.entity.Khhmcxx">
+		select  * from khgl_khhmcxx
+		WHERE 1 = 1
+		AND HHBM IN
+		<foreach collection="hhbms" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!--新增时输入的证件号码若已在小额农贷授信采集中录入，则从客户花名册中带回部分基础信息数据-->
+	<select id="GetKhhmcPartialInfoByZjhm" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.grkhgl.entity.Khhmcxx">
+		SELECT T.ID,T.HHBM,T.KHMC,T.XB,T.HYZK,T.LXFS,T.KHLX,T.CSZY FROM KHGL_KHHMCXX T WHERE T.ZJHM=#{zjhm}
+	</select>
+
+	<!--新增时，若该客户已在小额农贷授信中采集，则通过"HHBM"&"ID"获取"KHGL_KHHMCXX"家庭成员信息-->
+	<select id="getJtcyxxByHmcHhbmAndId" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.grkhgl.entity.Khhmcxx">
+		SELECT T.KHMC,T.ZJHM,T.YHZGX,T.CSZY,T.LXFS FROM KHGL_KHHMCXX T
+		 WHERE T.HHBM=#{hhbm} AND T.ZJHM != (SELECT ZJHM FROM KHGL_KHHMCXX WHERE ID=#{id})
+	</select>
+
+	<select id="selectAllByZjhm" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.grkhgl.entity.Khhmcxx">
+		select * from KHGL_KHHMCXX where hhbm = (select hhbm from KHGL_KHHMCXX where  zjhm =#{zjhm})
+	</select>
+	<select id="selectAllButNoSelfByZjhm" parameterType="java.lang.String" resultType="org.cmms.modules.khgl.grkhgl.entity.Khhmcxx">
+		select * from KHGL_KHHMCXX where hhbm = (select hhbm from KHGL_KHHMCXX where  zjhm =#{zjhm}) and zjhm <![CDATA[ != ]]> #{zjhm}
+	</select>
+
+</mapper>

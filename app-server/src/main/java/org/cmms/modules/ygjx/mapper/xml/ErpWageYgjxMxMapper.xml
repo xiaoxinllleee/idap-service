@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ygjx.mapper.ErpWageYgjxMxMapper">
+
+    <select id="getList" resultType="org.cmms.modules.ygjx.entity.ErpWageYgjxMxVO">
+        select t1.*,nvl(t2.zbdw,1)zbdw from (select * from ERP_WAGE_YGJX_MX
+            where yggh=#{yggh} and gzrq = to_date(#{gzrq},'yyyymmdd')
+            <if test="zblb != 0 and zblb &lt; 7">
+                and zblb=#{zblb}
+            </if>
+
+        <if test="zblb != 0 and zblb == 7">
+            and zblb not in (1,2,4)
+        </if>
+
+            ) t1 left join Erp_assess_gw_aljc t2
+                                                                          on t1.zzbz=t2.zzbz and t1.zbid=t2.zbid and t1.gwbz=t2.gwbz
+
+    </select>
+
+    <select id="getListV3" resultType="org.cmms.modules.ygjx.entity.ErpWageYgjxMxVO">
+        select t1.* from (select * from ERP_WAGE_YGJX_MX
+        where yggh=#{yggh} and gzrq = to_date(#{gzrq},'yyyymmdd')
+        <if test="zblb != 0 and zblb &lt; 7">
+            and zblb=#{zblb}
+        </if>
+
+        <if test="zblb != 0 and zblb == 7">
+            and zblb not in (1,2,4)
+        </if>
+
+        ) t1
+
+    </select>
+
+    <select id="getListTy" resultType="org.cmms.modules.ygjx.entity.ErpWageYgjxMxVO">
+        select t1.*,nvl(t2.zbdw,1)zbdw from (select * from ERP_WAGE_YGJX_MX
+        where yggh=#{yggh} and gzrq = to_date(#{gzrq},'yyyymmdd')
+        <if test="zblb != 0 and zblb &lt; 7">
+            and zblb=#{zblb}
+        </if>
+
+        <if test="zblb != 0 and zblb == 7">
+            and zblb not in (1,2,4)
+        </if>
+
+        ) t1 left join Erp_assess_gw_aljc t2
+        on t1.zzbz=t2.zzbz and t1.zbid=t2.zbid and t1.gwbz=t2.gwbz and t1.khfa= t2.khfa
+
+    </select>
+
+    <select id="getJhList" resultType="org.cmms.modules.ygjx.entity.ErpWageYgjxMxVO">
+        select t1.zzbz,t1.gzrq,t1.zbid,t1.zbdj,t1.zbjg,t1.gwbz,t1.yggh,t1.zblb,t1.lrsj,t1.lrbz,t1.qcjg,t1.qmjg,t1.zbgz
+             ,nvl(t2.zbdw,1)zbdw,case when t1.gzrq = to_date(#{gzrq},'yyyymmdd')  then 2 else 1 end as sfyg , t3.bz as ZBKBZ
+        from (
+        select * from  (
+        select t.*,row_number() over(partition by zbid order by gzrq desc) rn from ERP_WAGE_YGJX_MX t where zbid in (
+        select zbid from ERP_ASSESS_GW_ALJC t where (zzbz,gwbz) in (
+        select zzbz,gwbz from hr_bas_staff_post t where yggh =#{yggh}
+        and rgrq &lt;= to_date(#{gzrq},'yyyymmdd')
+        and (lgrq is null or lgrq >= to_date(#{gzrq},'yyyymmdd')) and rownum =1
+        )) and yggh=#{yggh}
+        <if test="zblb != 0 and zblb &lt; 7">
+            and zblb=#{zblb}
+        </if>
+
+        <if test="zblb != 0 and zblb == 7">
+            and zblb not in (1,2,4)
+        </if>
+            ) where rn = 1 ) t1 left join Erp_assess_gw_aljc t2
+        on t1.zzbz=t2.zzbz and t1.zbid=t2.zbid and t1.gwbz=t2.gwbz left join ERP_BAS_ZBK t3 on t1.zbid=t3.zbid
+
+    </select>
+</mapper>

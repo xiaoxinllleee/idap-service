@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.RateZbgzxxbMapper">
+
+    <select id="queryzbgzxxb"  resultType="org.cmms.modules.xdgl.grdkgl.entity.RateZbgzxxb">
+		SELECT * FROM  Rate_zbgzxxb
+		WHERE qydm = #{qydm}
+			 and zbid = #{zbid}
+			 and zbgzid = #{zbgzid}
+	</select>
+
+	<select id="getPreData"  resultType="org.cmms.modules.xdgl.grdkgl.entity.RateZbgzxxb">
+		select * from rate_zbgzxxb where qydm = '020' and zbgzid in('GZ00040' , 'GZ00050' , 'GZ00051' , 'GZ00052', 'GZ00053') order by zbgzid
+	</select>
+
+</mapper>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.nhxq.mapper.XxnyztTjfxMapper">
+
+    <select id="tjfx1" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.XxnyztTjfx">
+        select sszh,ghzrr,
+        count(1) ghs,
+        sum(clkhs) clkhs,
+        round(sum(clje/10000)) clje,
+        sum(hmdhs) hmdhs,
+        sum(wxh) wxh,
+        sum(dczpdhs) dczpdhs,
+        sum(drhhdhs) drhhdhs,
+        sum(bmd) bmdhs,
+        sum(huimd) huimdhs,
+        sum(ysxedcj) sxed
+        from (select sszh,ghzrr,
+        case when  sfysx = 1 and (sfhmdkh &lt;> 1 or sfhmdkh is null) then 1 else 0  end clkhs,
+        decode(sfhmdkh, '1', 1, 0) hmdhs,
+        case when ( (sfzcjy = 2 or pdfl = 4 ) and (sfysx != 1 or sfysx is null ) and (sfhmdkh != 1 or sfhmdkh is null) ) then 1 else 0 end wxh,
+        case
+        when pdfl is null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null)
+        then
+        1
+        else
+        0
+        end dczpdhs,
+        case
+        when pdfl in ('1', '2', '3') and zhfl is null  and sfzcjy =1  and (sfysx &lt;> 1 or sfysx is null )
+        and (sfhmdkh != '1' or sfhmdkh is null) then
+        1
+        else
+        0
+        end drhhdhs,
+        case when zhfl ='1' and  (sfysx &lt;> 1 or sfysx is null ) and sfzcjy =1 and (sfhmdkh &lt;>1 or sfhmdkh is null) and pdfl != 4 then 1 else 0 end bmd,
+        case when zhfl ='2' and  (sfysx &lt;> 1 or sfysx is null ) and sfzcjy =1  and (sfhmdkh &lt;>1 or sfhmdkh is null) and pdfl != 4 then 1 else 0 end huimd,
+        ysxedcj,
+        nvl(clje, 0) clje
+        from KHXXGL_KHXQ_XXNYZT
+        where 1 = 1
+        <if test="yggh != null and yggh != ''">
+            and sszh = #{yggh}
+        </if>
+        )
+        group by sszh,ghzrr
+
+
+    </select>
+
+    <select id="tjfx2And4" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.XxnyztTjfx">
+        select sszh,
+        ztfl,
+        count(1) ghs,
+        sum(clkhs) clkhs,
+        round(sum(clje / 10000)) clje,
+        sum(hmdhs) hmdhs,
+        sum(wxh) wxh,
+        sum(dczpdhs) dczpdhs,
+        sum(drhhdhs) drhhdhs,
+        sum(bmd) bmdhs,
+        sum(huimd) huimdhs,
+        sum(ysxedcj) sxed,
+        round(sum(clblje / 10000)) clblje
+        from (select sszh,
+        ztfl,
+        case when  sfysx = 1 and (sfhmdkh &lt;> 1 or sfhmdkh is null) then 1 else 0  end clkhs,
+        decode(sfhmdkh, '1', 1, 0) hmdhs,
+        case when ( (sfzcjy = 2 or pdfl = 4 ) and (sfysx != 1 or sfysx is null ) and (sfhmdkh != 1 or sfhmdkh is null) )  then 1 else 0 end wxh,
+        case
+        when pdfl is null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null)
+        then
+        1
+        else
+        0
+        end dczpdhs,
+        case
+        when pdfl in ('1', '2', '3') and zhfl is null  and sfzcjy =1  and (sfysx &lt;> 1 or sfysx is null )  and  (sfhmdkh != '1' or sfhmdkh is null)  then
+        1
+        else
+        0
+        end drhhdhs,
+        case when zhfl ='1' and  (sfysx &lt;> 1 or sfysx is null ) and sfzcjy =1 and (sfhmdkh &lt;>1 or sfhmdkh is null) and pdfl != 4 then 1 else 0 end bmd,
+        case when zhfl ='2' and  (sfysx &lt;> 1 or sfysx is null ) and sfzcjy =1  and (sfhmdkh &lt;>1 or sfhmdkh is null) and pdfl != 4 then 1 else 0 end huimd,
+        ysxedcj,
+        nvl(clje, 0) clje,
+        nvl(clblje, 0) clblje
+        from KHXXGL_KHXQ_XXNYZT
+        where 1 = 1
+          <if test = "sszh != null and sszh != ''" >and sszh = #{sszh}</if>
+        )
+        group by sszh, ztfl
+    </select>
+
+    <select id="tjfx3" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.XxnyztTjfx">
+        select sszh,
+        count(1) ghs,
+        sum(clkhs) clkhs,
+        round(sum(clje / 10000)) clje,
+        sum(hmdhs) hmdhs,
+        sum(wxh) wxh,
+        sum(dczpdhs) dczpdhs,
+        sum(drhhdhs) drhhdhs,
+        sum(bmd) bmdhs,
+        sum(huimd) huimdhs,
+        sum(ysxedcj) sxed,
+        round(sum(clblje / 10000)) clblje
+        from (select sszh,
+        case when  sfysx = 1 and (sfhmdkh &lt;> 1 or sfhmdkh is null) then 1 else 0  end clkhs,
+        decode(sfhmdkh, '1', 1, 0) hmdhs,
+        case when ( (sfzcjy = 2 or pdfl = 4 ) and (sfysx != 1 or sfysx is null ) and (sfhmdkh != 1 or sfhmdkh is null) ) then 1 else 0 end wxh,
+        case
+        when pdfl is null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null)
+        then
+        1
+        else
+        0
+        end dczpdhs,
+        case
+        when pdfl in ('1', '2', '3') and zhfl is null  and sfzcjy =1  and (sfysx &lt;> 1 or sfysx is null )  and  (sfhmdkh != '1' or sfhmdkh is null)  then
+        1
+        else
+        0
+        end drhhdhs,
+        case when zhfl ='1' and  (sfysx &lt;> 1 or sfysx is null ) and sfzcjy =1 and (sfhmdkh &lt;>1 or sfhmdkh is null) and pdfl != 4 then 1 else 0 end bmd,
+        case when zhfl ='2' and  (sfysx &lt;> 1 or sfysx is null ) and sfzcjy =1  and (sfhmdkh &lt;>1 or sfhmdkh is null) and pdfl != 4 then 1 else 0 end huimd,
+        ysxedcj,
+        nvl(clje, 0) clje,
+        nvl(clblje, 0) clblje
+        from KHXXGL_KHXQ_XXNYZT
+        where 1 = 1 <if test = "sszh != null and sszh != ''" >
+        and sszh = #{sszh} </if > )
+        group by sszh
+
+    </select>
+
+    <select id="tjfx4" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.XxnyztTjfx">
+        select
+            ztfl,
+            count(1) ghs,
+            sum(clkhs) clkhs,
+            round(sum(clje/10000)) clje,
+            sum(hmdhs) hmdhs,
+            sum(wxh) wxh,
+            sum(dczpdhs) dczpdhs,
+            sum(drhhdhs) drhhdhs,
+            sum(bmd) bmdhs,
+            sum(huimd) huimdhs,
+            sum(ysxedcj) sxed,
+            round(sum(clblje/10000)) clblje
+        from (select
+                  ztfl,
+                  case when  sfysx = 1 and (sfhmdkh &lt;> 1 or sfhmdkh is null) then 1 else 0  end clkhs,
+                  decode(sfhmdkh, '1', 1, 0) hmdhs,
+                  case when ( (sfzcjy = 2 or pdfl = 4 ) and (sfysx != 1 or sfysx is null ) and (sfhmdkh != 1 or sfhmdkh is null) ) then 1 else 0 end wxh,
+                  case
+                      when pdfl is null and
+                           (sfysx != '1' or sfysx is null)
+                          and  (sfhmdkh != '1' or sfhmdkh is null)
+                          and  (sfzcjy != '2' or sfzcjy is null)
+                          then
+                          1
+                      else
+                          0
+                      end dczpdhs,
+                  case
+                      when pdfl in ('1', '2', '3') and zhfl is null  and sfzcjy =1  and (sfysx &lt;> 1 or sfysx is null )  and  (sfhmdkh != '1' or sfhmdkh is null)  then
+                          1
+                      else
+                          0
+                      end drhhdhs,
+                  case when zhfl ='1' and  (sfysx &lt;> 1 or sfysx is null ) and sfzcjy =1 and (sfhmdkh &lt;>1 or sfhmdkh is null) and pdfl != 4 then 1 else 0 end bmd,
+                  case when zhfl ='2' and  (sfysx &lt;> 1 or sfysx is null ) and sfzcjy =1  and (sfhmdkh &lt;>1 or sfhmdkh is null) and pdfl != 4 then 1 else 0 end huimd,
+                  ysxedcj,
+                  nvl(clje, 0) clje,
+                  nvl(clblje, 0) clblje
+              from KHXXGL_KHXQ_XXNYZT
+             )
+        group by  ztfl
+    </select>
+
+    <update id="updateClje">
+        merge into KHXXGL_KHXQ_XXNYZT t using (
+            select zjhm, sum(dkje)dkje,sum(bldkye)bldkye from khxxgl_ywhywwlxx where dkye > 0 group by zjhm
+        )t2 on (t.jyzzjhm = t2.zjhm)
+            when matched then update set t.clje = t2.dkje ,t.clblje = t2.bldkye,t.sfysx ='1'
+    </update>
+    <update id="updateClje1">
+        merge into KHXXGL_KHXQ_XXNYZT t using (
+            select ident_no,sum(loan_bal)loan_bal  from cbs_borm_base where end_date > '20221201' and cust_type ='01' and loan_bal > 0 and subj_no like '13%' group by ident_no
+        )t2 on (t.jyzzjhm = t2.ident_no and t.hhbm is null)
+            when matched then update set t.sfysx = '1',t.clje = t2.loan_bal
+    </update>
+    <update id="updateClje2">
+        merge into KHXXGL_KHXQ_XXNYZT t using (
+            select ident_no,sum(loan_bal)loan_bal  from cbs_borm_base where end_date > '20221201' and cust_type ='01' and loan_bal > 0 and subj_no like '713%' group by ident_no
+        )t2 on (t.jyzzjhm = t2.ident_no and t.hhbm is null )
+            when matched then update set t.sfysx = '1',t.clblje =t2.loan_bal
+    </update>
+    <update id="updateClje3">
+        merge into KHXXGL_KHXQ_XXNYZT t using (
+            select hhbm,sum(loan_bal)loan_bal from (
+                                                       select t3.hhbm,t3.zjhm,t4.loan_bal from (
+                                                                                                   select t2.hhbm,t2.zjhm from (
+                                                                                                                                   select hhbm  from KHXXGL_KHXQ_XXNYZT where hhbm is not null ) t1 left join KHXXGL_KHXQ_NH t2
+                                                                                                                                                                                                              on t1.hhbm = t2.hhbm ) t3 left join (
+                                                           select ident_no,sum(loan_bal)loan_bal  from cbs_borm_base where end_date > '20221201' and cust_type ='01' and loan_bal > 0 and subj_no like '13%' group by ident_no
+                                                       )t4 on t3.zjhm = t4.ident_no ) group by hhbm ) t5 on (t.hhbm = t5.hhbm)
+            when matched then update set t.sfysx = '1',t.clje = t5.loan_bal
+    </update>
+    <update id="updateClje4">
+        merge into KHXXGL_KHXQ_XXNYZT t using (
+            select hhbm,sum(loan_bal)loan_bal from (
+                                                       select t3.hhbm,t3.zjhm,t4.loan_bal from (
+                                                                                                   select t2.hhbm,t2.zjhm from (
+                                                                                                                                   select hhbm  from KHXXGL_KHXQ_XXNYZT where hhbm is not null ) t1 left join KHXXGL_KHXQ_NH t2
+                                                                                                                                                                                                              on t1.hhbm = t2.hhbm ) t3 left join (
+                                                           select ident_no,sum(loan_bal)loan_bal  from cbs_borm_base where end_date > '20221201' and cust_type ='01' and loan_bal > 0 and subj_no like '713%' group by ident_no
+                                                       )t4 on t3.zjhm = t4.ident_no ) group by hhbm ) t5 on (t.hhbm = t5.hhbm)
+            when matched then update set t.sfysx = '1',t.clblje = t5.loan_bal
+    </update>
+    <update id="updateClje5">
+        merge into KHXXGL_KHXQ_XXNYZT t using (
+            select ident_no,sum(loan_bal)loan_bal  from cbs_borm_base where end_date > '20221201' and cust_type ='02' and loan_bal > 0 and subj_no like '13%' group by ident_no
+        )t2 on (t.xxztzjhm = t2.ident_no)
+            when matched then update set t.sfysx = '1',t.clje = t.clje + t2.loan_bal
+    </update>
+    <update id="updateClje6">
+        merge into KHXXGL_KHXQ_XXNYZT t using (
+            select ident_no,sum(loan_bal)loan_bal  from cbs_borm_base where end_date > '20221201' and cust_type ='02' and loan_bal > 0 and subj_no like '713%' group by ident_no
+        )t2 on (t.xxztzjhm = t2.ident_no)
+            when matched then update set t.sfysx = '1',t.clblje = t.clblje + t2.loan_bal
+    </update>
+
+    <update id="initSfysx">
+        update KHXXGL_KHXQ_XXNYZT set sfysx ='2'
+    </update>
+
+    <select id="xxnyztTjfx" statementType="CALLABLE">
+        {call PKG_KHXXGL.P_XXNYZT_TJFX}
+    </select>
+
+</mapper>

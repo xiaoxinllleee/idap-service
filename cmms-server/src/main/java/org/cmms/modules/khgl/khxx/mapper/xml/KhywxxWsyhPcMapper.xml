@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khgl.khxx.mapper.KhywxxWsyhPcMapper">
+
+    <select id="getByWgbh" resultType="org.cmms.modules.khgl.khxx.entity.KhywxxWsyhPc">
+             select t1.* from KHYWXX_WSYH t1 left join (
+                select zjhm from  khxxgl_khxq_nh where wgbh in (
+                    select wgbh from yxdygl_main start with wgbh in
+                    <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                        #{wgbh}
+                    </foreach>
+                    connect by prior    wgbh=parent_id
+                )
+              ) t2
+             on t1.zjhm = t2.zjhm where t2.zjhm is not null
+    </select>
+    <select id="getByWgbhList" resultType="org.cmms.modules.khgl.khxx.entity.KhywxxWsyhPc">
+        select t1.* from KHYWXX_WSYH t1 left join (
+             select zjhm from  khxxgl_khxq_nh where wgbh in (
+                 select wgbh from yxdygl_main start with wgbh in
+                <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+                    #{wgbh}
+                </foreach>
+                 connect by prior    wgbh=parent_id
+             )
+        )t2
+        on t1.zjhm = t2.zjhm where t2.zjhm is not null
+    </select>
+
+    <select id="getWktByWgbhList" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+        select t1.khmc,t1.zjhm, t1.xb, t1.nl, t1.sjhm, t1.hjdz from  khxxgl_khxq_nh t1
+        where t1.wgbh in
+        <foreach collection="wgbhList" item="wgbh" open="(" close=")" separator=",">
+            #{wgbh}
+        </foreach>
+        and not exists(select 1 from KHYWXX_WSYH t2 where t1.zjhm=t2.zjhm)
+    </select>
+</mapper>

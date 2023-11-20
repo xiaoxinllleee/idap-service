@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.ygjx.mapper.ErpWageYgjxMapper">
+
+    <select id="jgIndex" resultType="org.cmms.modules.ygjx.entity.JgDataVO">
+        select * from (
+        select t.*,rank() over (order by zhrj desc) rjpm
+        from (select zzbz,
+        ceil( sum(gzhj)) ygjx,
+        count(distinct yggh) zhrs,
+        round(sum(gzhj) / count(distinct yggh), 0) zhrj
+        from ERP_WAGE_YGJX t
+        where gzrq =
+        (select max(gzrq) from ERP_WAGE_YGJX)
+        group by zzbz) t)t2 ,(select  ceil(sum(gzhj)/count(distinct yggh)) qhrj ,ceil(sum(gzhj)) qhjx,count(distinct yggh) qhrs from ERP_WAGE_YGJX t
+        where gzrq =
+        (select max(gzrq) from ERP_WAGE_YGJX))t3  where
+        <if test="zzbz != null and zzbz != ''">
+            zzbz = #{zzbz}
+        </if>
+        <if test="zzbz == null or zzbz == ''">
+            rjpm =  1
+        </if>
+
+    </select>
+    <select id="getRj" resultType="string">
+        SELECT PVALUE FROM ERP_BAS_ASSESS_PARAM WHERE PID = 'P90024'
+    </select>
+
+    <select id="getGzPmByZzbz" resultType="org.cmms.modules.ygjx.entity.ErpWageYgjx">
+        select * from ERP_WAGE_YGJX t where gzrq = (select max(gzrq) from ERP_WAGE_YGJX) and zzbz =#{zzbz} order by gzhj desc
+    </select>
+
+
+    <select id="getGzPmByZzbzJH" resultType="org.cmms.modules.ygjx.entity.ErpWageYgjx">
+
+        select t1.yggh,case when max(t3.zbgz) is null then  sum(t1.zbgz)
+                            when max(t3.zbgz) = 0 then sum(t1.zbgz+nvl(t2.zbgz,0))
+                            when max(t3.zbgz) > 0 then sum(t1.zbgz+nvl(t3.zbgz,0)) else sum(t1.zbgz) end   gzhj,max(t1.gwbz) gwbz
+        from (
+                 select yggh,sum(zbgz)zbgz,max(gwbz)gwbz
+                 from ERP_WAGE_YGJX_MX t
+                 where gzrq = (select max(gzrq) from ERP_WAGE_YGJX_mx)
+                   and zzbz = #{zzbz}
+                   and zbid != 'D90060' group by yggh
+             ) t1
+                 left join (select yggh, zbgz, zbid
+                            from (select t.*,
+                                         row_number() over(partition by yggh order by gzrq desc) rn
+                                  from ERP_WAGE_YGJX_MX t
+                                  where zbid ='D90060'
+                                    and zzbz = #{zzbz}
+                                    and zbgz > 0)
+                            where rn = 1) t2
+                           on t1.yggh = t2.yggh
+                 left join (
+            select yggh,sum(zbgz)zbgz,max(gwbz)gwbz
+            from ERP_WAGE_YGJX_MX t
+            where gzrq = (select max(gzrq) from ERP_WAGE_YGJX_mx)
+              and zzbz = #{zzbz}
+              and zbid = 'D90060' group by yggh
+        )t3      on t1.yggh = t3.yggh
+        group by t1.yggh
+    </select>
+
+    <select id="getCkByJgdm" resultType="integer">
+        select ceil( nvl(sum(curr_bal),0)/10000) from ${yyMM} where branch_no = #{jgdm}
+    </select>
+    <select id="getHqCkByJgdm" resultType="integer">
+        select ceil( nvl(sum(curr_bal),0)/10000) from ${yyMM} where branch_no = #{jgdm} and ACCT_DESC='T'
+    </select>
+    <select id="getDkByJgdm" resultType="integer">
+        select ceil( nvl(sum(loan_bal),0)/10000) from ${yyMM} where br_no = #{jgdm}
+    </select>
+
+    <select id="getDkkhJgdm" resultType="map">
+        select count(ident_no) zrs, NVL(sum(nr),0) nr
+        from (select ident_no,
+                     case
+                         when f_get_sex(ident_no) = 1 then
+                             1
+                         else
+                             0
+                         end nr
+              from ${yyMM} t where br_no = #{jgdm} and subj_no like '13%'
+              group by ident_no)
+    </select>
+
+    <select id="getBnblByJgdm" resultType="integer">
+        select ceil( nvl(sum(loan_bal),0)/10000) from ${yyMM} where br_no = #{jgdm} and five_class_type in('5','3','4') and subj_no like '13%'
+    </select>
+
+    <select id="getImpWage" resultType="org.cmms.modules.gr.grjxsj.entity.ErpWageYgjbgzglYx">
+        select t.*,rownum from ERP_WAGE_YGJBGZGL_YX t where gzyf=to_date(#{date},'yyyymmdd') and yggh= #{yggh} and rownum =1
+    </select>
+    <update id="updateYfgz">
+        update ERP_WAGE_YGJBGZGL_YX set yfgzhj = ( nvl(zwgwgz,0)+nvl(nggz,0)+nvl(sqbt,0)+nvl(yfjxgz,0)+nvl(jbgz,0)+nvl(tjiagz,0)+nvl(tjiangz,0)+nvl(syjxdx,0)+nvl(qtyf,0))
+                                      ,ykgzhj=(nvl(kfk,0)+nvl(ylbx,0)+nvl(bkylbx,0)+nvl(GRYLBX,0)+nvl(BKGRYLBX,0)+nvl(GRZFJJ,0)+nvl(BKGRZFJJ,0)+nvl(GRQYNJ,0)
+                +nvl(BKGRQYNJ,0)+nvl(GRSYBX,0)
+                +nvl(BKGRSYBX,0)+nvl(GRSDS,0)+nvl(GHJF,0))
+                                      ,sfgz= ( ( nvl(zwgwgz,0)+nvl(nggz,0)+nvl(sqbt,0)+nvl(yfjxgz,0)+nvl(jbgz,0)+nvl(tjiagz,0)+nvl(tjiangz,0)+nvl(syjxdx,0)+nvl(qtyf,0))
+                -(nvl(kfk,0)+nvl(ylbx,0)+nvl(bkylbx,0)+nvl(GRYLBX,0)+nvl(BKGRYLBX,0)+nvl(GRZFJJ,0)+nvl(BKGRZFJJ,0)+nvl(GRQYNJ,0)
+                    +nvl(BKGRQYNJ,0)+nvl(GRSYBX,0)
+                    +nvl(BKGRSYBX,0)+nvl(GRSDS,0)+nvl(GHJF,0))) where yggh=#{yggh}
+    </update>
+
+    <select id="getImpWageList" resultType="org.cmms.modules.ygjx.entity.ImpWageVO">
+        select gzyf,yfgzhj,ykgzhj,sfgz from ERP_WAGE_YGJBGZGL_YX where yggh=#{yggh} order by gzyf desc
+    </select>
+    <select id="getMaxDate" resultType="string">
+        select max(gzrq) from ERP_WAGE_YGJX where yggh=#{yggh}
+    </select>
+
+    <select id="getTjbsCK" resultType="integer">
+        select ceil(nvl(sum(abs(DAY_END_CR)), 0)/10000)
+        from MODM_TJBS_KMYE_JG
+        where tjbs = 'CK'
+          and tjyf = to_date(#{yyyyMMdd},'yyyymmdd')
+          and BRHM_NO = #{jgdm}
+    </select>
+    <select id="getTjbsDK" resultType="integer">
+        select ceil(nvl(sum(abs(DAY_END_DR)),0)/10000)
+        from MODM_TJBS_KMYE_JG
+        where tjbs='DK' and tjyf = to_date(#{yyyyMMdd},'yyyymmdd') and BRHM_NO =#{jgdm}
+    </select>
+
+    <select id="getTjbsDxck" resultType="integer">
+        select ceil(NVL(SUM(ABS(DAY_END_CR)), 0)/10000)
+        from MODM_TJBS_KMYE_JG
+        WHERE BRHM_NO = #{jgdm}
+        AND TJYF = to_date(#{yyyyMMdd},'yyyymmdd')
+        AND TJBS = 'DXCK'
+    </select>
+
+    <select id="getMaxJbgz" resultType="string">
+        select nvl(sfgz,0) from (
+                          select * from ERP_WAGE_YGJBGZGL_YX t where yggh=#{yggh}  order by gzyf desc) where rownum =1
+    </select>
+
+    <select id="getMaxJbgzAndDate" resultType="string">
+        select nvl(sfgz,0) from (
+        select * from ERP_WAGE_YGJBGZGL_YX t where yggh=#{yggh} and gzyf >= to_date(#{yc},'yyyymmdd')
+        and gzyf &lt;= to_date(#{ym},'yyyymmdd') order by gzyf desc) where rownum =1
+    </select>
+
+    <select id="getJhJxgz" resultType="decimal">
+        select sum(zbgz) from  (
+        select t.*,row_number() over(partition by zbid order by gzrq desc) rn from ERP_WAGE_YGJX_MX t where zbid in (
+        select zbid from ERP_ASSESS_GW_ALJC t where (zzbz,gwbz) in (
+        select zzbz,gwbz from hr_bas_staff_post t where yggh =#{yggh}
+        and rgrq &lt;= to_date(#{gzrq},'yyyymmdd')
+        and (lgrq is null or lgrq >= to_date(#{gzrq},'yyyymmdd')) and rownum =1
+        )) and yggh=#{yggh} ) where rn = 1
+    </select>
+
+    <select id="zbids" resultType="string">
+        select zbid from ERP_ASSESS_GW_ALJC t where (zzbz,gwbz) in (
+            select zzbz,gwbz from hr_bas_staff_post t where yggh =#{yggh}
+                                                        and rgrq &lt;= to_date(#{yymmdd},'yyyymmdd')
+                                                        and (lgrq is null or lgrq >= to_date(#{yymmdd},'yyyymmdd')) and rownum =1
+        )
+    </select>
+
+    <select id="getZjjDate" resultType="string">
+        select max(DATA_DATE -1)from TGLS_GLSBUSINESS_INFO where rownum=1
+    </select>
+
+    <select id="getZhrjZjj" resultType="org.cmms.modules.ygjx.entity.JgDataVO">
+       select t1.*,t2.* from
+        (select round(nvl(avg(gzhj),0),2)as zhrj from (
+        select yggh,sum(zbgz)as gzhj from erp_wage_ygjx_mx  where zzbz=#{zzbz}
+        and  gzrq=to_date(#{gzrq},'yyyymmdd')group by  yggh)
+        ) t1,
+        (select  round(nvl(avg(gzhj),0),2)as qhrj ,count(yggh)as qhrs  from (
+        select t.yggh,sum(t.zbgz)as gzhj from  erp_wage_ygjx_mx t,hr_bas_organization n1
+        where t.zzbz= n1.zzbz
+        and  (n1.ywjgdm like '535%'or  n1.zzbz=#{zzbz}) and n1.zzbz not in(64,1)
+        and t.gzrq=to_date(#{gzrq},'yyyymmdd')group by t.yggh)
+ )t2
+
+    </select>
+
+
+
+    <select id="getZjjDK" resultType="integer">
+        select  ceil(nvl(sum(day_end_dr),0)/10000) from ${tableName}
+        where brhm_no = #{jgdm}
+        and item_no in ('1301','1302','1303','1304','1305','1306')
+    </select>
+
+    <select id="getZjjCK" resultType="integer">
+        select ceil(nvl(sum(day_end_cr),0)/10000) from ${tableName}
+        where brhm_no = #{jgdm}
+        and item_no in ('2001','2002','2003','2004','2005','2006','2011','2014')
+    </select>
+
+    <select id="getZjjDxye" resultType="integer">
+        select ceil(nvl(sum(day_end_cr),0)/10000)  from ${tableName}
+        where brhm_no = #{jgdm}
+        and item_no in ('2001','2003','2005','2006','2011')
+    </select>
+    <select id="getZjjZczl" resultType="integer">
+        select ceil(nvl(sum(loan_bal),0)/10000)from ${tableName}
+        where subj_no like '13%'
+        and five_class_type in ('3','4','5')
+    </select>
+    <select id="getZjjZczlDkye" resultType="integer">
+        select ceil(nvl(sum(loan_bal),0)/10000)from ${tableName}
+        where subj_no like '13%'
+    </select>
+
+    <select id="ckrpAndCkje" resultType="map">
+        select rpye_y_b,curr_bal from ${table} where acc_no =#{acctNo}
+    </select>
+
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.jylrhs.csgl.zbk.mapper.JylrhsZbkMapper">
+
+    <!-- 重复校验 sql语句 -->
+    <select id="duplicateCheckCount" resultType="Long" parameterType="java.lang.String">
+        SELECT COUNT(*) FROM jylrhs_zbk WHERE zbid = #{id}
+    </select>
+
+</mapper>

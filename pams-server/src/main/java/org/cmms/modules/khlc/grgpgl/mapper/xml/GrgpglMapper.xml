@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khlc.grgpgl.mapper.GrgpglMapper">
+    <select id="getListClaim" resultType="org.cmms.modules.hr.zzgl.gwxxgl.entity.HrBasStaffPostVo" parameterType="java.lang.String">
+        select t.*,t2.ywjgdm from HR_BAS_STAFF_POST t,HR_BAS_ORGANIZATION t2,hr_bas_staff t3
+        where t.zzbz=t2.zzbz and t.yggh=t3.yggh
+        <if test="zzbz != null and zzbz !=''">
+            and  t.zzbz = #{zzbz}
+        </if>
+        <if test="yggh != null and yggh!=''">
+            and  t.yggh = #{yggh}
+        </if>
+        <if test="ygxm != null and ygxm!=''">
+            and  t3.ygxm like CONCAT(CONCAT('%',#{ygxm}), '%')
+        </if>
+    </select>
+
+</mapper>

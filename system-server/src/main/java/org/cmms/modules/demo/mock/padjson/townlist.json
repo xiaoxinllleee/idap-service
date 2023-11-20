@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "code": 200,
+  "timestamp": 1534955098193,
+  "message": "获取乡镇信息成功",
+  "result": {
+    "pageSize": 10,
+    "pageNo": 0,
+    "totalCount": 57,
+    "totalPage": 6,
+    "list": [
+      {
+        "key": 1,
+        "id": 1,
+        "dybh": "1001",
+        "dymc": "测试镇",
+        "cwsl": 127,
+        "fjsl": 2,
+        "备注": "的居安思危打的"
+      }
+    ]
+  }
+}

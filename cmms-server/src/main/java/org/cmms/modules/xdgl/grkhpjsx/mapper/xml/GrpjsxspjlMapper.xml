@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grkhpjsx.mapper.GrpjsxspjlMapper">
+    <update id="deleteByspid">
+		delete from   CAMS_ZCSX_GRPJSXXX_SPJL  where spid=#{spid}
+	</update>
+
+	<update id="deleteGrdkByspid">
+		delete from   CAMS_ZCSX_GRXDCJXX_SPJL  where spid=#{spid}
+	</update>
+
+	<select id="getDzdkzData" resultType="org.cmms.modules.xdgl.grkhpjsx.entity.Grpjsxspjl">
+		select *
+      from (select t.khmc,t.zjhm,t2.zzjc bz,t.zzpddj,t.zzsxed,t.sqr,t.sjhm,
+                   row_number() over(partition by t.zjhm order by t.sqrq desc) sfktsbk
+              from CAMS_ZCSX_GRPJSXXX_SPJL t
+              left join HR_BAS_ORGANIZATION t2 on t.sszh=t2.zzbz
+              where t.zzpddj is not null
+              ) c
+     where sfktsbk = 1
+	</select>
+</mapper>

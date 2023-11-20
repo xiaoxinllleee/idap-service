@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khpjsx.pjzxmsz.mapper.pjsxPjzxmszMapper">
+    <insert id="insertXLInfoBatch" parameterType="java.util.List">
+
+       <!--     insert ignore  PJSX_PJZXMGZSZ_xl (id,qydm,XMBH_ID,XMBH,KEY,VALUE,fz)
+          <foreach collection="list" item="item" index="index" separator=",">
+              (#{item.id},#{item.qydm}, #{item.XMBH_ID}, #{item.XMBH}, #{item.KEY},
+              #{item.VALUE}, #{item.fz})
+            </foreach>
+            values-->
+        <foreach collection="list" item="item" index="index" separator=",">
+         MERGE INTO  PJSX_PJZXMGZSZ_xl T1
+        USING (SELECT
+
+                  (#{item.id},#{item.qydm}, #{item.XMBH_ID}, #{item.XMBH}, #{item.KEY},
+                  #{item.VALUE}, #{item.fz})
+             
+        FROM dual) T2 on (T1.ID=T2.ID)
+        WHEN MATCHED THEN UPDATE SET T1.id=T2.id,T1.qydm=T2.qydm,T1.XMBH_ID=T2.XMBH_ID,T1.XMBH=T2.XMBH,T1.KEY=T2.KEY,T1.VALUE=T2.VALUE,T1.fz=T2.fz,
+        WHEN NOT MATCHED THEN  INSERT (T1.ID, T1.qydm,T1.XMBH_ID,T1.XMBH) VALUES (T2.ID, T2.qydm,T2.XMBH_ID,T2.XMBH );
+              </foreach>
+
+          </insert>
+
+
+</mapper>

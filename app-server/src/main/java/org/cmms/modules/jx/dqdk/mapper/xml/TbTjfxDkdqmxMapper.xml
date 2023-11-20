@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.jx.dqdk.mapper.TbTjfxDkdqmxMapper">
+    <select id="getListByYggh"  resultType="org.cmms.modules.jx.dqdk.entity.TbTjfxDkdqmxVO">
+        select tb.*,org.ZZJC as zzjc,org.ZZMC as ZZMC from tb_tjfx_dkdqmx tb left join hr_bas_organization org on tb.jgdm=org.YWJGDM
+            and tb.YGGH =#{yggh}
+        order by tb.dkye desc
+    </select>
+
+    <select id="getPageListByYggh" resultType="org.cmms.modules.jx.dqdk.entity.TbTjfxDkdqmxVO">
+        select tb.*,org.ZZJC as zzjc,org.ZZMC as ZZMC from tb_tjfx_dkdqmx tb left join hr_bas_organization org on tb.jgdm=org.YWJGDM
+        <if test="param2 != null">
+            and tb.yggh =#{param2}
+        </if>
+        order by tb.dkye desc
+    </select>
+</mapper>

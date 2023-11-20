@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.jgywsj.jgkmsj.mapper.JgkmsjMapper">
+    <select id="getLatestTjrq" resultType="java.util.Date">
+        select tjrq from (
+          select tjrq from tb_tjfx_jgkmsj where zzbz= #{zzbz} group by tjrq order by tjrq desc
+        ) where rownum &lt;= 5
+    </select>
+
+    <select id="queryCkxxByTjrqAndZzbz" resultType="org.cmms.modules.jgywsj.jgkmsj.entity.JgkmsjCk">
+        select
+          tjrq,zzbz,sum(case when tjbs='CK' then dqye else 0 end) ckye, sum(case when tjbs='CK' then dqrpye else 0 end) ckrj,
+          sum(case when tjbs='DXCK' then dqye else 0 end) dxye, sum(case when tjbs='DXCK' then dqrpye else 0 end) dxrj
+        from tb_tjfx_jgkmsj where tjrq = to_date(#{tjrq},'yyyy-MM-dd') and zzbz = #{zzbz} and tjbs in ('CK','DXCK')
+        group by tjrq,zzbz
+    </select>
+</mapper>

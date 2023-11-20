@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.XydbMapper">
+
+	<delete id="deleteByMainId" parameterType="java.lang.String">
+		DELETE
+		FROM  CAMS_ZCSX_XYDB
+		WHERE
+			 zjhm = #{zjhm}
+	</delete>
+
+	<select id="selectByMainId" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Xydb">
+		SELECT *
+		FROM  CAMS_ZCSX_XYDB
+		WHERE
+			 zjhm = #{zjhm}
+	</select>
+
+	<!--根据"ID"获取担保方式:信用担保-->
+	<select id="queryCreditGuaranteeInfoById" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Xydb">
+        SELECT DBLX FROM CAMS_ZCSX_XYDB
+         WHERE zjhm=(SELECT zjhm FROM CAMS_ZCSX_GRXDCJXX WHERE id = #{id})
+    </select>
+
+	<!--根据"ID"获取担保方式:信用担保-->
+	<select id="queryCreditGuaranteeDataById" parameterType="java.lang.String" resultType="org.cmms.modules.xdgl.grdkgl.entity.Xydb">
+        SELECT DBLX FROM CAMS_ZCSX_XYDB WHERE zjhm=(SELECT zjhm FROM CAMS_ZCSX_GRXDCJXX_SPJL WHERE id=#{id})
+    </select>
+
+</mapper>

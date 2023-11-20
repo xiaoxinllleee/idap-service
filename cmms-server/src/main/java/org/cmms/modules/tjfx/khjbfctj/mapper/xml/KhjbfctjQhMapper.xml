@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.tjfx.khjbfctj.mapper.KhjbfctjQhMapper">
+
+    <!--全行客户级别分层统计-->
+    <update id="extract" parameterType="java.util.Map" statementType="CALLABLE">
+        {call PKG_TJFX.P_KHFCTJ_QH(
+            #{tjwd, mode=IN, jdbcType=VARCHAR},
+            #{tjrq, mode=IN, jdbcType=VARCHAR}
+        )}
+    </update>
+
+    <!--查询全行最新数据日期：月-->
+    <select id="getMaxDateM" resultType="java.util.Date">
+        SELECT MAX(TJRQ) FROM TJFX_KHDJFCTJ_QH WHERE TJWD='MM'
+    </select>
+    <!--查询全行最新数据日期：季-->
+    <select id="getMaxDateQ" resultType="java.util.Date">
+        SELECT MAX(TJRQ) FROM TJFX_KHDJFCTJ_QH WHERE TJWD='Q'
+    </select>
+    <!--查询全行最新数据日期：年-->
+    <select id="getMaxDateY" resultType="java.util.Date">
+        SELECT MAX(TJRQ) FROM TJFX_KHDJFCTJ_QH WHERE TJWD='YYYY'
+    </select>
+
+    <!--查询全行最新数据：月-->
+    <select id="getQhDataM"  resultType="org.cmms.modules.tjfx.khjbfctj.entity.KhjbfctjQh">
+       SELECT KHDJ,KHS,RSZB FROM TJFX_KHDJFCTJ_QH WHERE TJWD='MM' AND TJRQ=(SELECT MAX(TJRQ) FROM TJFX_KHDJFCTJ_QH WHERE TJWD='MM')
+    </select>
+    <!--查询全行最新数据：季-->
+    <select id="getQhDataQ"  resultType="org.cmms.modules.tjfx.khjbfctj.entity.KhjbfctjQh">
+       SELECT KHDJ,KHS,RSZB FROM TJFX_KHDJFCTJ_QH WHERE TJWD='Q' AND TJRQ=(SELECT MAX(TJRQ) FROM TJFX_KHDJFCTJ_QH WHERE TJWD='Q')
+    </select>
+    <!--查询全行最新数据：年-->
+    <select id="getQhDataY"  resultType="org.cmms.modules.tjfx.khjbfctj.entity.KhjbfctjQh">
+       SELECT KHDJ,KHS,RSZB FROM TJFX_KHDJFCTJ_QH WHERE TJWD='YYYY' AND TJRQ=(SELECT MAX(TJRQ) FROM TJFX_KHDJFCTJ_QH WHERE TJWD='YYYY')
+    </select>
+
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.sjxf.qtxt.khxxst.khxxb.mapper.KhxxbMapper">
+
+    <select id="getKhxxbHive" parameterType="java.lang.String" resultType="org.cmms.modules.sjxf.qtxt.khxxst.khxxb.entity.Khxxb">
+        select * from ecif_customer where ident_no=#{zjhm} order by last_update_tm desc limit 1
+    </select>
+
+    <select id="getKhxxbOracle" parameterType="java.lang.String" resultType="org.cmms.modules.sjxf.qtxt.khxxst.khxxb.entity.Khxxb">
+        select * from (select * from ecif_customer where ident_no=#{zjhm} order by last_update_tm) where rownum=1
+    </select>
+</mapper>

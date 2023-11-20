@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.rwzx.rwcj.mapper.TaskCreateMapper">
+
+    <select id="getTaskList" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+        select t1.* from khxxgl_khxq_nh t1 left join KHXXGL_YWHYWWLXX t2 on t1.zjhm = t2.zjhm where 1 = 1
+        <if test="taskCreateQuery.wgbh != null and taskCreateQuery.wgbh !=''">
+            and t1.wgbh in (select wgbh from yxdygl_main start with wgbh=#{taskCreateQuery.wgbh} connect by prior wgbh=parent_id)
+        </if>
+        <if test="taskCreateQuery.khlx != null and taskCreateQuery.khlx !='' ">
+            and t1.khlx =#{taskCreateQuery.khlx}
+        </if>
+        <if test="taskCreateQuery.sfckkh == '1'">
+            and t2.ckye > 0
+        </if>
+        <if test="taskCreateQuery.sckje != null">
+            and t2.ckye >= #{taskCreateQuery.sckje}
+        </if>
+        <if test="taskCreateQuery.eckje != null">
+            and t2.ckye &lt;= #{taskCreateQuery.eckje}
+        </if>
+        <if test="taskCreateQuery.sfckkh == 1">
+            and t2.ckye is null
+        </if>
+
+        <if test="taskCreateQuery.sfdkkh == 1">
+            and t2.dkje > 0
+        </if>
+        <if test="taskCreateQuery.sdkje != null">
+            and t2.dkje >= #{taskCreateQuery.sdkje}
+        </if>
+        <if test="taskCreateQuery.edkje != null">
+            and t2.dkje &lt;= #{taskCreateQuery.edkje}
+        </if>
+        <if test="taskCreateQuery.sfdkkh == 2">
+            and t2.dkje is null
+        </if>
+
+        <if test="taskCreateQuery.sfktsbk != null and taskCreateQuery.sfktsbk !='' ">
+            and t1.sfktsbk =#{taskCreateQuery.sfktsbk}
+        </if>
+        <if test="taskCreateQuery.sfktsjyhyw != null and taskCreateQuery.sfktsjyhyw !='' ">
+            and t1.sfktsjyhyw =#{taskCreateQuery.sfktsjyhyw}
+        </if>
+
+        <if test="taskCreateQuery.snl != null">
+            and t1.nl >= #{taskCreateQuery.snl}
+        </if>
+        <if test="taskCreateQuery.enl != null">
+            and t2.nl &lt;= #{taskCreateQuery.enl}
+        </if>
+    </select>
+
+    <select id="getPageTaskList" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.Nhxq">
+        select t1.* from khxxgl_khxq_nh t1 left join KHXXGL_YWHYWWLXX t2 on t1.zjhm = t2.zjhm where 1 = 1
+        <if test="taskCreateQuery.wgbh != null and taskCreateQuery.wgbh !=''">
+            and t1.wgbh in (select wgbh from yxdygl_main start with wgbh=#{taskCreateQuery.wgbh} connect by prior wgbh=parent_id)
+        </if>
+        <if test="taskCreateQuery.khlx != null and taskCreateQuery.khlx !='' ">
+            and t1.khlx =#{taskCreateQuery.khlx}
+        </if>
+        <if test="taskCreateQuery.sfckkh == 1">
+            and t2.ckye > 0
+        </if>
+        <if test="taskCreateQuery.sckje != null">
+            and t2.ckye >= #{taskCreateQuery.sckje}
+        </if>
+        <if test="taskCreateQuery.eckje != null">
+            and t2.ckye &lt;= #{taskCreateQuery.eckje}
+        </if>
+        <if test="taskCreateQuery.sfckkh == 2">
+            and t2.ckye is null
+        </if>
+
+        <if test="taskCreateQuery.sfdkkh == 1">
+            and t2.dkje > 0
+        </if>
+        <if test="taskCreateQuery.sdkje != null">
+            and t2.dkje >= #{taskCreateQuery.sdkje}
+        </if>
+        <if test="taskCreateQuery.edkje != null">
+            and t2.dkje &lt;= #{taskCreateQuery.edkje}
+        </if>
+        <if test="taskCreateQuery.sfdkkh == 2">
+            and t2.dkje is null
+        </if>
+
+        <if test="taskCreateQuery.sfktsbk != null and taskCreateQuery.sfktsbk !='' ">
+            and t2.sfktsbk =#{taskCreateQuery.sfktsbk}
+        </if>
+        <if test="taskCreateQuery.sfktsjyhyw != null and taskCreateQuery.sfktsjyhyw !='' ">
+            and t2.sfktsjyhyw =#{taskCreateQuery.sfktsjyhyw}
+        </if>
+
+        <if test="taskCreateQuery.snl != null">
+            and t1.nl >= #{taskCreateQuery.snl}
+        </if>
+        <if test="taskCreateQuery.enl != null">
+            and t1.nl &lt;= #{taskCreateQuery.enl}
+        </if>
+       <!-- <if test="taskCreateQuery.yxlx == 1  ">
+            and t1.zjhm in (select ident_no from KHXXGL_JZYX_DKLSH_C)
+        </if>-->
+        <if test="taskCreateQuery.rwlx == 2  ">
+            and t1.xtpdjg =2
+            and
+            (
+                 t1.hhbm in (select hhbm from TJFX_ZFSJMX_NH where sfyxzf=1)
+                 or t1.zjhm in (SELECT ZJHM FROM CAMS_ZCSX_NHPJSXXX  where NHZZSXED>0)
+            )
+        </if>
+
+    </select>
+
+    <insert id="insertNhxxInfo">
+        insert into  TASK_RWMX (id,rwid,mxsjid)
+        select seq_public_id.nextval,#{taskCreateQuery.id},t1.id
+        from KHXXGL_JZYX_ECZF_C t1  where 1 = 1
+        <if test="taskCreateQuery.wgbh != null and taskCreateQuery.wgbh !=''">
+            and t1.wgbh in (select wgbh from yxdygl_main start with wgbh=#{taskCreateQuery.wgbh} connect by prior wgbh=parent_id)
+        </if>
+        <if test="taskCreateQuery.khlx != null and taskCreateQuery.khlx !='' ">
+            and t1.khlx =#{taskCreateQuery.khlx}
+        </if>
+        <if test="taskCreateQuery.sfckkh != null and taskCreateQuery.sfckkh !='' ">
+            and t1.sfckkh =#{taskCreateQuery.sfckkh}
+        </if>
+        <if test="taskCreateQuery.ckje_begin != null">
+            and t1.ckye >= #{taskCreateQuery.ckje_begin}
+        </if>
+        <if test="taskCreateQuery.ckje_end != null">
+            and t1.ckye &lt;= #{taskCreateQuery.ckje_end}
+        </if>
+        <if test="taskCreateQuery.sfdkkh != null and taskCreateQuery.sfdkkh !='' ">
+            and t1.sfdkkh =#{taskCreateQuery.sfdkkh}
+        </if>
+        <if test="taskCreateQuery.dkje_begin != null">
+            and t1.dkje >= #{taskCreateQuery.dkje_begin}
+        </if>
+        <if test="taskCreateQuery.dkje_end != null">
+            and t1.dkje &lt;= #{taskCreateQuery.dkje_end}
+        </if>
+
+        <if test="taskCreateQuery.sfblsbk != null and taskCreateQuery.sfblsbk !='' ">
+            and t1.sfblsbk =#{taskCreateQuery.sfblsbk}
+        </if>
+        <if test="taskCreateQuery.sfktsjyhyw != null and taskCreateQuery.sfktsjyhyw !='' ">
+            and t1.sfktsjyhyw =#{taskCreateQuery.sfktsjyhyw}
+        </if>
+
+        <if test="taskCreateQuery.nl_begin != null">
+            and t1.nl >= #{taskCreateQuery.nl_begin}
+        </if>
+        <if test="taskCreateQuery.nl_end != null">
+            and t1.nl &lt;= #{taskCreateQuery.nl_end}
+        </if>
+       <!-- <if test="taskCreateQuery.rwlx == 1  ">
+            and t1.zjhm in (select ident_no from KHXXGL_JZYX_DKLSH_C)
+        </if>-->
+        <if test="taskCreateQuery.rwlx == 2  ">
+            and t1.xtpdjg =2
+            and
+            (
+            t1.hhbm in (select hhbm from TJFX_ZFSJMX_NH where sfyxzf=1)
+            or t1.zjhm in (SELECT ZJHM FROM CAMS_ZCSX_NHPJSXXX  where NHZZSXED>0)
+            )
+        </if>
+    </insert>
+
+    <insert id="insertZzrwInfo">
+        insert into  TASK_RWMX (id,rwid,mxsjid)
+        select seq_public_id.nextval,#{taskCreateQuery.id},t1.id
+        from task_zzrwsjb t1  where 1 = 1
+        <if test="taskCreateQuery.sswg != null and taskCreateQuery.sswg !=''">
+            and t1.sswg in (select wgbh from yxdygl_main start with wgbh=#{taskCreateQuery.sswg} connect by prior wgbh=parent_id)
+        </if>
+
+        <if test="taskCreateQuery.sszh != null and taskCreateQuery.sszh !='' ">
+            and t1.sszh =#{taskCreateQuery.sszh}
+        </if>
+
+        <if test="taskCreateQuery.rwmc != null and taskCreateQuery.rwmc !='' ">
+            and t1.rwmc =#{taskCreateQuery.rwmc}
+        </if>
+
+        <if test="taskCreateQuery.ywsszh != null and taskCreateQuery.ywsszh !='' ">
+            and t1.ywsszh =#{taskCreateQuery.ywsszh}
+        </if>
+
+
+        <if test="taskCreateQuery.khmc != null and taskCreateQuery.khmc !='' ">
+            and t1.khmc =#{taskCreateQuery.khmc}
+        </if>
+
+        <if test="taskCreateQuery.zjhm != null and taskCreateQuery.zjhm !='' ">
+            and t1.zjhm =#{taskCreateQuery.zjhm}
+        </if>
+    </insert>
+
+    <insert id="insertDklshInfo">
+        insert into TASK_RWMX (id,rwid,mxsjid)
+        select seq_public_id.nextval,#{dklshjTaskCreateQuery.id},id
+        from KHXXGL_JZYX_DKLSH_C  where 1 = 1
+        <if test="dklshjTaskCreateQuery.zzbz != null">
+            and zzbz = #{dklshjTaskCreateQuery.zzbz}
+        </if>
+        <if test="dklshjTaskCreateQuery.hjsszh != null">
+            and hjsszh = #{dklshjTaskCreateQuery.hjsszh}
+        </if>
+        <if test="dklshjTaskCreateQuery.custName != null and dklshjTaskCreateQuery.custName !=''">
+            and cust_name = #{dklshjTaskCreateQuery.custName}
+        </if>
+        <if test="dklshjTaskCreateQuery.identNo != null and dklshjTaskCreateQuery.identNo !=''">
+            and ident_no = #{dklshjTaskCreateQuery.identNo}
+        </if>
+        <if test="dklshjTaskCreateQuery.hjszwg != null and dklshjTaskCreateQuery.hjszwg !=''">
+            and hjszwg in (select wgbh from yxdygl_main start with wgbh=#{dklshjTaskCreateQuery.hjszwg} connect by prior wgbh=parent_id)
+        </if>
+
+    </insert>
+
+
+
+    <select id="getYxPicker" resultType="org.cmms.modules.rwzx.rwcj.entity.UniDataPicker">
+        select id as value,title as text from TASK_CREATE group by id,title
+    </select>
+
+
+
+    <select id="initRwsh" statementType="CALLABLE">
+        {call PKG_RWZX.P_RWHS(#{rwid}) }
+    </select>
+
+
+    <select id="initRwpf" statementType="CALLABLE">
+        {call PKG_RWZX.P_RWFP(#{rwid},#{yggh}) }
+    </select>
+
+    <select id="initRwpfLs" statementType="CALLABLE">
+        {call PKG_RWZX.P_RWFP_LS(#{rwid}) }
+    </select>
+</mapper>

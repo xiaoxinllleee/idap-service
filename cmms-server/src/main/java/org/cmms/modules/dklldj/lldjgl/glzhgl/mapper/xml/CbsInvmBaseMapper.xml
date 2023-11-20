@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dklldj.lldjgl.glzhgl.mapper.CbsInvmBaseMapper">
+
+    <select id="dhqye" resultType="string">
+        select sum(CURR_BAL) from cbs_invm_base where ident_no=#{zjhm}
+    </select>
+
+    <select id="crxx" resultType="map">
+        select count(inv.sub_acct_no) as count,sum(inc.amount) as amount from cbs_invm_base inv left join cbs_inct_base
+        inc on inv.sub_acct_no=inc.acc_no
+        <where>
+            <if test="zjhm != null and zjhm != ''">
+                <![CDATA[ inv.ident_no=#{zjhm} and inc.amount>0 ]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="zcxx" resultType="map">
+        select count(inv.sub_acct_no) as count,sum(inc.amount) as amount from cbs_invm_base inv left join cbs_inct_base
+        inc on inv.sub_acct_no=inc.acc_no
+        <where>
+            <if test="zjhm != null and zjhm != ''">
+                <![CDATA[ inv.ident_no=#{zjhm} and inc.amount<0 ]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="ckzhs" resultType="int">
+        select count(1) from cbs_invm_base where ident_no=#{zjhm}
+    </select>
+
+    <select id="getIntermediaryBusiness" resultType="map">
+        select a.*,b.*,c.*,d.*,e.*,f.* from (
+	SELECT
+	min( CIF_OPENTIME ) ebank
+FROM
+	ibss_pb_open pb,
+	(
+	SELECT
+		count( tf.TRF_CSTNO ) pbc
+	FROM
+		ibss_pb_open cs
+		RIGHT JOIN ibss_pb_tranflow tf ON cs.CIF_CSTNO = tf.TRF_CSTNO
+	WHERE
+		cs.CIF_CSTNO = #{zjhm}
+	) pba
+WHERE
+	pb.CIF_CSTNO =#{zjhm}
+	AND pb.CIF_CTFTYPE = '01'
+	AND pba.pbc IS NOT NULL
+	AND pba.pbc !=0
+	) a,(
+	SELECT
+	min( signdate ) mobileBank
+FROM
+	fbuss_tel_signinfo tel,
+	( SELECT count( OLDACCTNO ) telc FROM fbuss_tel_signinfo WHERE OPERIDENTNO =#{zjhm} AND OPERIDENTTYPE = '01' ) tela
+WHERE
+	tel.OPERIDENTNO =#{zjhm}
+	AND tel.OPERIDENTTYPE = '01'
+	AND tela.telc IS NOT NULL
+	AND tela.telc !=0
+	) b,(
+	SELECT
+	min( workdate ) etc
+FROM
+	ibus_etc_bdxxb etc,
+	(
+	SELECT
+		count( bd.xtkh ) bdc
+	FROM
+		ibus_etc_bdxxb bd
+		INNER JOIN ibus_etc_pkmxb pk ON bd.xtkh = pk.paycardid
+	WHERE
+		bd.ZJHM ='123'
+	) bda
+WHERE
+	etc.zjhm ='123'
+	AND etc.ZJLX = '01'
+	AND bda.bdc IS NOT NULL
+	AND bda.bdc !=0
+	) c,(
+	SELECT
+	min( QYZT ) nxy
+FROM
+	tgacs_nps_dwyktqyxx nps,
+	( SELECT count( ZJHM ) npsc FROM tgacs_nps_dwyktqyxx dwy WHERE dwy.zjhm =#{zjhm} ) npsa
+WHERE
+	nps.ZJHM =#{zjhm}
+	AND npsa.npsc IS NOT NULL
+	AND npsa.npsc !=0
+	) d,(
+		SELECT
+	min( startdate ) water
+FROM
+	ibus_dssf_dealinfo dssf,
+	(
+	SELECT
+		count( deal.USER_SFZNO ) dssfc
+	FROM
+		ibus_dssf_dealinfo deal
+		RIGHT JOIN ibus_dssf_debtinfo debt ON deal.USER_NO = debt.USER_NO
+	WHERE
+		deal.USER_SFZNO = #{zjhm}
+	) dssfa
+WHERE
+	dssf.USER_SFZNO =#{zjhm}
+	AND dssfa.dssfc IS NOT NULL
+	AND dssfa.dssfc !=0
+	) e,(
+	 SELECT
+	min( OPENTIME ) phoneBank
+FROM
+	mbs_mb_cstinf cst,
+	(
+	SELECT
+		count( cs.CSTNO ) cstc
+	FROM
+		mbs_mb_cstinf cs
+		RIGHT JOIN mbs_mb_tranflow tf ON cs.CSTNO = tf.CSTNO
+	WHERE
+		cs.CTFNO = #{zjhm}
+	) ctsa
+WHERE
+	cst.CTFNO =#{zjhm}
+	AND cst.CSTTYPE = '01'
+	AND ctsa.cstc IS NOT NULL
+	AND ctsa.cstc !=0
+	) f
+    </select>
+
+    <select id="bwdk" resultType="string">
+		select SUM(LOAN_BAL) from cbs_borm_base where ident_no=#{zjhm} AND SUBJ_NO NOT LIKE '13%'
+	</select>
+
+    <select id="credit" resultType="string">
+		       select  credit_value
+                from (select t3.credit_value,
+                             t1.cust_id ,
+                             t1.ident_no,
+                             row_number() over(partition by t3.cust_id order by t3.end_date desc) pk
+                        from cbs_borm_base          t1,
+                             cms_base               t2,
+                             CMS_LINE_CREDIT_DETAIL t3
+                       where t1.cust_id = t2.ecif_cust_id
+                         and t2.cust_id = t3.cust_id
+                         and t3.credit_kind = '1110101'
+                         and t3.start_date is not null
+												 and t1.ident_no=#{zjhm}
+                         and t3.credit_value > 0)
+               where pk = 1
+	</select>
+
+    <select id="sfxd" resultType="int">
+		select case when count(1)>0 then 1 else 0 end count from cbs_borm_base where ident_no=#{zjhm}
+	</select>
+
+    <select id="khsjAndCkrp" resultType="map">
+		SELECT min(acct_open_dt) as dat,sum(net_av_bal_ytd) as avg_day
+		from cbs_invm_base
+		where ident_no =#{zjhm}
+		and ident_type='01'
+		group by ident_no
+	</select>
+
+	<select id="getAccNoByMastAcctAndSubAcctNo" parameterType="java.lang.String" resultType="java.lang.String">
+		select acc_no from ods_020.cbs_invm_base where mast_acct = #{paramOne} and substr(sub_acct_no, 14, 4) = #{paramTwo}
+	</select>
+</mapper>

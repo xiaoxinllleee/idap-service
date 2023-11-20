@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.system.mapper.DpJdrwglMapper">
+
+
+    <select id="getJdrwByJdId" resultType="org.cmms.modules.system.entity.DpJdrwgl">
+        select * from DP_JDRWGL where  jdid IN (select id from dp_jdgl start with id=#{jdid} connect by prior id = sjid)
+        <if test="rwmc!=null and rwmc!=''">
+            and rwmc like '%${rwmc}%'
+        </if>
+    </select>
+
+
+    <select id="extract" parameterType="java.lang.String" statementType="CALLABLE">
+        {call PKG_TD_EXTRACT.P_EXTRACT(#{spname},#{ksrq},#{jsrq},#{rwid})}
+    </select>
+
+
+
+    <update id="updatezt" parameterType="java.lang.String">
+        update DP_RWRL set zxzt=0 where to_char(tjrq,'yyyymmdd')=#{tjrq} and rwid=#{rwid}
+    </update>
+
+    <select id="updateBatchzt" parameterType="java.lang.String" statementType="CALLABLE">
+        {call PKG_TD_EXTRACT.P_UPDATE_ZT(#{ksrq},#{jsrq},#{rwid})}
+    </select>
+</mapper>

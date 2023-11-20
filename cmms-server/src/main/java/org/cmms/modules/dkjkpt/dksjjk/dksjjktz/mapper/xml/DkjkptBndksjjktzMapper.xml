@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dkjkpt.dksjjk.dksjjktz.mapper.DkjkptBndksjjktzMapper">
+    <select id="queryByDkzh" parameterType="String" resultType="org.cmms.modules.dkjkpt.dksjjk.dksjjktz.entity.DkjkptBndksjjktz">
+        select * from dkjkpt_bndksjjktz where dkzh = #{dkzh}
+    </select>
+
+    <update id="init" statementType="CALLABLE">
+        {call PKG_DKJKPT.P_BNDKSJJKTZ_TQ}
+    </update>
+
+    <select id="queryDkrqq" parameterType="String" resultType="org.cmms.modules.dkjkpt.dksjjk.dksjjktz.entity.DkjkptBndksjjktz">
+       select to_date(t.qx_date,'yyyy-MM-dd') as jkrq,t.five_class_type as dkxt from cbs_borm_base t where  t.acct_no=#{dkzh}
+    </select>
+
+    <select id="queryDkxt" parameterType="String" resultType="String">
+       select t.five_class_type  from ${table} t where t.acct_no=#{dkzh}
+    </select>
+</mapper>

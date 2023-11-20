@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.nhxq.mapper.VKhxxglKhxqXxnyztMapper">
+    <select id="initData" parameterType="java.lang.String" statementType="CALLABLE">
+        { CALL PKG_TJFX.P_TJFX_XXNYZT_DKXX(#{sjrq}) }
+    </select>
+
+    <select id="getMaxDate" resultType="java.util.Date">
+        select max(sjrq) from v_khxxgl_khxq_xxnyzt
+    </select>
+</mapper>

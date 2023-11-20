@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.dklldj.tjfxgl.zhsftj.mapper.ZhsftjMapper">
+
+    <select id="init" parameterType="java.util.Map" statementType="CALLABLE">
+        { CALL EWEB.PKG_LLDJ.P_ZHllSF_TJ(#{tjyf, mode=IN, jdbcType=VARCHAR}) }
+    </select>
+
+</mapper>

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.nhxq.mapper.KhxxglKhxqXxnyztMapper">
+
+    <select id="getTjfx2" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.XxnyztTjfx2">
+        select t1.*, t2.czzstj,t2.rhzstj,t2.yxzstj from (
+        select sszh,ghzrr,count(1) ghs,sum(czzs)czzs,sum(rhzs) rhzs ,sum(yxzs)yxzs,sum(dczpdhs)syrs from (
+        select sszh,ghzrr,
+        case when czpywcsj is not null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end czzs,
+        case when rhhdwcsj is not null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end rhzs,
+        case when yxzfwcsj is not null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) and zhfl='1' then 1 else 0 end yxzs,
+        case
+        when pdfl is null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null)
+        then
+        1
+        else
+        0
+        end dczpdhs
+        from KHXXGL_KHXQ_XXNYZT
+            where 1 = 1 <if test="dao.sszh != null and dao.sszh !=''">
+        and sszh = #{dao.sszh}
+    </if>
+        <if test="dao.wgbh != null and dao.wgbh !=''">
+            and wgbh = #{dao.wgbh}
+        </if>
+        <if test="dao.ztfl != null and dao.ztfl !=''">
+            and ztfl = #{dao.ztfl}
+        </if>
+        <if test="dao.ghzrr != null and dao.ghzrr !=''">
+            and ghzrr = #{dao.ghzrr}
+        </if>
+            ) group by sszh,ghzrr )t1 left join (
+
+
+        select sszh,ghzrr,sum(czzs) czzstj,sum(rhzs) rhzstj ,sum(yxzs)yxzstj from (
+        select sszh,ghzrr,case when czpywcsj is not null and czpywcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and czpywcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end czzs,
+        case when rhhdwcsj is not null and rhhdwcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and rhhdwcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end rhzs,
+        case when yxzfwcsj is not null and zhfl='1' and yxzfwcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and yxzfwcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss')  and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end yxzs
+        from KHXXGL_KHXQ_XXNYZT where 1 = 1
+        <if test="dao.sszh != null and dao.sszh !=''">
+            and sszh = #{dao.sszh}
+        </if>
+        <if test="dao.wgbh != null and dao.wgbh !=''">
+            and wgbh = #{dao.wgbh}
+        </if>
+        <if test="dao.ztfl != null and dao.ztfl !=''">
+            and ztfl = #{dao.ztfl}
+        </if>
+        <if test="dao.ghzrr != null and dao.ghzrr !=''">
+            and ghzrr = #{dao.ghzrr}
+        </if>
+            ) group by sszh,ghzrr ) t2 on
+        t1.sszh = t2.sszh and t1.ghzrr = t2.ghzrr
+    </select>
+
+    <select id="getTjfx2Qy" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.XxnyztTjfx2">
+        select t1.*, t2.czzstj,t2.rhzstj,t2.yxzstj from (
+        select sszh,ghzrr,count(1) ghs,sum(czzs)czzs,sum(rhzs) rhzs ,sum(yxzs)yxzs,sum(dczpdhs)syrs from (
+        select sszh,ghzrr,
+        case when czpywcsj is not null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end czzs,
+        case when rhhdwcsj is not null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end rhzs,
+        case when sfyxzf='1' then 1 else 0 end yxzs,
+        case
+        when pdfl is null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null)
+        then
+        1
+        else
+        0
+        end dczpdhs
+        from KHXXGL_KHXQ_XXNYZT
+        where 1 = 1 <if test="dao.sszh != null and dao.sszh !=''">
+        and sszh = #{dao.sszh}
+    </if>
+        <if test="dao.wgbh != null and dao.wgbh !=''">
+            and wgbh = #{dao.wgbh}
+        </if>
+        <if test="dao.ztfl != null and dao.ztfl !=''">
+            and ztfl = #{dao.ztfl}
+        </if>
+        <if test="dao.ghzrr != null and dao.ghzrr !=''">
+            and ghzrr = #{dao.ghzrr}
+        </if>
+        ) group by sszh,ghzrr )t1 left join (
+
+
+        select sszh,ghzrr,sum(czzs) czzstj,sum(rhzs) rhzstj ,sum(yxzs)yxzstj from (
+        select sszh,ghzrr,case when czpywcsj is not null and czpywcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and czpywcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end czzs,
+        case when rhhdwcsj is not null and rhhdwcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and rhhdwcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end rhzs,
+        case when yxzfwcsj is not null and yxzfwcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and yxzfwcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss')
+        and sfyxzf='1'
+        then 1 else 0 end yxzs
+        from KHXXGL_KHXQ_XXNYZT where 1 = 1
+        <if test="dao.sszh != null and dao.sszh !=''">
+            and sszh = #{dao.sszh}
+        </if>
+        <if test="dao.wgbh != null and dao.wgbh !=''">
+            and wgbh = #{dao.wgbh}
+        </if>
+        <if test="dao.ztfl != null and dao.ztfl !=''">
+            and ztfl = #{dao.ztfl}
+        </if>
+        <if test="dao.ghzrr != null and dao.ghzrr !=''">
+            and ghzrr = #{dao.ghzrr}
+        </if>
+        ) group by sszh,ghzrr ) t2 on
+        t1.sszh = t2.sszh and t1.ghzrr = t2.ghzrr
+    </select>
+
+    <select id="getTjfx2exp" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.XxnyztTjfx2">
+        select t1.*, t2.czzstj,t2.rhzstj,t2.yxzstj from (
+        select sszh,ghzrr,count(1) ghs,sum(czzs)czzs,sum(rhzs) rhzs ,sum(yxzs)yxzs,sum(dczpdhs)syrs from (
+        select sszh,ghzrr,case when czpywcsj is not null and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end czzs,
+        case when rhhdwcsj is not null  and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end rhzs,
+        case when yxzfwcsj is not null and zhfl='1'  and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end yxzs,
+        case
+        when pdfl is null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null)
+        then
+        1
+        else
+        0
+        end dczpdhs
+        from KHXXGL_KHXQ_XXNYZT
+        where 1 = 1 <if test="dao.sszh != null and dao.sszh !=''">
+        and sszh = #{dao.sszh}
+    </if>
+        <if test="dao.wgbh != null and dao.wgbh !=''">
+            and wgbh = #{dao.wgbh}
+        </if>
+        <if test="dao.ztfl != null and dao.ztfl !=''">
+            and ztfl = #{dao.ztfl}
+        </if>
+        <if test="dao.ghzrr != null and dao.ghzrr !=''">
+            and ghzrr = #{dao.ghzrr}
+        </if>
+        ) group by sszh,ghzrr )t1 left join (
+
+
+        select sszh,ghzrr,sum(czzs) czzstj,sum(rhzs) rhzstj ,sum(yxzs)yxzstj from (
+        select sszh,ghzrr,case when czpywcsj is not null and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) and czpywcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and czpywcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') then 1 else 0 end czzs,
+        case when rhhdwcsj is not null and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) and rhhdwcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and rhhdwcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') then 1 else 0 end rhzs,
+        case when yxzfwcsj is not null and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) and zhfl='1' and yxzfwcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and yxzfwcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') then 1 else 0 end yxzs
+        from KHXXGL_KHXQ_XXNYZT where 1 = 1
+        <if test="dao.sszh != null and dao.sszh !=''">
+            and sszh = #{dao.sszh}
+        </if>
+        <if test="dao.wgbh != null and dao.wgbh !=''">
+            and wgbh = #{dao.wgbh}
+        </if>
+        <if test="dao.ztfl != null and dao.ztfl !=''">
+            and ztfl = #{dao.ztfl}
+        </if>
+        <if test="dao.ghzrr != null and dao.ghzrr !=''">
+            and ghzrr = #{dao.ghzrr}
+        </if>
+        ) group by sszh,ghzrr ) t2 on
+        t1.sszh = t2.sszh and t1.ghzrr = t2.ghzrr
+    </select>
+
+    <select id="getTjfx2expQy" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.XxnyztTjfx2">
+        select t1.*, t2.czzstj,t2.rhzstj,t2.yxzstj from (
+        select sszh,ghzrr,count(1) ghs,sum(czzs)czzs,sum(rhzs) rhzs ,sum(yxzs)yxzs,sum(dczpdhs)syrs from (
+        select sszh,ghzrr,case when czpywcsj is not null and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end czzs,
+        case when rhhdwcsj is not null  and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) then 1 else 0 end rhzs,
+        case when yxzfwcsj is not null and sfyxzf='1' then 1 else 0 end yxzs,
+        case
+        when pdfl is null and
+        (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null)
+        then
+        1
+        else
+        0
+        end dczpdhs
+        from KHXXGL_KHXQ_XXNYZT
+        where 1 = 1 <if test="dao.sszh != null and dao.sszh !=''">
+        and sszh = #{dao.sszh}
+    </if>
+        <if test="dao.wgbh != null and dao.wgbh !=''">
+            and wgbh = #{dao.wgbh}
+        </if>
+        <if test="dao.ztfl != null and dao.ztfl !=''">
+            and ztfl = #{dao.ztfl}
+        </if>
+        <if test="dao.ghzrr != null and dao.ghzrr !=''">
+            and ghzrr = #{dao.ghzrr}
+        </if>
+        ) group by sszh,ghzrr )t1 left join (
+
+
+        select sszh,ghzrr,sum(czzs) czzstj,sum(rhzs) rhzstj ,sum(yxzs)yxzstj from (
+        select sszh,ghzrr,case when czpywcsj is not null and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) and czpywcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and czpywcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') then 1 else 0 end czzs,
+        case when rhhdwcsj is not null and (sfysx != '1' or sfysx is null)
+        and  (sfhmdkh != '1' or sfhmdkh is null)
+        and  (sfzcjy != '2' or sfzcjy is null) and rhhdwcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and rhhdwcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') then 1 else 0 end rhzs,
+        case when yxzfwcsj is not null
+        and sfyxzf='1'
+        and yxzfwcsj >= to_date(#{dao.pyyxm},'yyyymmddhh24miss')
+        and yxzfwcsj &lt;= to_date(#{dao.pyyzjhm},'yyyymmddhh24miss') then 1 else 0 end yxzs
+        from KHXXGL_KHXQ_XXNYZT where 1 = 1
+        <if test="dao.sszh != null and dao.sszh !=''">
+            and sszh = #{dao.sszh}
+        </if>
+        <if test="dao.wgbh != null and dao.wgbh !=''">
+            and wgbh = #{dao.wgbh}
+        </if>
+        <if test="dao.ztfl != null and dao.ztfl !=''">
+            and ztfl = #{dao.ztfl}
+        </if>
+        <if test="dao.ghzrr != null and dao.ghzrr !=''">
+            and ghzrr = #{dao.ghzrr}
+        </if>
+        ) group by sszh,ghzrr ) t2 on
+        t1.sszh = t2.sszh and t1.ghzrr = t2.ghzrr
+    </select>
+
+    <select id="getAllGhzrr" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.AntSelectOptions">
+        select t1.ghzrr as value,t2.ygxm || '-' || t1.ghzrr label from (
+            select distinct ghzrr from KHXXGL_KHXQ_XXNYZT t ) t1 left join
+            Hr_Bas_Staff t2
+        on t1.ghzrr = t2.yggh where t1.ghzrr is not null
+    </select>
+
+    <select id="xxnyztYxzfInit" statementType="CALLABLE">
+        { CALL PKG_TJFX.P_TJFX_XXNYZTWCTJ(#{id},#{yggh})}
+    </select>
+
+    <select id="getZfzbxxByXxnyztId" parameterType="java.lang.String" resultType="org.cmms.modules.khxxgl.khflgl.nhxq.entity.XxnyztYxzfVo">
+        select
+            to_char(t1.tjrq, 'YYYY-MM-DD') tjrq,t1.yggh,t1.zbid,t1.zbmc,t1.sfdb,t2.bz
+        from TJFX_YXZFZBMX_XXNYZT t1,TJFX_XXNYZT_YXZFZBSZ t2
+        where t1.XXNYZTID=#{id}
+          and (t1.tjrq,t1.yggh)=(
+            select tjrq,yggh from (
+                                      select tjrq,yggh,row_number() over(order by tjrq desc) pk  from TJFX_YXZFZBMX_XXNYZT
+                                      where XXNYZTID=#{id}
+                                  ) where pk=1
+        )
+          and t1.zbid=t2.zbid
+    </select>
+</mapper>

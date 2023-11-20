@@ -1,0 +1,29 @@
+{
+  "status": 200,
+  "success": true,
+  "message": "",
+  "result": {
+    "records":[
+      {
+        "tjyf": 11,
+        "jgmc": "钓鱼岛银行",
+        "cklx": "个人活期",
+        "ye": 123123,
+        "yrp": 12,
+        "nrp": 32,
+        "npld": 13,
+        "ypld": 31
+      },
+      {
+        "tjyf": 12,
+        "jgmc": "北京银行",
+        "cklx": "个人定期",
+        "ye": 123123,
+        "yrp": 12,
+        "nrp": 32,
+        "npld": 13,
+        "ypld": 31
+      }
+    ]
+  }
+}

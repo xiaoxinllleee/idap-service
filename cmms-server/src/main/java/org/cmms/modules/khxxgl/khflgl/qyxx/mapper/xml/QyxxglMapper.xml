@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.khxxgl.khflgl.qyxx.mapper.QyxxglMapper">
+
+    <update id="init" statementType="CALLABLE">
+        {call pkg_khxxgl.P_QYXXXX}
+    </update>
+
+    <select id="selectByQyxx" parameterType="java.lang.String" resultType="org.cmms.modules.khxxgl.khflgl.qyxx.entity.Qyxxgl">
+        select * from KHXXGL_QYXQ_QY t
+        <where>
+            t.frzjhm in (select m.zjhm from KHXXGL_KHXQ_NH m <where>
+            <if test="hhbm!=null and hhbm!=''">
+                hhbm = #{hhbm})
+            </if>
+        </where>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cmms.modules.xdgl.grdkgl.mapper.GrdkcjxxMapper">
+
+    <update id="updateSxed">
+		update CAMS_ZCSX_GRXDCJXX set  pddj=#{pddj},sxje=#{zzsxed},dcjl=#{yj} where zjhm=#{zjhm}
+	</update>
+
+
+	<update id="updateSpjled">
+		update CAMS_ZCSX_GRXDCJXX_SPJL set  pddj=#{pddj},sxje=#{zzsxed},dcjl=#{yj} where spid=#{spid}
+	</update>
+
+
+</mapper>
